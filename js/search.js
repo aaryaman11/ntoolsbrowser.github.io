@@ -11,7 +11,7 @@
                       
     const mode = umbButton.checked ? 'umb' : 'nyu';
     const url = mode === 'umb' ?
-      `./data/${subject}/JSON/${subject}.json`
+      `../data/${subject}/JSON/${subject}.json`
     : `${protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`;
     
     
