@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title>N-Tools Browser</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"> 
+    <link rel="stylesheet" href="./css/style.css">
+
+    <script src='scripts/xio.js'></script>
+    <script src="scripts/xtk_simpleviewer.js"></script>
+    <script type="text/javascript" src="https://get.goxtk.com/xtk_edge.js"></script>
+    <script type="text/javascript" src="https://get.goXTK.com/xtk_xdat.gui.js"></script>
+    <script type="module" src='main.js'></script>
+
+
+  </head>
+  <body>
+    <div id="electrode-controller" class="ui container raised very padded segment">
+      <div id="patient-info" class="container">
+        <div>
+          <label>Subject ID:</label>
+          <label id="subject-id-lbl"></label>
+        </div>
+        <div>
+          <label>Number of Seizure Types:</label>
+          <label id="num-seiz-types-lbl"></label>
+        </div>
+      </div>
+        <br>
+          <label for="electrode-types">Select Seizure Type</label> 
+            <select name="electrode-types" id="seizure-display-menu"></select>
+        <br><br>
+        <div>
+          <label for="electrode">Select Electrode ID</label>
+          <select name="electrodes" id="electrode-menu">
+            <option value="none">None</option>
+          </select>
+          <div>
+            <div id="electrode-type-label">
+              <label>Electrode ID: </label>
+              <label id="electrode-id-label-inner"></label>
+            </div>
+            <div id="electrode-type-label">
+              <label>Electrode Type: </label>
+              <label id="electrode-type-label-inner"></label>
+            </div>
+            <div id="int-population-label">
+              <label>Interictal Population: </label>
+              <label id="int-population-label-inner"></label>
+            </div>
+            <div id="seiz-type-label">
+              <label>Seizure Type: </label>    
+              <label id="seiz-type-label-inner"></label>
+            </div>
+              <div id="coordinates-label">
+              <label>Coordinates: </label>    
+              <label id="coordinates-label-inner"></label>
+            </div>
+          </div>
+          <br>
+          <div>
+            <button id="show-tags-btn">
+              Show All Tags
+            </button>
+          </div>
+          <br>
+          <label for="fmaps">Select Functional Map</label>
+          <select name="fmaps" id="fmap-menu">
+            <option value="none">None</option>
+            <!-- <option value="fmapThreshold">Threshold</option> -->
+            <option value="fmapMotor">Motor</option>
+            <option value="fmapSensory">Sensory</option>
+            <option value="fmapLanguage">Language</option>
+            <option value="fmapVisual">Visual</option>
+            <option value="fmapOther">Other</option>
+            <option value="fmapAfterDischarge">After Discharge</option>
+          </select>
+          <br><br>
+          <label id="fmap-caption">No Functional Mapping Selected</label>
+        </div>
+      </div>
+    </div>
+    <!-- the container for the renderers -->
+    <div id="renderer-container">
+      <div id="3d" style="height: 70%;" class="container raised">
+      </div>
+      <div id="sliceX" class="slice-container"></div>
+      <div id="sliceY" class="slice-container"></div>
+      <div id="sliceZ" class="slice-container"></div>
+      <div id="tags"></div>
+    </div>
+  </body>
+</html>

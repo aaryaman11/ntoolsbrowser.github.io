@@ -1,0 +1,152 @@
+ html, body { 
+    background-color:#000;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden !important;  
+    box-sizing: border-box;
+    min-width: 640px;
+}
+canvas {
+    min-width: 100%;
+}
+#renderer-container {
+    color: black;
+}
+/* https://stackoverflow.com/questions/25653639/how-do-i-change-the-location-of-the-dat-gui-dropdown */
+/* #gui { 
+    position: absolute; 
+    top: 0vh; 
+    right: 0px;
+} */
+
+#menu {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    color: rgb(255,255,255);
+    background: transparent;
+    border: 0px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: rgba(0,255,255,0.5);
+}
+button:active {
+    color: #000000;
+    background-color: rgba(0,255,255,1);
+}
+
+.label {
+    text-shadow: -1px 1px 1px rgb(0,0,0);
+    margin-left: 25px;
+    font-size: 20px;
+    z-index: 10;
+}
+
+#electrode-controller {
+    position: absolute;
+    height: 65%;
+    width: 220px;
+    font-family: sans-serif;
+    color: white;
+    display: block;
+    background-color: #303030;
+    padding: 10px;
+    z-index: 1;
+    min-width: 10%;
+}
+
+.check-box {
+    display: inline-block;
+}
+input:hover {
+    cursor: pointer;
+}
+
+#onset-label {
+    color: red;
+}
+#early-spread-label {
+    color: yellow
+}
+#late-spread-label {
+    color: green;
+}
+
+#electrode-menu:hover {
+    cursor: pointer;
+}
+option:hover {
+    cursor: pointer;
+}
+
+#ntools-search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#ntools-search {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.search-text {
+    color: white;
+}
+
+#radio-button-modes {
+    color: white;
+}
+
+.slice-container {
+    background-color: #000;
+    width: calc(100% / 3);
+    height: 30%;
+    float: left;
+}
+
+#3d {
+    background-color: #000;
+    /* position: absolute; */
+    width: 100%;
+    height: 70%;
+    margin-bottom: 2px;
+}
+#sliceX {
+    border-top: 2px solid red;
+}
+
+#sliceY {
+    border-top: 2px solid green;
+}
+
+#sliceZ {
+    border-top: 2px solid blue;
+}
+
+button {
+    border: 1px solid white;
+}
+
+#color-legend{
+    border: 1px solid white;
+    margin-top: 10px;
+    font-size: 1rem;
+    position: relative;
+    display: block;
+}
+
