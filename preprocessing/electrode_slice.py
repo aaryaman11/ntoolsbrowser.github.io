@@ -106,12 +106,12 @@ for seizType in all_seiztypes:
     if seizType == 'funMapping':
         # again, a hacky way to make a default
         print("Saving Default Labels...")
-        nib.save(labelmap, f'../volumes/{subject}_default_labels.nii')
+        nib.save(labelmap, f'../data/{subject}/volume/{subject}_default_labels.nii')
         print("Done")
 
     else:
         print(f'Generating Labels for {seizType}...')
-        nib.save(labelmap, f'../volumes/{subject}_{seizType}_labels.nii')
+        nib.save(labelmap, f'../data/{subject}/volume/{subject}_{seizType}_labels.nii')
         print("Done")
 
 print("Label Maps Generated")

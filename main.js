@@ -1,4 +1,4 @@
-import { loadElectrodes } from './scripts/electrodes.js'
+import { loadElectrodes } from './js/electrodes.js'
 
 'use strict';
 
