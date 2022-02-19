@@ -435,7 +435,7 @@ const loadElectrodes = (renderer, volumeGUI, volume, mode, subject) => {
   (async () => {
     // initial data load
     const electrodeJSONData = mode === "umb" ?
-      await (await fetch(`./data/JSON/${subject}.json`)).json()
+      await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
     : await (await fetch (`${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`)).json()
 
     // can choose any property here, but it must have same length as other properties to work

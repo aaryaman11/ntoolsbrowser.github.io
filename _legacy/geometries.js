@@ -1,4 +1,4 @@
-import { getSeizTypeColor } from './color.js'
+import { getSeizTypeColor } from '../scripts/color.js'
 
 // create the graphical electrode on the canvas
 export function drawElectrodeFx(electrodeDatum) {

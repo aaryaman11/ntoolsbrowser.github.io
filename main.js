@@ -1,4 +1,3 @@
-//var subject = localStorage.getItem("user-search") // get the subject name from search page
 import { loadElectrodes } from './scripts/electrodes.js'
 
 'use strict';
@@ -8,12 +7,8 @@ import { loadElectrodes } from './scripts/electrodes.js'
     main() 
   : window.addEventListener('load', main)
 })(() => {
-    
-
 
   const [mode, subject] = parse();
-  console.log(subject)
-
   const volume = loadVolume(subject);
   const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject);
   const [threeDRenderer, sliceX, sliceY, sliceZ] = initRenderers();
@@ -106,16 +101,16 @@ import { loadElectrodes } from './scripts/electrodes.js'
         intPopList.style.visibility = 'visible'
         seizTypeList.style.visibility = 'hidden'
 
-        volume.labelmap.file = mode === "umb" ? `./data/volumes/${subject}_intPopulation_labels.nii`
+        volume.labelmap.file = mode === "umb" ? `./data/${subject}/volume/${subject}_intPopulation_labels.nii`
                                               : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_intPopulation_labels.nii`
 
-        volume.labelmap.colortable.file = './data/volumes/colormap_intpop.txt'
+        volume.labelmap.colortable.file = './data/colormaps/colormap_intpop.txt'
       } else {
         seizTypeList.style.visibility = 'visible'
         intPopList.style.visibility = 'hidden'
-        volume.labelmap.file = mode === "umb" ? `./data/volumes/${subject}_${selectedSeizType}_labels.nii`
-                                              : window.location.protocol+`//ievappwpdcpvm01.nyumc.org/?file=${subject}_${selectedSeizType}_labels.nii`
-        volume.labelmap.colortable.file = './data/volumes/colormap_seiztype.txt'
+        volume.labelmap.file = mode === "umb" ? `./data/${subject}/volume/${subject}_${selectedSeizType}_labels.nii`
+                                              : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_${selectedSeizType}_labels.nii`
+        volume.labelmap.colortable.file = './data/colormaps/colormap_seiztype.txt'
       }
 
       volume.modified()
@@ -130,9 +125,9 @@ import { loadElectrodes } from './scripts/electrodes.js'
  */
 const loadVolume = (subject) => {
   let volume = new X.volume();
-  volume.file = `./data/volumes/${subject}_T1.nii`;
-  volume.labelmap.file = `./data/volumes/${subject}_default_labels.nii`;
-  volume.labelmap.colortable.file = `./data/volumes/colormap_seiztype.txt`;
+  volume.file = `./data/${subject}/volume/${subject}_T1.nii`;
+  volume.labelmap.file = `./data/${subject}/volume/${subject}_default_labels.nii`;
+  volume.labelmap.colortable.file = `./data/colormaps/colormap_seiztype.txt`;
   volume.modified();
   return volume;
 };
@@ -156,8 +151,8 @@ const loadSurfaces = (subject) => {
   const leftHemisphere = new X.mesh();
   const rightHemisphere = new X.mesh();
 
-  leftHemisphere.file = `./data/meshes/${subject}_lh.pial`;
-  rightHemisphere.file = `./data/meshes/${subject}_rh.pial`;
+  leftHemisphere.file = `./data/${subject}/meshes/${subject}_lh.pial`;
+  rightHemisphere.file = `./data/${subject}/meshes/${subject}_rh.pial`;
 
   leftHemisphere.color = [1, 1, 1];
   rightHemisphere.color = [1, 1, 1];

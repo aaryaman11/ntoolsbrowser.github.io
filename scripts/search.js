@@ -11,7 +11,7 @@
                       
     const mode = umbButton.checked ? 'umb' : 'nyu';
     const url = mode === 'umb' ?
-      `../data/JSON/sample.json`
+      `./data/${subject}/JSON/${subject}.json`
     : `${protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`;
     
     
@@ -19,7 +19,7 @@
     request.open('HEAD', url, false);
     request.send();
     if (request.status !== 404) {
-      window.location.href = `../index.html?mode=${mode}&subject=${subject}`;
+      window.location.href = `./view.html?mode=${mode}&subject=${subject}`;
     }
     else {
       document.getElementById('err').innerText = 'Data not found!';
