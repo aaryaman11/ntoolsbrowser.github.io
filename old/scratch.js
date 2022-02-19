@@ -63,3 +63,10 @@
   //     var input = X.io.get('../data/T1_RAS.nii')
   //     new SIMPLEVIEWER('sliceX', input.header.dim.subarray(1,4), input.data.image);
   // }
+
+    // const niftiFile = `./data/volumesT1_RAS.nii`;
+  // const niftiLabelMap = `../data/fsaverage_default_labels.nii`
+  // const niftiColorTable = `../data/colormap_seiztype.txt`
+
+  // const volume = createVolume(niftiFile)
+  // const volumeWithLabelmap = createVolume(niftiFile, niftiLabelMap, niftiColorTable);

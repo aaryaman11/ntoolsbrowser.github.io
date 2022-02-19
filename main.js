@@ -9,15 +9,13 @@ import { loadElectrodes } from './scripts/electrodes.js'
   : window.addEventListener('load', main)
 })(() => {
     
-  // const niftiFile = `./data/volumesT1_RAS.nii`;
-  // const niftiLabelMap = `../data/fsaverage_default_labels.nii`
-  // const niftiColorTable = `../data/colormap_seiztype.txt`
 
-  // const volume = createVolume(niftiFile)
-  // const volumeWithLabelmap = createVolume(niftiFile, niftiLabelMap, niftiColorTable);
 
-  const volume = loadVolume();
-  const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces();
+  const [mode, subject] = parse();
+  console.log(subject)
+
+  const volume = loadVolume(subject);
+  const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject);
   const [threeDRenderer, sliceX, sliceY, sliceZ] = initRenderers();
 
   threeDRenderer.add(leftHemisphereMesh);
@@ -88,24 +86,40 @@ import { loadElectrodes } from './scripts/electrodes.js'
     // fix original camera position
     threeDRenderer.camera.position = [0, 200, 0];
 
-    const [mode, subject] = parse();
+   
     loadElectrodes(threeDRenderer, volumeGUI, volume, mode, subject);
 
     // this should ideally reset the colormap and labelmap of volume
     // whenever the menu is changed. It also will put the appropriate
     // color legend on the screen
 
-    // const displayMenu = document.getElementById('seizure-display-menu')
-    // const seizTypeList = document.getElementById('seiztype-list')
-    // const intPopList = document.getElementById('int-pop-list')
+    const displayMenu = document.getElementById('seizure-display-menu')
+    const seizTypeList = document.getElementById('seiztype-list')
+    const intPopList = document.getElementById('int-pop-list')
 
-    // displayMenu.addEventListener('change', event => {
-    //   event.preventDefault()
-    //   event.stopPropagation()
-    //   const selectedSeizType = event.target.value
+    displayMenu.addEventListener('change', event => {
+      event.preventDefault()
+      event.stopPropagation()
+      const selectedSeizType = event.target.value
+        
+      if (selectedSeizType === "intPopulation") {
+        intPopList.style.visibility = 'visible'
+        seizTypeList.style.visibility = 'hidden'
 
-    //   volume.modified()
-    // })
+        volume.labelmap.file = mode === "umb" ? `./data/volumes/${subject}_intPopulation_labels.nii`
+                                              : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_intPopulation_labels.nii`
+
+        volume.labelmap.colortable.file = './data/volumes/colormap_intpop.txt'
+      } else {
+        seizTypeList.style.visibility = 'visible'
+        intPopList.style.visibility = 'hidden'
+        volume.labelmap.file = mode === "umb" ? `./data/volumes/${subject}_${selectedSeizType}_labels.nii`
+                                              : window.location.protocol+`//ievappwpdcpvm01.nyumc.org/?file=${subject}_${selectedSeizType}_labels.nii`
+        volume.labelmap.colortable.file = './data/volumes/colormap_seiztype.txt'
+      }
+
+      volume.modified()
+    })
     
   };
 })
@@ -114,36 +128,36 @@ import { loadElectrodes } from './scripts/electrodes.js'
  * loads the .nii data into a X.volume and returns it
  * @returns {X.volume}
  */
-const loadVolume = () => {
+const loadVolume = (subject) => {
   let volume = new X.volume();
-  volume.file = `./data/volumes/T1_RAS.nii`;
-  volume.labelmap.file = `./data/volumes/fsaverage_default_labels.nii`;
+  volume.file = `./data/volumes/${subject}_T1.nii`;
+  volume.labelmap.file = `./data/volumes/${subject}_default_labels.nii`;
   volume.labelmap.colortable.file = `./data/volumes/colormap_seiztype.txt`;
   volume.modified();
   return volume;
 };
 
-const createVolume = (file, labelmap = null, colormap = null) => {
-  let v = new X.volume();
-  v.file = file;
-  if (labelmap != null && colormap != null) {
-    v.labelmap.file = labelmap;
-    v.labelmap.colortable.file = colormap;
-  }
-  v.modified();
-  return v;
-}
+// const createVolume = (file, labelmap = null, colormap = null) => {
+//   let v = new X.volume();
+//   v.file = file;
+//   if (labelmap != null && colormap != null) {
+//     v.labelmap.file = labelmap;
+//     v.labelmap.colortable.file = colormap;
+//   }
+//   v.modified();
+//   return v;
+// }
 
 /**
  * Loads the .pial data into two X.meshes and returns them
  * @returns {[X.mesh, X.mesh]}
  */
-const loadSurfaces = () => {
+const loadSurfaces = (subject) => {
   const leftHemisphere = new X.mesh();
   const rightHemisphere = new X.mesh();
 
-  leftHemisphere.file = `./data/meshes/lh.pial`;
-  rightHemisphere.file = `./data/meshes/rh.pial`;
+  leftHemisphere.file = `./data/meshes/${subject}_lh.pial`;
+  rightHemisphere.file = `./data/meshes/${subject}_rh.pial`;
 
   leftHemisphere.color = [1, 1, 1];
   rightHemisphere.color = [1, 1, 1];
