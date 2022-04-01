@@ -431,7 +431,7 @@ const jumpSlicesOnClick = (
     }) // end of event lsitener
 }
 
-const loadElectrodes = (renderer, volumeGUI, volume, mode, subject) => {
+const loadElectrodes = (renderer, volumeGUI, volume, mode, subject, playSignalController) => {
   (async () => {
     // initial data load
     const electrodeJSONData = mode === "umb" ?
@@ -466,6 +466,27 @@ const loadElectrodes = (renderer, volumeGUI, volume, mode, subject) => {
     selectionSpheres.forEach(el => renderer.add(el));
     fmapConnections.forEach(connection => renderer.add(connection));
     fmapHighlights.forEach(highlight => renderer.add(highlight));
+
+    //setup electrode signal display
+    let playSignal = false;
+
+    playSignalController['start / stop'] = function(){
+
+      let signalFrequency = 250;
+
+      playSignal = !playSignal;
+
+      function applySignal(){
+        if(!playSignal) return;
+
+        electrodeSpheres.forEach(sphere => sphere.color = [Math.random(), Math.random(), Math.random()]);
+
+        setTimeout(applySignal, signalFrequency);
+      };
+
+      if(playSignal)
+        applySignal();
+    };
 
     // adds the seizure types to the first drop down menu on the panel
     fillSeizureTypeBox(electrodeJSONData, electrodeSpheres, fmapConnections, volume, renderer);

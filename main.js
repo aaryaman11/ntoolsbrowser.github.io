@@ -73,16 +73,25 @@ import { loadElectrodes } from './js/electrodes.js'
     const slicesGUI = gui.addFolder('Slices');
     slicesGUI.add(volume, 'visible');
 
+    const signalGUI = gui.addFolder('Electrode Signal');
+    const playSignalController = {
+      'start / stop': function() {
+      }
+    };
+
+    signalGUI.add(playSignalController, 'start / stop');
+
     volumeGUI.open();
     leftHemisphereGUI.open();
     rightHemisphereGUI.open();
     slicesGUI.open();
+    signalGUI.open();
 
     // fix original camera position
     threeDRenderer.camera.position = [0, 200, 0];
 
    
-    loadElectrodes(threeDRenderer, volumeGUI, volume, mode, subject);
+    loadElectrodes(threeDRenderer, volumeGUI, volume, mode, subject, playSignalController);
 
     // this should ideally reset the colormap and labelmap of volume
     // whenever the menu is changed. It also will put the appropriate
