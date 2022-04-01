@@ -89,8 +89,7 @@ import { loadElectrodes } from './js/electrodes.js'
 
     // fix original camera position
     threeDRenderer.camera.position = [0, 200, 0];
-
-   
+    
     loadElectrodes(threeDRenderer, volumeGUI, volume, mode, subject, playSignalController);
 
     // this should ideally reset the colormap and labelmap of volume
@@ -124,7 +123,7 @@ import { loadElectrodes } from './js/electrodes.js'
 
       volume.modified()
     })
-    
+
   };
 })
 
@@ -140,17 +139,6 @@ const loadVolume = (subject) => {
   volume.modified();
   return volume;
 };
-
-// const createVolume = (file, labelmap = null, colormap = null) => {
-//   let v = new X.volume();
-//   v.file = file;
-//   if (labelmap != null && colormap != null) {
-//     v.labelmap.file = labelmap;
-//     v.labelmap.colortable.file = colormap;
-//   }
-//   v.modified();
-//   return v;
-// }
 
 /**
  * Loads the .pial data into two X.meshes and returns them
@@ -205,26 +193,11 @@ const initRenderers = () => {
   return [threeDRenderer, sliceX, sliceY, sliceZ];
 }
 
-// from http://stackoverflow.com/a/7826782/1183453
+
+// matches mode/subject by regex match and removes '=' character
 const parse = () => {
-
-      const args = document.location.search
-                    .substring(1)
-                    .split('&')
-                    .filter(arg => arg != '');
-      const argsParsed = {};
-
-      for (const arg of args) {
-          const currentArg = unescape(arg);
-
-          if (currentArg.indexOf('=') === -1) {
-            argsParsed[currentArg.replace(new RegExp('/$'),'').trim()] = true;
-          }
-          else {
-            const keyValPair = currentArg.split('=');
-            argsParsed[keyValPair[0].trim()] = keyValPair[1].replace(new RegExp('/$'),'').trim();
-          }
-      }
-    
-    return [argsParsed['mode'], argsParsed['subject']]
+  const userSearch = document.location.search;
+  return [...userSearch.matchAll('=[a-zA-Z]+')].map(match => match[0].slice(1));
 }
+
+
