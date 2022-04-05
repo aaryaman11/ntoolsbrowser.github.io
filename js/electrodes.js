@@ -70,6 +70,12 @@ function getElectrodeObject(jsonData, index, bBox) {
   return electrodeObject
 }
 
+// be mindful that NONE occupies index 0
+const getCurrentSelectedIndex = () => {
+  return document.getElementById('electrode-menu').selectedIndex;
+}
+
+
 // create the graphical electrode on the canvas
 const drawElectrodeFx = (electrodeDatum) => {
   // destructuring object properties. it is more readable for me, 
@@ -341,6 +347,13 @@ const addMouseHover = (renderer) => {
  * made arrays from the JSON is very useful
  */
 
+//!  the JSON does not get updated with the update button
+// because this function is currently JUST looking at JSON data, 
+// not the updated electrode // objects during edits.
+
+// options: 1. use the new JSON format
+//          2. refactor to remove dependence on passing the itself JSON around
+
 const updateLabels = (electrode, data) => {
   const {elecType, intPopulation, xCoor, yCoor, zCoor} = electrode;
 
@@ -514,6 +527,28 @@ const loadElectrodes = (renderer, volumeGUI, volume, mode, subject, playSignalCo
       renderer.resetBoundingBox();
       renderer.showAllCaptions(sphereIDs);
     });
+
+    // right now, just turns electrodes to "onset" type
+    const editBtn = document.getElementById('edit-btn')
+    editBtn.addEventListener('click', () => {
+      const currentIndex = getCurrentSelectedIndex() - 1;
+      if (currentIndex < 0) return;
+
+      const currentElectrode = electrodeObjects[currentIndex]
+
+      const updatedElectrode = {
+        ...currentElectrode,
+        "seizType": "Onset"
+      }
+
+      electrodeObjects[currentIndex] = updatedElectrode;
+   
+      // since this logic is repeated elsewhere, it would be good to abstract
+      // to its own function
+      electrodeSpheres.forEach((sphere, index) => {
+        sphere.color = getSeizTypeColor(electrodeObjects[index].seizType)
+      })
+    })
   })();
 }
 
