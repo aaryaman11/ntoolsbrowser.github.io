@@ -42,14 +42,14 @@ function getElectrodeObject(jsonData, index, bBox) {
   // creates an electrode object based on the index of the JSON properties.
   // coordinates are offset by the bounding box
   var electrodeObject = {
-    "elecID": jsonData.elecID[index],
-    "xCoor": (jsonData.coorX[index] + xOffset),
-    "yCoor": (jsonData.coorY[index] + yOffset),
-    "zCoor": (jsonData.coorZ[index] + zOffset),
-    "elecType": jsonData.elecType[index],
-    "intPopulation": jsonData.intPopulation[index],
-    "seizType": jsonData[defaultSeizType][index],
-    "visible": true, // a default value for later filtering
+    elecID: jsonData.elecID[index],
+    xCoor: (jsonData.coorX[index] + xOffset),
+    yCoor: (jsonData.coorY[index] + yOffset),
+    zCoor: (jsonData.coorZ[index] + zOffset),
+    elecType: jsonData.elecType[index],
+    intPopulation: jsonData.intPopulation[index],
+    seizType: jsonData[defaultSeizType][index],
+    visible: true, // a default value for later filtering
   };
 
   // the slice in which the electrode appears, based on the coordinates
