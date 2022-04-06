@@ -1,13 +1,12 @@
-import { loadElectrodes } from './js/electrodes.js'
+import { loadElectrodes } from "./js/electrodes.js";
 
-'use strict';
+("use strict");
 
-(main => {
-  document.readyState == 'complete' ? 
-    main() 
-  : window.addEventListener('load', main)
+((main) => {
+  document.readyState == "complete"
+    ? main()
+    : window.addEventListener("load", main);
 })(() => {
-
   const [mode, subject] = parse();
   const volume = loadVolume(subject);
   const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject);
@@ -15,7 +14,7 @@ import { loadElectrodes } from './js/electrodes.js'
 
   threeDRenderer.add(leftHemisphereMesh);
   threeDRenderer.add(rightHemisphereMesh);
-  
+
   sliceX.add(volume);
   sliceX.render();
 
@@ -26,11 +25,11 @@ import { loadElectrodes } from './js/electrodes.js'
     sliceY.render();
     sliceZ.add(volume);
     sliceZ.render();
-    
+
     const toggleSliceOnScroll = () => {
       volume.visible = !volume.visible;
       volume.visible = !volume.visible;
-    }
+    };
     sliceX.onScroll = () => toggleSliceOnScroll();
     sliceY.onScroll = () => toggleSliceOnScroll();
     sliceZ.onScroll = () => toggleSliceOnScroll();
@@ -46,40 +45,39 @@ import { loadElectrodes } from './js/electrodes.js'
     const gui = new dat.GUI();
     // gui.domElement.id = 'gui';
 
-    const volumeGUI = gui.addFolder('Volume');
-    volumeGUI.add(volume, 'opacity', 0, 1);
-    volumeGUI.add(volume, 'lowerThreshold', volume.min, volume.max);
-    volumeGUI.add(volume, 'upperThreshold', volume.min, volume.max);
-    volumeGUI.add(volume, 'windowLow', volume.min, volume.max);
-    volumeGUI.add(volume, 'windowHigh', volume.min, volume.max);
+    const volumeGUI = gui.addFolder("Volume");
+    volumeGUI.add(volume, "opacity", 0, 1);
+    volumeGUI.add(volume, "lowerThreshold", volume.min, volume.max);
+    volumeGUI.add(volume, "upperThreshold", volume.min, volume.max);
+    volumeGUI.add(volume, "windowLow", volume.min, volume.max);
+    volumeGUI.add(volume, "windowHigh", volume.min, volume.max);
 
     // slice indicies
-    volumeGUI.add(volume, 'indexX', 0, volume.dimensions[0] - 1);
-    volumeGUI.add(volume, 'indexY', 0, volume.dimensions[1] - 1);
-    volumeGUI.add(volume, 'indexZ', 0, volume.dimensions[2] - 1);
+    volumeGUI.add(volume, "indexX", 0, volume.dimensions[0] - 1);
+    volumeGUI.add(volume, "indexY", 0, volume.dimensions[1] - 1);
+    volumeGUI.add(volume, "indexZ", 0, volume.dimensions[2] - 1);
 
     // hemisphere GUIs
-    const leftHemisphereGUI = gui.addFolder('Left Hemisphere');
-    leftHemisphereGUI.add(leftHemisphereMesh, 'visible');
-    leftHemisphereGUI.add(leftHemisphereMesh, 'opacity', 0, 1);
-    leftHemisphereGUI.addColor(leftHemisphereMesh, 'color');
+    const leftHemisphereGUI = gui.addFolder("Left Hemisphere");
+    leftHemisphereGUI.add(leftHemisphereMesh, "visible");
+    leftHemisphereGUI.add(leftHemisphereMesh, "opacity", 0, 1);
+    leftHemisphereGUI.addColor(leftHemisphereMesh, "color");
 
-    const rightHemisphereGUI = gui.addFolder('Right Hemisphere');
-    rightHemisphereGUI.add(rightHemisphereMesh, 'visible');
-    rightHemisphereGUI.add(rightHemisphereMesh, 'opacity', 0, 1);
-    rightHemisphereGUI.addColor(rightHemisphereMesh, 'color');
+    const rightHemisphereGUI = gui.addFolder("Right Hemisphere");
+    rightHemisphereGUI.add(rightHemisphereMesh, "visible");
+    rightHemisphereGUI.add(rightHemisphereMesh, "opacity", 0, 1);
+    rightHemisphereGUI.addColor(rightHemisphereMesh, "color");
 
     // making slices invisible
-    const slicesGUI = gui.addFolder('Slices');
-    slicesGUI.add(volume, 'visible');
+    const slicesGUI = gui.addFolder("Slices");
+    slicesGUI.add(volume, "visible");
 
-    const signalGUI = gui.addFolder('Electrode Signal');
+    const signalGUI = gui.addFolder("Electrode Signal");
     const playSignalController = {
-      'start / stop': function() {
-      }
+      "start / stop": function () {},
     };
 
-    signalGUI.add(playSignalController, 'start / stop');
+    signalGUI.add(playSignalController, "start / stop");
 
     volumeGUI.open();
     leftHemisphereGUI.open();
@@ -89,43 +87,55 @@ import { loadElectrodes } from './js/electrodes.js'
 
     // fix original camera position
     threeDRenderer.camera.position = [0, 200, 0];
-    
-    loadElectrodes(threeDRenderer, volumeGUI, volume, mode, subject, playSignalController);
+
+    loadElectrodes(
+      threeDRenderer,
+      volumeGUI,
+      volume,
+      mode,
+      subject,
+      playSignalController
+    );
 
     // this should ideally reset the colormap and labelmap of volume
     // whenever the menu is changed. It also will put the appropriate
     // color legend on the screen
 
-    const displayMenu = document.getElementById('seizure-display-menu')
-    const seizTypeList = document.getElementById('seiztype-list')
-    const intPopList = document.getElementById('int-pop-list')
+    const displayMenu = document.getElementById("seizure-display-menu");
+    const seizTypeList = document.getElementById("seiztype-list");
+    const intPopList = document.getElementById("int-pop-list");
 
-    displayMenu.addEventListener('change', event => {
-      event.preventDefault()
-      event.stopPropagation()
-      const selectedSeizType = event.target.value
-        
+    displayMenu.addEventListener("change", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const selectedSeizType = event.target.value;
+
       if (selectedSeizType === "intPopulation") {
-        intPopList.style.visibility = 'visible'
-        seizTypeList.style.visibility = 'hidden'
+        intPopList.style.visibility = "visible";
+        seizTypeList.style.visibility = "hidden";
 
-        volume.labelmap.file = mode === "umb" ? `./data/${subject}/volume/${subject}_intPopulation_labels.nii`
-                                              : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_intPopulation_labels.nii`
+        volume.labelmap.file =
+          mode === "umb"
+            ? `./data/${subject}/volume/${subject}_intPopulation_labels.nii`
+            : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_intPopulation_labels.nii`;
 
-        volume.labelmap.colortable.file = './data/colormaps/colormap_intpop.txt'
+        volume.labelmap.colortable.file =
+          "./data/colormaps/colormap_intpop.txt";
       } else {
-        seizTypeList.style.visibility = 'visible'
-        intPopList.style.visibility = 'hidden'
-        volume.labelmap.file = mode === "umb" ? `./data/${subject}/volume/${subject}_${selectedSeizType}_labels.nii`
-                                              : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_${selectedSeizType}_labels.nii`
-        volume.labelmap.colortable.file = './data/colormaps/colormap_seiztype.txt'
+        seizTypeList.style.visibility = "visible";
+        intPopList.style.visibility = "hidden";
+        volume.labelmap.file =
+          mode === "umb"
+            ? `./data/${subject}/volume/${subject}_${selectedSeizType}_labels.nii`
+            : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_${selectedSeizType}_labels.nii`;
+        volume.labelmap.colortable.file =
+          "./data/colormaps/colormap_seiztype.txt";
       }
 
-      volume.modified()
-    })
-
+      volume.modified();
+    });
   };
-})
+});
 
 /**
  * loads the .nii data into a X.volume and returns it
@@ -169,35 +179,34 @@ const loadSurfaces = (subject) => {
 
 const initRenderers = () => {
   const threeDRenderer = new X.renderer3D();
-  threeDRenderer.container = '3d';
+  threeDRenderer.container = "3d";
   threeDRenderer.init();
 
   const sliceX = new X.renderer2D();
   sliceX.pickable = false;
-  sliceX.container = 'sliceX';
-  sliceX.orientation = 'X';
+  sliceX.container = "sliceX";
+  sliceX.orientation = "X";
   sliceX.init();
 
   const sliceY = new X.renderer2D();
   sliceY.pickable = false;
-  sliceY.container = 'sliceY';
-  sliceY.orientation = 'Y';
+  sliceY.container = "sliceY";
+  sliceY.orientation = "Y";
   sliceY.init();
 
   const sliceZ = new X.renderer2D();
   sliceZ.pickable = false;
-  sliceZ.container = 'sliceZ';
-  sliceZ.orientation = 'Z';
+  sliceZ.container = "sliceZ";
+  sliceZ.orientation = "Z";
   sliceZ.init();
 
   return [threeDRenderer, sliceX, sliceY, sliceZ];
-}
-
+};
 
 // matches mode/subject by regex match and removes '=' character
 const parse = () => {
   const userSearch = document.location.search;
-  return [...userSearch.matchAll('=[a-zA-Z]+')].map(match => match[0].slice(1));
-}
-
-
+  return [...userSearch.matchAll("=[a-zA-Z]+")].map((match) =>
+    match[0].slice(1)
+  );
+};
