@@ -25,6 +25,7 @@
 
 import { mapInterval } from './mapInterval.js';
 import { getSeizTypeColor, COLOR } from './color.js';
+import { DOMNodes } from './DOMtree.js';
 
 // package each electrode together as an object for readability and easier iteration
 /**
@@ -72,9 +73,9 @@ const getElectrodeObject = (jsonData, index, bBox) => {
 
 // be mindful that NONE occupies index 0
 const getCurrentSelectedIndex = () => {
-  return document.getElementById('electrode-menu').selectedIndex;
+  const { electrodeMenu } = DOMNodes;
+  return electrodeMenu.selectedIndex;
 }
-
 
 // create the graphical electrode on the canvas
 const drawElectrodeFx = (electrodeDatum) => {
@@ -145,7 +146,6 @@ const drawFmapHighlightFx = (fmap) => {
   return highlight;
 }
 
-
 // finds the two electrodes in the data and calls the cylinder renderer
 /**
  * 
@@ -154,6 +154,8 @@ const drawFmapHighlightFx = (fmap) => {
  * @returns {array} - array of X.cyilinders
  */
 const drawFmapConnections = (data, electrodes) => {
+  // in the current JSON format, fmapG1 and fmapG2 are full arrays. this will have
+  // to change in the new format
   const { fmapG1, fmapG2 } = data;
   const numEntries = fmapG1.length;
 
@@ -202,7 +204,7 @@ const updateSliceLocation = (sliderControllers, volume, electrode) => {
  * @param {X.volume} volume 
  */
 const initializeElectrodeIDMenu = (elObjects, idArray, selectionSpheres, data, volumeGUI, volume) => {
-  const electrodeMenu = document.getElementById('electrode-menu');
+  const { electrodeMenu } = DOMNodes;
 
   electrodeMenu.addEventListener('change', event => {
     const correspondingData = elObjects.find(e => e.elecID === event.target.value);
@@ -228,10 +230,10 @@ const initializeElectrodeIDMenu = (elObjects, idArray, selectionSpheres, data, v
  */
 const fillSeizureTypeBox = (data, spheres, fmaps) => {
   const seizureTypes = data.SeizDisplay;
-  const displayMenu = document.getElementById('seizure-display-menu');
+  const { seizTypeMenu } = DOMNodes
 
   // make ALL fmaps visible if user selects "Fun Mapping"
-  displayMenu.addEventListener('change', event => {
+  seizTypeMenu.addEventListener('change', event => {
     event.preventDefault();
     event.stopPropagation();
     const selectedType = event.target.value;
@@ -250,7 +252,7 @@ const fillSeizureTypeBox = (data, spheres, fmaps) => {
     const newOption = document.createElement('option');
     newOption.value = type;
     newOption.innerText = type;
-    displayMenu.appendChild(newOption);
+    seizTypeMenu.appendChild(newOption);
   })
 }
 // redraw the fmaps, showing only the ones that have a caption
@@ -272,11 +274,12 @@ const redrawFmaps = (fmaps, captions) => {
  * @param {array} fmapHighlights - the X.cylinders which highlight
  */
 const addEventsToFmapMenu = (electrodeData, fmaps, fmapHighlights) => {
-  const fmapMenu = document.getElementById('fmap-menu')
+  const { fmapMenu, fmapCaption } = DOMNodes;
   fmapMenu.addEventListener('change', event => {
-    if (event.target.value !== "none") {
+    const selected = event.target.value;
+    if (selected !== "none") {
       redrawFmaps(fmaps, electrodeData[event.target.value]);
-      document.getElementById('fmap-caption').innerText = 'No Functional Mapping Selected';
+      fmapCaption.innerText = 'No Functional Mapping Selected';
     } else {
       fmaps.forEach(fmap => fmap.visible = false);
     }
@@ -355,28 +358,34 @@ const addMouseHover = (renderer) => {
 //          2. refactor to remove dependence on passing the itself JSON around
 
 const updateLabels = (electrode, data) => {
-  const {elecType, intPopulation, xCoor, yCoor, zCoor} = electrode;
+  const { elecID, elecType, intPopulation, xCoor, yCoor, zCoor} = electrode;
+  const {
+    seizTypeMenu, 
+    intPopulationLabel, 
+    seizTypeLabel, 
+    IDLabel, 
+    elecTypeLabel,
+    coordinateLabel 
+  } = DOMNodes;
 
-  const seizTypeMenu = document.getElementById('seizure-display-menu');
-  const intPopulationLabel = document.getElementById('int-population-label-inner');
-  const seizTypeLabel = document.getElementById('seiz-type-label-inner');
-  const coordinateLabel = document.getElementById('coordinates-label-inner');
-
-  const selectedSeizType = seizTypeMenu.options[seizTypeMenu.selectedIndex].value;
+  const selectedSeizType = seizTypeMenu.selectedOptions[0].value;
+  // again, relying on the old JSON structure here to be a matrix. will need to change
   const seizureTypeValues = data[selectedSeizType];
   const allElectrodeIDs = data.elecID;
 
-  document.getElementById('electrode-id-label-inner').innerText = electrode.elecID;
-  document.getElementById('electrode-type-label-inner').innerText = elecType;
+  IDLabel.innerText = elecID;
+  elecTypeLabel.innerText = elecType;
   coordinateLabel.innerText = `(${Math.round(xCoor)}, ${Math.round(yCoor)}, ${Math.round(zCoor)})`;
   
   if (selectedSeizType === "intPopulation") {
     intPopulationLabel.innerText = intPopulation;
     seizTypeLabel.innerText = '';
   } else {
-    seizTypeLabel.innerText = seizureTypeValues[allElectrodeIDs.indexOf(electrode.elecID)];
+    const currentElecSeizType = seizureTypeValues[allElectrodeIDs.indexOf(electrode.elecID)];
+    seizTypeLabel.innerText = currentElecSeizType;
     intPopulationLabel.innerText = '';
   }
+
 }
 
 /**
@@ -404,44 +413,44 @@ const jumpSlicesOnClick = (
   fmaps, fmapHighlights, volumeRendered
 ) => {
   // get the main canvas
-  const canvas = document.getElementsByTagName('canvas')[0];
-    canvas.addEventListener('click', e => {
-      const clickedObject = renderer.pick(e.clientX, e.clientY);
-      // check if it actually has an ID
-      if (clickedObject !== 0) {
-        const selectedObject = renderer.get(clickedObject);
-        // ".g" is an object property that corresponds to the selected X.object's name
-        if (selectedObject.g === "sphere") {
-          // find the actual electrode in the array of XTK spheres
-          const sphereIndex = spheres.indexOf(selectedObject);
+  const { canvases, electrodeMenu, fmapCaption } = DOMNodes;
+  canvases[0].addEventListener('click', e => {
+    const clickedObject = renderer.pick(e.clientX, e.clientY);
+    // check if it actually has an ID
+    if (clickedObject !== 0) {
+      const selectedObject = renderer.get(clickedObject);
+      // ".g" is an object property that corresponds to the selected X.object's name
+      if (selectedObject.g === "sphere") {
+        // find the actual electrode in the array of XTK spheres
+        const sphereIndex = spheres.indexOf(selectedObject);
 
-          if (sphereIndex >= 0) {
-            // electrodeObjects != xtk spheres!! The electrode objects are an array of objects. the OOP
-            // style allows for all their data points to be bundled together
-            const target = electrodeObjects[sphereIndex];
-            
-            // destructure out the needed properties
-            const { elecID } = target;
+        if (sphereIndex >= 0) {
+          // electrodeObjects != xtk spheres!! The electrode objects are an array of objects. the OOP
+          // style allows for all their data points to be bundled together
+          const target = electrodeObjects[sphereIndex];
+          
+          // destructure out the needed properties
+          const { elecID } = target;
 
-            // highlight and show the needed captions on the menu
-            highlightSelectedElectrode(elecID, IDs, selections);
-            updateLabels(target, data);
-       
-            // sync with electrode menu options
-            const electrodeIDMenuOptions = document.getElementById('electrode-menu').options;
-            electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
-            
-            updateSliceLocation(datGUI.__controllers, volumeRendered, target)  ;                  
-          }
-        } else if (selectedObject.g === "cylinder") {
-          const cylinderIndex = fmaps.indexOf(selectedObject);
-          if (cylinderIndex >= 0) {
-            document.getElementById('fmap-caption').innerText = selectedObject.caption;
-            highlightSelectedFmap(fmapHighlights, cylinderIndex);
-          }
+          // highlight and show the needed captions on the menu
+          highlightSelectedElectrode(elecID, IDs, selections);
+          updateLabels(target, data);
+      
+          // sync with electrode menu options
+          const electrodeIDMenuOptions = electrodeMenu.options;
+          electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
+          
+          updateSliceLocation(datGUI.__controllers, volumeRendered, target);                  
+        }
+      } else if (selectedObject.g === "cylinder") {
+        const cylinderIndex = fmaps.indexOf(selectedObject);
+        if (cylinderIndex >= 0) {
+          fmapCaption.innerText = selectedObject.caption;
+          highlightSelectedFmap(fmapHighlights, cylinderIndex);
         }
       }
-    }) // end of event lsitener
+    }
+  }) // end of event lsitener
 }
 
 const loadElectrodes = (renderer, volumeGUI, volume, mode, subject, playSignalController) => {
@@ -458,8 +467,10 @@ const loadElectrodes = (renderer, volumeGUI, volume, mode, subject, playSignalCo
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
 
-    document.getElementById('subject-id-lbl').innerText = electrodeJSONData.subjID;
-    document.getElementById('num-seiz-types-lbl').innerText = electrodeJSONData.totalSeizType;
+    const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn } = DOMNodes;
+
+    subjectIDLabel.innerText = electrodeJSONData.subjID;
+    numSeizTypeLabel.innerText = electrodeJSONData.totalSeizType;
 
     // contains the array of IDs from the JSON
     const electrodeIDs = electrodeJSONData.elecID;
@@ -522,14 +533,12 @@ const loadElectrodes = (renderer, volumeGUI, volume, mode, subject, playSignalCo
     const sphereIDs = electrodeSpheres.map(el => el.id);
 
     // adds event listener to the show-all-tags button on the menu
-    const tagsBtn = document.getElementById('show-tags-btn')
     tagsBtn.addEventListener('click', () => {
       renderer.resetBoundingBox();
       renderer.showAllCaptions(sphereIDs);
     });
 
     // right now, just turns electrodes to "onset" type
-    const editBtn = document.getElementById('edit-btn')
     editBtn.addEventListener('click', () => {
       const currentIndex = getCurrentSelectedIndex() - 1;
       if (currentIndex < 0) return;
