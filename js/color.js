@@ -1,3 +1,23 @@
+// color object according to the actual name of the original hex code
+// multiply 255 by each val to get RGB decimal value
+const COLOR = {
+  white: [1, 1, 1],
+  black: [0, 0, 0],
+  red: [1, 0, 0],
+  green: [0, 1, 0],
+  blue: [0, 0, 1],
+  yellow: [1, 1, 0],
+  cyan: [0, 1, 1],
+  magenta: [1, 0, 1],
+  orange: [1, 0.65, 0],
+  electricGreen: [0, 1, 0.19],
+  giantsOrange: [1, 0.35, 0.12],
+  sapGreen: [0.27, 0.46, 0.2],
+  eminence: [0.4, 0.17, 0.57],
+  silverSand: [0.76, 0.76, 0.76],
+  shadowBlue: [0.46, 0.55, 0.65]
+}
+
 // returns color of electrode
 /**
  *
@@ -6,7 +26,7 @@
  */
 const getSeizTypeColor = (type) => {
   // if type is null, return white
-  if (!type) return [1, 1, 1];
+  if (!type) return COLOR.white;
 
   // the JSON is not always the same form for strings, so we trim space and make lowercase
   const lowerCaseType = type
@@ -17,28 +37,28 @@ const getSeizTypeColor = (type) => {
 
   const electrodeColors = {
     // Seizure Type X
-    "early spread": [1, 1, 0],
-    "onset": [1, 0, 0],
-    "late spread": [0, 1, 0.19],
-    "very early spread": [1, 0.35, 0.12],
-    "rapid spread": [0, 0, 1],
-    "early onset": [0, 1, 1],
+    "early spread": COLOR.yellow,
+    "onset": COLOR.red,
+    "late spread": COLOR.electricGreen,
+    "very early spread": COLOR.giantsOrange,
+    "rapid spread": COLOR.blue,
+    "early onset": COLOR.cyan,
 
     // int pop
-    0: [1, 1, 1],
-    1: [0, 1, 0.19],
-    2: [0, 0, 0.9],
-    3: [1, 0, 1],
-    4: [0, 1, 1],
-    5: [0.27, 0.46, 0.2],
-    6: [0.4, 0.17, 0.57],
-    7: [0.76, 0.76, 0.76],
-    8: [0.46, 0.55, 0.65],
+    0: COLOR.white,
+    1: COLOR.electricGreen,
+    2: COLOR.blue,
+    3: COLOR.magenta,
+    4: COLOR.cyan,
+    5: COLOR.sapGreen,
+    6: COLOR.eminence,
+    7: COLOR.silverSand,
+    8: COLOR.shadowBlue,
 
     // default (no color)
-    "": [1, 1, 1],
+    "": COLOR.white,
   };
   return electrodeColors[lowerCaseType];
 };
 
-export { getSeizTypeColor };
+export { getSeizTypeColor, COLOR };

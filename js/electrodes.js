@@ -24,7 +24,7 @@
 // one giant object full of arrays.
 
 import { mapInterval } from './mapInterval.js';
-import { getSeizTypeColor } from './color.js';
+import { getSeizTypeColor, COLOR } from './color.js';
 
 // package each electrode together as an object for readability and easier iteration
 /**
@@ -87,7 +87,7 @@ const drawElectrodeFx = (electrodeDatum) => {
   electrodeXSphere.center = [xCoor, yCoor, zCoor];
   // create the smaller magenta electrodes of this particular type
   if (elecType === "EG" || elecType === "MG") {
-    electrodeXSphere.color = [1, 0, 1];
+    electrodeXSphere.color = COLOR.magenta;
     electrodeXSphere.radius = 1 / 3;
   } else {
     electrodeXSphere.color = getSeizTypeColor(seizType);
@@ -106,7 +106,7 @@ const drawElectrodeHighlightFx = (electrodeDatum) => {
 
   electrodeXSphere.center = [xCoor, yCoor, zCoor];
 
-  electrodeXSphere.color = [0, 0, 1];
+  electrodeXSphere.color = COLOR.blue;
   electrodeXSphere.opacity = 0.5;
 
   if (elecType === "EG" || elecType === "MG") {
@@ -139,7 +139,7 @@ const drawFmapHighlightFx = (fmap) => {
   highlight.start = start;
   highlight.end = end;
   highlight.opacity = 0.5;
-  highlight.color = [0, 0, 1];
+  highlight.color = COLOR.blue;
   highlight.visible = false;
 
   return highlight;
