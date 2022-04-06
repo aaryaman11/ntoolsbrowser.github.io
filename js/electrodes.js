@@ -34,14 +34,14 @@ import { getSeizTypeColor, COLOR } from './color.js';
  * @param {array} bBox - original bounding box for electrodes. will be reset after call
  * @returns {object} - an object with all of the JSON properties shared at an index
  */
-function getElectrodeObject(jsonData, index, bBox) {
+const getElectrodeObject = (jsonData, index, bBox) => {
   // set default to first seizure display
   const defaultSeizType = jsonData.SeizDisplay[0];
   const [xOffset, yOffset, zOffset] = bBox;
 
   // creates an electrode object based on the index of the JSON properties.
   // coordinates are offset by the bounding box
-  var electrodeObject = {
+  const electrodeObject = {
     elecID: jsonData.elecID[index],
     xCoor: (jsonData.coorX[index] + xOffset),
     yCoor: (jsonData.coorY[index] + yOffset),
