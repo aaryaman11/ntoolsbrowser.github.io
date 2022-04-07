@@ -26,6 +26,7 @@
 import { mapInterval } from './mapInterval.js';
 import { getSeizTypeColor, COLOR } from './color.js';
 import { DOMNodes } from './DOMtree.js';
+import { GFX } from './gfx.js'
 
 // package each electrode together as an object for readability and easier iteration
 /**
@@ -75,106 +76,6 @@ const getElectrodeObject = (jsonData, index, bBox) => {
 const getCurrentSelectedIndex = () => {
   const { electrodeMenu } = DOMNodes;
   return electrodeMenu.selectedIndex;
-}
-
-// create the graphical electrode on the canvas
-const drawElectrodeFx = (electrodeDatum) => {
-  // destructuring object properties. it is more readable for me, 
-  const { xCoor, yCoor, zCoor, 
-          elecID, seizType, elecType } = electrodeDatum;
-
-  const electrodeXSphere = new X.sphere();
-
-  electrodeXSphere.center = [xCoor, yCoor, zCoor];
-  // create the smaller magenta electrodes of this particular type
-  if (elecType === "EG" || elecType === "MG") {
-    electrodeXSphere.color = COLOR.magenta;
-    electrodeXSphere.radius = 1 / 3;
-  } else {
-    electrodeXSphere.color = getSeizTypeColor(seizType);
-    electrodeXSphere.radius = 1;
-  }
-  electrodeXSphere.visible = electrodeDatum.visible;
-  electrodeXSphere.caption = elecID;
- 
-  return electrodeXSphere;
-}
-
-// this function draws the opaque blue shperes around a selected node
-const drawElectrodeHighlightFx = (electrodeDatum) => {
-  const { xCoor, yCoor, zCoor, elecID, elecType } = electrodeDatum;
-  const electrodeXSphere = new X.sphere();
-
-  electrodeXSphere.center = [xCoor, yCoor, zCoor];
-
-  electrodeXSphere.color = COLOR.blue;
-  electrodeXSphere.opacity = 0.5;
-
-  if (elecType === "EG" || elecType === "MG") {
-    electrodeXSphere.radius = 1.3 / 5;
-  } else {
-    electrodeXSphere.radius = 1.3;
-  }
-  electrodeXSphere.visible = false;
-  electrodeXSphere.caption = elecID;
-
-  return electrodeXSphere;
-}
-
-// create cylinder between to nodes
-const drawFmapFx = (startNode, endNode) => {
-  const connection = new X.cylinder();
-  connection.radius = 0.3;
-  connection.start = [startNode.xCoor, startNode.yCoor, startNode.zCoor];
-  connection.end = [endNode.xCoor, endNode.yCoor, endNode.zCoor];
-  connection.visible = false;
-
-  return connection;
-}
-
-// create a new X.cyilnder highlight between two nodes
-const drawFmapHighlightFx = (fmap) => {
-  const { start, end } = fmap;
-  const highlight = new X.cylinder();
-  highlight.radius = 0.4;
-  highlight.start = start;
-  highlight.end = end;
-  highlight.opacity = 0.5;
-  highlight.color = COLOR.blue;
-  highlight.visible = false;
-
-  return highlight;
-}
-
-// finds the two electrodes in the data and calls the cylinder renderer
-/**
- * 
- * @param {JSON} data 
- * @param {array} electrodes - Electrode Objects
- * @returns {array} - array of X.cyilinders
- */
-const drawFmapConnections = (data, electrodes) => {
-  // in the current JSON format, fmapG1 and fmapG2 are full arrays. this will have
-  // to change in the new format
-  const { fmapG1, fmapG2 } = data;
-  const numEntries = fmapG1.length;
-
-  const connections = [];
-
-  for (let i = 0; i < numEntries; i++) {
-    const electrodeStartIndex = fmapG1[i];
-    const electrodeEndIndex = fmapG2[i];
-
-    // since the data is generated from matlab, the indices need to be offset to 0-based
-    const startNode = electrodes[electrodeStartIndex - 1];
-    const endNode = electrodes[electrodeEndIndex - 1];
-
-    if (startNode && endNode) {
-      connections.push(drawFmapFx(startNode, endNode));
-    }
-  }
-
-  return connections
 }
 
 const updateSliceLocation = (sliderControllers, volume, electrode) => {
@@ -255,18 +156,7 @@ const fillSeizureTypeBox = (data, spheres, fmaps) => {
     seizTypeMenu.appendChild(newOption);
   })
 }
-// redraw the fmaps, showing only the ones that have a caption
-const redrawFmaps = (fmaps, captions) => {
-  fmaps.forEach((fmap, index) => {
-    if (captions[index]) {
-      fmap.visible = true;
-      fmap.caption = captions[index];
-    } else {
-      fmap.visible = false;
-      fmap.caption = null;
-    }
-  })
-}
+
 /**
  * 
  * @param {array} electrodeData - The electrode objects
@@ -278,7 +168,7 @@ const addEventsToFmapMenu = (electrodeData, fmaps, fmapHighlights) => {
   fmapMenu.addEventListener('change', event => {
     const selected = event.target.value;
     if (selected !== "none") {
-      redrawFmaps(fmaps, electrodeData[event.target.value]);
+      GFX.redrawFmaps(fmaps, electrodeData[event.target.value]);
       fmapCaption.innerText = 'No Functional Mapping Selected';
     } else {
       fmaps.forEach(fmap => fmap.visible = false);
@@ -299,27 +189,10 @@ const printElectrodeInfo = (selectedElectrode, idArray, selectionSpheres, data) 
   if (selectedElectrode) {
     const ID = selectedElectrode.elecID;
     updateLabels(selectedElectrode, data);
-    highlightSelectedElectrode(ID, idArray, selectionSpheres);
+    GFX.highlightSelectedElectrode(ID, idArray, selectionSpheres);
   } else {
     console.log(`Could not find electrode with ID of ${ID}`);
   }
-}
-
-// find the specific electrode to highlight by making all but one invisible
-const highlightSelectedElectrode = (ID, idArray, selector) => {
-  for (var i = 0; i < idArray.length; i++) {
-    if (idArray[i] === ID) {
-      selector[i].visible = true;
-    } else {
-      selector[i].visible = false;
-    }
-  }
-}
-
-// make an electrode fmap highlighted by making all but one invisible
-const highlightSelectedFmap = (fmapHighlights, index) => {
-  fmapHighlights.forEach(fmap => fmap.visible = false);
-  fmapHighlights[index].visible = true;
 }
 
 // changes the mosue to a crosshair for responsive selection
@@ -433,7 +306,7 @@ const jumpSlicesOnClick = (
           const { elecID } = target;
 
           // highlight and show the needed captions on the menu
-          highlightSelectedElectrode(elecID, IDs, selections);
+          GFX.highlightSelectedElectrode(elecID, IDs, selections);
           updateLabels(target, data);
       
           // sync with electrode menu options
@@ -446,7 +319,7 @@ const jumpSlicesOnClick = (
         const cylinderIndex = fmaps.indexOf(selectedObject);
         if (cylinderIndex >= 0) {
           fmapCaption.innerText = selectedObject.caption;
-          highlightSelectedFmap(fmapHighlights, cylinderIndex);
+          GFX.highlightSelectedFmap(fmapHighlights, cylinderIndex);
         }
       }
     }
@@ -480,10 +353,10 @@ const loadElectrodes = (renderer, volumeGUI, volume, mode, subject, playSignalCo
       .map((_, index) => getElectrodeObject(electrodeJSONData, index, oldBoundingBox));
 
     // arrays of objects
-    const electrodeSpheres = electrodeObjects.map(el => drawElectrodeFx(el, renderer));
-    const selectionSpheres = electrodeObjects.map(el => drawElectrodeHighlightFx(el));
-    const fmapConnections = drawFmapConnections(electrodeJSONData, electrodeObjects, renderer);
-    const fmapHighlights = fmapConnections.map(fmap => drawFmapHighlightFx(fmap));
+    const electrodeSpheres = electrodeObjects.map(el => GFX.drawElectrodeFx(el, false));
+    const selectionSpheres = electrodeObjects.map(el => GFX.drawElectrodeFx(el, true));
+    const fmapConnections = GFX.drawFmapFx(electrodeJSONData, electrodeObjects);
+    const fmapHighlights = fmapConnections.map(fmap => GFX.drawFmapHighlightFx(fmap));
 
     // add XTK's graphical representation of data to renderer
     electrodeSpheres.forEach(el => renderer.add(el));
