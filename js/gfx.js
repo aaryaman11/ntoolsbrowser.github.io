@@ -26,6 +26,7 @@ const GFX = {
       electrodeXSphere.color = COLOR.magenta;
       electrodeXSphere.radius = 1 / 3;
     } else if (isHighlight) {
+      electrodeXSphere.pickable = false;
       electrodeXSphere.color = COLOR.blue;
       electrodeXSphere.opacity = 0.5;
       electrodeXSphere.radius = 1.3;

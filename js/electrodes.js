@@ -288,9 +288,6 @@ const setupEditMenu = (renderer, data, spheres) => {
     e.preventDefault();
     const clickedObject = renderer.pick(e.clientX, e.clientY)
     if (clickedObject !== 0) {
-      // I think 'getSelectedElectrode' needs to be its own function
-      // right now, if the sphere is highlighted, it wont find it, which is 
-      // super bad
       const selectedObject = renderer.get(clickedObject);
       const objectIndex = spheres.indexOf(selectedObject);
       const selectedElectrode = data.electrodes[objectIndex];
