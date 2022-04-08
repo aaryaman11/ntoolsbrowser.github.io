@@ -65,7 +65,6 @@ const initializeElectrodeIDMenu = (
     const index = data.electrodes.findIndex((e) => e.elecID === id);
     const res = data.electrodes.find((e) => e.elecID === id);
 
-    console.log(res, index);
     printElectrodeInfo(res, index, selectionSpheres, data);
     if (id !== "None" && res)
       updateSliceLocation(volumeGUI.__controllers, volume, res);
@@ -303,17 +302,22 @@ const setupEditMenu = (renderer, data, spheres) => {
       menu.style.top = `${e.pageY}px`;
 
       document.getElementById('edit-btn').addEventListener('click', () => {
-        editElectrode(data, objectIndex)
+        const type = getSelectedSeizType();
+        editElectrode(data, objectIndex, type)
+
         spheres.forEach((sphere, index) => {
-          sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
+          sphere.color = getSeizTypeColor(data.electrodes[index][type]);
         });
+        hideMenu();
       });
     }
   })
 }
 
 const insertMenuHTML = (electrode) => {
-  const { elecID, elecType, intPopulation, seizType, coordinates } = electrode;
+  const { elecID, elecType, intPopulation, coordinates } = electrode;
+  const type = getSelectedSeizType();
+  const seizType = type === 'intPopulation' ? '' : electrode[type];
   const { x, y, z } = coordinates;
   const markUp = (
     `<div style="display: block">
@@ -345,7 +349,7 @@ const insertMenuHTML = (electrode) => {
   return markUp;
 }
 
-const editElectrode = (data, index) => {
+const editElectrode = (data, index, type) => {
   const newID = document.getElementById('elec-id-edit').value;
   const newElecType = document.getElementById('elec-type-edit').value;
   const newIntPop = document.getElementById('int-pop-edit').value;
@@ -353,7 +357,9 @@ const editElectrode = (data, index) => {
   const coordinates = document.getElementById('coord-edit').value;
   const [newX, newY, newZ] = coordinates.split(',').map(c => Number(c))
 
+  const currentElectrode = data.electrodes[index];
   const newElectrode = {
+    ...currentElectrode,
     elecID: newID,
     coordinates: {
       x: newX,
@@ -362,8 +368,10 @@ const editElectrode = (data, index) => {
     },
     elecType: newElecType,
     intPopulation: Number(newIntPop),
-    seizType: newSeizType
   }
+
+  if (type !== 'intPopulation')
+    newElectrode[type] = newSeizType;
 
   data.electrodes[index] = newElectrode;
 }
@@ -371,6 +379,11 @@ const editElectrode = (data, index) => {
 const hideMenu = () => {
   const menu = document.getElementById('edit-menu')
   menu.style.display = 'none';
+}
+
+const getSelectedSeizType = () => {
+  const { seizTypeMenu } = DOMNodes;
+  return seizTypeMenu.selectedOptions[0].value;
 }
 
 const getAttributeArray = (data, attr) => {
