@@ -156,5 +156,6 @@ button {
     position: absolute;
     z-index: 1;
     color: white;
+    width: 14%;
 }
 

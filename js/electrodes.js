@@ -308,15 +308,85 @@ const setupEditMenu = (renderer, data, spheres) => {
       // });
 
       // console.log(selectedElectrode);
+      const menu = document.getElementById('edit-menu')
+      menu.innerHTML = insertMenuHTML(selectedElectrode);
+      menu.style.display = 'block';
+      menu.style.left = `${e.pageX}px`;
+      menu.style.top = `${e.pageY}px`;
+      document.getElementById('edit-btn').addEventListener('click', () => {
+        editElectrode(data, objectIndex)
+        spheres.forEach((sphere, index) => {
+          sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
+        });
+      });
     }
-    const menu = document.getElementById('edit-menu')
  
-    menu.style.display = 'block';
-    menu.style.left = `${e.pageX}px`;
-    menu.style.top = `${e.pageY}px`;
 
   })
 }
+
+const insertMenuHTML = (electrode) => {
+  const { elecID, elecType, intPopulation, seizType, coordinates } = electrode;
+  const { x, y, z } = coordinates;
+  const markUp = (
+    `<div style="display: block">
+      <div>
+        <label>Electrode ID: </label>
+        <input id="elec-id-edit" type="text" value="${elecID}">
+      </div>
+      <div>
+        <label>Electrode Type: </label>
+        <input id="elec-type-edit" type="text" value="${elecType}">
+      </div>
+      <div>
+        <label>Interical Population: </label>
+        <input id="int-pop-edit" type="text" value="${intPopulation}">
+      </div>
+      <div>
+        <label>Seizure Type: </label>
+        <input id="seiz-type-edit" type="text" value="${seizType}">
+      </div>
+      <div>
+        <label>Coordinates: </label>
+        <input id="coord-edit" type="text" value="${x}, ${y}, ${z}">
+      </div>
+      <div>
+        <button id="edit-btn">Update</button>
+      </div>
+    </div> `
+  )
+  return markUp;
+}
+
+const editElectrode = (data, index) => {
+  const newID = document.getElementById('elec-id-edit').value;
+  const newElecType = document.getElementById('elec-type-edit').value;
+  const newIntPop = document.getElementById('int-pop-edit').value;
+  const newSeizType = document.getElementById('seiz-type-edit').value;
+  const coordinates = document.getElementById('coord-edit').value;
+  const [newX, newY, newZ] = coordinates.split(',').map(c => Number(c))
+
+  const newElectrode = {
+    elecID: newID,
+    coordinates: {
+      x: newX,
+      y: newY,
+      z: newZ
+    },
+    elecType: newElecType,
+    intPopulation: Number(newIntPop),
+    seizType: newSeizType
+  }
+
+  data.electrodes[index] = newElectrode;
+
+  console.log(newElectrode);
+
+  // console.log(newID, newElecType, newIntPop, newSeizType, newX, newY, newZ);
+
+}
+
+
 
 const hideMenu = () => {
   const menu = document.getElementById('edit-menu')
@@ -440,26 +510,26 @@ const loadElectrodes = (
 
 
     // right now, just turns electrodes to "onset" type
-    editBtn.addEventListener("click", () => {
-      const currentIndex = getCurrentSelectedIndex() - 1;
-      if (currentIndex < 0) return;
+    // editBtn.addEventListener("click", () => {
+    //   const currentIndex = getCurrentSelectedIndex() - 1;
+    //   if (currentIndex < 0) return;
 
-      const currentElectrode = data.electrodes[currentIndex];
+    //   const currentElectrode = data.electrodes[currentIndex];
 
-      const updatedElectrode = {
-        ...currentElectrode,
-        seizType: "Onset",
-      };
+    //   const updatedElectrode = {
+    //     ...currentElectrode,
+    //     seizType: "Onset",
+    //   };
 
-      data.electrodes[currentIndex] = updatedElectrode;
+    //   data.electrodes[currentIndex] = updatedElectrode;
 
-      // since this logic is repeated elsewhere, it would be good to abstract
-      // to its own function
-      // TODO make sure this uses the selected seiztype. currently breaks fsMNI
-      electrodeSpheres.forEach((sphere, index) => {
-        sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
-      });
-    });
+    //   // since this logic is repeated elsewhere, it would be good to abstract
+    //   // to its own function
+    //   // TODO make sure this uses the selected seiztype. currently breaks fsMNI
+    //   electrodeSpheres.forEach((sphere, index) => {
+    //     sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
+    //   });
+    // });
   })();
 };
 
