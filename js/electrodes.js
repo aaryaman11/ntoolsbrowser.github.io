@@ -296,20 +296,23 @@ const loadElectrodes = (
   playSignalController
 ) => {
   (async () => {
+    // for 'NYU' mode
+    const protocol = window.location.protocol;
+    const URL = `//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`;
+
     // initial data load
     const data =
       mode === "umb"
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
-        : await (
-            await fetch(
-              `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`
-            )
-          ).json();
+        : await (await fetch(`${protocol}${URL}`)).json();
 
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
-    const defaultSeizType = getAttributeArray(data.electrodes, data.SeizDisplay[0])
+    const defaultSeizType = getAttributeArray(
+      data.electrodes,
+      data.SeizDisplay[0]
+    );
     const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn } = DOMNodes;
 
     subjectIDLabel.innerText = data.subjID;
@@ -339,7 +342,7 @@ const loadElectrodes = (
     //setup electrode signal display
     let playSignal = false;
 
-    playSignalController["start / stop"] = function (){
+    playSignalController["start / stop"] = function () {
       let signalFrequency = 250;
 
       playSignal = !playSignal;
@@ -347,13 +350,15 @@ const loadElectrodes = (
       function applySignal() {
         if (!playSignal) return;
 
-        electrodeSpheres.forEach(sphere => sphere.color = [Math.random(), Math.random(), Math.random()]);
+        electrodeSpheres.forEach(
+          (sphere) =>
+            (sphere.color = [Math.random(), Math.random(), Math.random()])
+        );
 
         setTimeout(applySignal, signalFrequency);
       }
 
-      if (playSignal) 
-        applySignal();
+      if (playSignal) applySignal();
     };
 
     // //* adds the seizure types to the first drop down menu on the panel
