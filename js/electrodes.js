@@ -282,8 +282,8 @@ const jumpSlicesOnClick = (
   }); // end of event lsitener
 };
 
-const setupEditMenu = (renderer, data, spheres) => {
-  const { canvases } = DOMNodes;
+const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
+  const { canvases, electrodeMenu } = DOMNodes;
   canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
     const clickedObject = renderer.pick(e.clientX, e.clientY)
@@ -298,9 +298,13 @@ const setupEditMenu = (renderer, data, spheres) => {
       menu.style.left = `${e.pageX}px`;
       menu.style.top = `${e.pageY}px`;
 
+      GFX.highlightSelectedElectrode(selectionSpheres, objectIndex);
+      updateLabels(selectedElectrode, objectIndex, data);
+      electrodeMenu.options.selectedIndex = objectIndex + 1;
+
       document.getElementById('edit-btn').addEventListener('click', () => {
         const type = getSelectedSeizType();
-        editElectrode(data, objectIndex, type)
+        editElectrode(data, objectIndex, type);
 
         spheres.forEach((sphere, index) => {
           sphere.color = getSeizTypeColor(data.electrodes[index][type]);
@@ -371,6 +375,7 @@ const editElectrode = (data, index, type) => {
     newElectrode[type] = newSeizType;
 
   data.electrodes[index] = newElectrode;
+  updateLabels(newElectrode, index, data);
 }
 
 const hideMenu = () => {
@@ -493,7 +498,7 @@ const loadElectrodes = (
       renderer.showAllCaptions(sphereIDs);
     });
 
-    setupEditMenu(renderer, data, electrodeSpheres);
+    setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres);
     // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
     // TODO: change the fmap connections if needed 
     document.getElementById('download-btn')
