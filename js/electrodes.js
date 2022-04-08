@@ -97,6 +97,7 @@ const initSeizureTypeMenu = (data, spheres, fmaps) => {
 
     if (selectedType === "funMapping") {
       fmaps.forEach((fmap) => (fmap.visible = true));
+      return;
     }
 
     const selectedSeizType = getAttributeArray(data.electrodes, selectedType);
@@ -206,9 +207,7 @@ const updateLabels = (electrode, index, data) => {
 
   IDLabel.innerText = elecID;
   elecTypeLabel.innerText = elecType;
-  coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(
-    y
-  )}, ${Math.round(z)})`;
+  coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(y)}, ${Math.round(z)})`;
 
   if (selectedSeizType === "intPopulation") {
     intPopulationLabel.innerText = intPopulation;
@@ -250,6 +249,8 @@ const jumpSlicesOnClick = (
   // get the main canvas
   const { canvases, electrodeMenu, fmapCaption } = DOMNodes;
   canvases[0].addEventListener("click", (e) => {
+    // need to handle mouse dragging event too
+    hideMenu()
     const clickedObject = renderer.pick(e.clientX, e.clientY);
     // check if it actually has an ID
     if (clickedObject !== 0) {
@@ -282,6 +283,46 @@ const jumpSlicesOnClick = (
     }
   }); // end of event lsitener
 };
+
+const setupEditMenu = (renderer, data, spheres) => {
+  const { canvases } = DOMNodes;
+  canvases[0].addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    const clickedObject = renderer.pick(e.clientX, e.clientY)
+    if (clickedObject !== 0) {
+      // I think 'getSelectedElectrode' needs to be its own function
+      // right now, if the sphere is highlighted, it wont find it, which is 
+      // super bad
+      const selectedObject = renderer.get(clickedObject);
+      const objectIndex = spheres.indexOf(selectedObject);
+      const selectedElectrode = data.electrodes[objectIndex];
+
+      // const updatedElectrode = {
+      //   ...selectedElectrode,
+      //   seizType: "Onset",
+      // };
+      // data.electrodes[objectIndex] = updatedElectrode;
+
+      // spheres.forEach((sphere, index) => {
+      //   sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
+      // });
+
+      // console.log(selectedElectrode);
+    }
+    const menu = document.getElementById('edit-menu')
+ 
+    menu.style.display = 'block';
+    menu.style.left = `${e.pageX}px`;
+    menu.style.top = `${e.pageY}px`;
+
+  })
+}
+
+const hideMenu = () => {
+  const menu = document.getElementById('edit-menu')
+  menu.style.display = 'none';
+}
+
 
 const getAttributeArray = (data, attr) => {
   return data.map((datum) => datum[attr]);
@@ -393,6 +434,11 @@ const loadElectrodes = (
       renderer.showAllCaptions(sphereIDs);
     });
 
+
+
+    setupEditMenu(renderer, data, electrodeSpheres);
+
+
     // right now, just turns electrodes to "onset" type
     editBtn.addEventListener("click", () => {
       const currentIndex = getCurrentSelectedIndex() - 1;
@@ -409,6 +455,7 @@ const loadElectrodes = (
 
       // since this logic is repeated elsewhere, it would be good to abstract
       // to its own function
+      // TODO make sure this uses the selected seiztype. currently breaks fsMNI
       electrodeSpheres.forEach((sphere, index) => {
         sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
       });

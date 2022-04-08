@@ -150,3 +150,11 @@ button {
     display: block;
 }
 
+#edit-menu {
+    background-color: #5e5e5e;
+    border: 1px solid black;
+    position: absolute;
+    z-index: 1;
+    color: white;
+}
+
