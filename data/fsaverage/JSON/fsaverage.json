@@ -1,1 +1,1698 @@
-{"subjID":"Sample_ver0.1","totalSeizType":1,"SeizDisplay":["seizType","intPopulation","funMapping"],"elecID":["G01","G02","G03","G04","G05","G06","G07","G08","G09","G10","G11","G12","G13","G14","G15","G16","G17","G18","G19","G20","G21","G22","G23","G24","G25","G26","G27","G28","G29","G30","G31","G32","G33","G34","G35","G36","G37","G38","G39","G41","G42","G43","G44","G45","G46","G47","G49","G50","G51","G52","G53","G54","G57","G58","G59","G60","G61","G62","IF04","IF03","IF02","IF01","AF01","AF02","AF03","AF04","AF05","AF06","PO01","PO02","PO03","PO04","PO05","PO06","PO07","PO08","DAL01","DAL02","DAL03","DAL04","DAL05","DAL06","DAL07","DAL08","DIL01","DIL02","DIL03","DIL04","DIL05","DL01","DL02","DL03","DL04","DL05","DL06","DL07","DL08","DPL01","DPL02","DPL03","DPL04","DPL05","DPL06","DPL07","DPL08","DSL01","DSL02","DSL03","DSL04","DSL05","DSL06","DSL07","DSL08"],"coorX":[-34.487446,-44.980419,-55.059143,-61.182529,-64.092781,-66.338387,-65.826027,-65.086998,-33.456219,-44.779007,-53.14069,-58.967628,-63.012966,-64.054573,-63.972885,-64.603447,-34.886364,-43.199451,-51.187176,-56.06881,-59.450848,-60.154797,-61.757076,-62.607159,-34.143764,-42.047382,-48.561699,-52.584221,-55.356033,-55.788853,-56.421619,-56.650944,-31.711954,-39.812374,-46.86451,-50.979736,-52.633209,-52.367844,-51.269619,-27.157948,-35.935974,-42.683037,-47.692024,-50.312096,-49.17094,-46.497387,-22.752834,-31.735119,-38.327721,-43.257446,-45.677876,-44.611511,-17.506184,-25.530394,-32.918507,-38.275112,-40.755272,-41.78236,-40.431347,-32.742241,-21.079817,-11.929891,8.617244,7.904613,2.545006,-5.279553,-12.430342,-18.749172,-17.090292,-24.348635,-31.168858,-36.155212,-41.102642,-43.917377,-48.302357,-49.555416,6,1.428571,-3.142857,-7.714286,-12.285714,-16.857143,-21.428571,-26,-7,-15.25,-23.5,-31.75,-40,-10,-14.714286,-19.428571,-24.142857,-28.857143,-33.571429,-38.285714,-43,2,-2.714286,-7.428571,-12.142857,-16.857143,-21.571429,-26.285714,-31,13,8.857143,4.714286,0.571429,-3.571429,-7.714286,-11.857143,-16],"coorY":[-21.274218,-19.022665,-17.148115,-14.767766,-13.463357,-12.039046,-11.743881,-11.073524,-11.285272,-8.704151,-6.718171,-4.90883,-2.996575,-2.315765,-1.635821,-0.89029,-1.344694,1.252726,3.260697,5.278826,6.537622,7.584771,7.974953,8.939204,8.541259,11.317,13.548306,15.336384,16.315504,17.137609,17.724693,18.263601,18.126757,20.911404,23.393579,24.909359,26.331869,26.446381,26.544468,27.823296,31.21423,33.078316,35.147957,36.593231,35.782795,35.889549,36.744904,40.139149,42.198818,44.390778,45.310215,45.25,45.187408,48.970581,51.303841,53.526436,54.214149,55.392857,55.759956,57.879784,58.127735,55.702724,66.043777,70.730537,73.525658,69.524513,65.116486,57.744362,-71.69136,-69.476028,-63.019737,-55.475922,-47.758755,-38.702362,-30.294516,-19.784773,23,24.571429,26.142857,27.714286,29.285714,30.857143,32.428571,34,12,14.75,17.5,20.25,23,12,13.142857,14.285714,15.428571,16.571429,17.714286,18.857143,20,-13,-12,-11,-10,-9,-8,-7,-6,-1,0.285714,1.571429,2.857143,4.142857,5.428571,6.714286,8],"coorZ":[48.651531,42.233738,35.537331,26.934883,17.63777,8.042907,-2.89295,-12.80114,49.590576,43.624653,35.592991,27.351727,18.108675,8.277059,-2.684762,-11.77469,51.496635,43.96545,36.912476,27.80154,18.10771,7.918403,-1.672971,-11.932661,52.226665,45.549778,36.825607,27.808769,18.225183,7.975975,-1.801833,-11.770152,52.785591,45.970322,37.672966,28.330338,18.430317,8.487905,-2.590001,52.448502,45.730438,37.729759,28.304565,18.566471,8.004839,-2.031842,52.364971,45.710484,37.131294,28.876678,19.005798,8.060094,51.548687,44.290138,36.552235,27.98724,18.12995,8.573977,2.118634,-7.301847,-8.367157,-9.36051,17.833874,26.893429,36.197323,42.144604,44.062592,45.243523,15.170178,20.983395,26.668909,30.306328,35.105026,36.012928,37.813683,39.216949,23,24.285714,25.571429,26.857143,28.142857,29.428571,30.714286,32,10,10.5,11,11.5,12,23,24.142857,25.285714,26.428571,27.571429,28.714286,29.857143,31,21,22.285714,23.571429,24.857143,26.142857,27.428571,28.714286,30,24,26.428571,28.857143,31.285714,33.714286,36.142857,38.571429,41],"elecType":["G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D","D"],"intPopulation":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],"seizType":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","Onset","Early Spread","","","","","Onset","Onset","","","","","","Onset","Onset","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","Onset","Onset","","","","","","","","","","","","Onset","","","","","","","","","","","","","","","","",""],"fmapG1":[58,45,30,57,42,51,1,17,33,47,2,18,34,48,3,19,27,35,42,49,56,50,43,28,44,84],"fmapG2":[52,38,22,51,44,44,9,25,40,53,10,26,41,54,11,27,35,42,49,55,50,43,36,20,37,83],"fmapThreshold":[11,12,5,12,12,12,2,12,15,15,4,10,15,12,1.5,2,4,10,11,10,12,12,12,4,12,6],"fmapMotor":["","","tongue deviation","","","","elbow flexion","","","","hand motor","","","","finger motor","tongue/laryngeal motor","","","","","","","","tongue/face motor","",""],"fmapSensory":["","","","","","","","","","","","","","","finger sensory","","","","","","","","","","",""],"fmapLanguage":["possible auditory naming dysfunction","auditory namining","","","visual naming","","","","","","","","","","","","speech arrest","","possible impaired comprehension","","","","","","",""],"fmapVisual":["","","","","","","","","","","","","","","","","","","","","","","","","",""],"fmapOther":["","","","","","perseveration with presented visual naming objects; named correctly with longer interstimulus intervals","","right gaze deviation","","","","head version; atypical focal seizure with impaired awareness","","","","","","stimulation at 12mA evoked the patients habitual seizure","","","","","","","","habitual aura of electric sensation of right arm"],"fmapAfterDischarge":["Yes","Yes","No","Yes","Yes","Yes","No","No","No","No","No","Yes","Yes","Yes","No","No","No","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes"]}
+{
+    "subjID": "Sample_ver0.1",
+    "totalSeizType": 1,
+    "SeizDisplay": [
+        "seizType",
+        "intPopulation",
+        "funMapping"
+    ],
+    "electrodes": [
+        {
+            "elecID": "G01",
+            "coordinates": {
+                "x": -34.487446,
+                "y": -21.274218,
+                "z": 48.651531
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G02",
+            "coordinates": {
+                "x": -44.980419,
+                "y": -19.022665,
+                "z": 42.233738
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G03",
+            "coordinates": {
+                "x": -55.059143,
+                "y": -17.148115,
+                "z": 35.537331
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G04",
+            "coordinates": {
+                "x": -61.182529,
+                "y": -14.767766,
+                "z": 26.934883
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G05",
+            "coordinates": {
+                "x": -64.092781,
+                "y": -13.463357,
+                "z": 17.63777
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G06",
+            "coordinates": {
+                "x": -66.338387,
+                "y": -12.039046,
+                "z": 8.042907
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G07",
+            "coordinates": {
+                "x": -65.826027,
+                "y": -11.743881,
+                "z": -2.89295
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G08",
+            "coordinates": {
+                "x": -65.086998,
+                "y": -11.073524,
+                "z": -12.80114
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G09",
+            "coordinates": {
+                "x": -33.456219,
+                "y": -11.285272,
+                "z": 49.590576
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G10",
+            "coordinates": {
+                "x": -44.779007,
+                "y": -8.704151,
+                "z": 43.624653
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G11",
+            "coordinates": {
+                "x": -53.14069,
+                "y": -6.718171,
+                "z": 35.592991
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G12",
+            "coordinates": {
+                "x": -58.967628,
+                "y": -4.90883,
+                "z": 27.351727
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G13",
+            "coordinates": {
+                "x": -63.012966,
+                "y": -2.996575,
+                "z": 18.108675
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G14",
+            "coordinates": {
+                "x": -64.054573,
+                "y": -2.315765,
+                "z": 8.277059
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G15",
+            "coordinates": {
+                "x": -63.972885,
+                "y": -1.635821,
+                "z": -2.684762
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G16",
+            "coordinates": {
+                "x": -64.603447,
+                "y": -0.89029,
+                "z": -11.77469
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G17",
+            "coordinates": {
+                "x": -34.886364,
+                "y": -1.344694,
+                "z": 51.496635
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G18",
+            "coordinates": {
+                "x": -43.199451,
+                "y": 1.252726,
+                "z": 43.96545
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G19",
+            "coordinates": {
+                "x": -51.187176,
+                "y": 3.260697,
+                "z": 36.912476
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "seizType": ""
+        },
+        {
+            "elecID": "G20",
+            "coordinates": {
+                "x": -56.06881,
+                "y": 5.278826,
+                "z": 27.80154
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G21",
+            "coordinates": {
+                "x": -59.450848,
+                "y": 6.537622,
+                "z": 18.10771
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G22",
+            "coordinates": {
+                "x": -60.154797,
+                "y": 7.584771,
+                "z": 7.918403
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G23",
+            "coordinates": {
+                "x": -61.757076,
+                "y": 7.974953,
+                "z": -1.672971
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G24",
+            "coordinates": {
+                "x": -62.607159,
+                "y": 8.939204,
+                "z": -11.932661
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G25",
+            "coordinates": {
+                "x": -34.143764,
+                "y": 8.541259,
+                "z": 52.226665
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G26",
+            "coordinates": {
+                "x": -42.047382,
+                "y": 11.317,
+                "z": 45.549778
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "seizType": ""
+        },
+        {
+            "elecID": "G27",
+            "coordinates": {
+                "x": -48.561699,
+                "y": 13.548306,
+                "z": 36.825607
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "seizType": ""
+        },
+        {
+            "elecID": "G28",
+            "coordinates": {
+                "x": -52.584221,
+                "y": 15.336384,
+                "z": 27.808769
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G29",
+            "coordinates": {
+                "x": -55.356033,
+                "y": 16.315504,
+                "z": 18.225183
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G30",
+            "coordinates": {
+                "x": -55.788853,
+                "y": 17.137609,
+                "z": 7.975975
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G31",
+            "coordinates": {
+                "x": -56.421619,
+                "y": 17.724693,
+                "z": -1.801833
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G32",
+            "coordinates": {
+                "x": -56.650944,
+                "y": 18.263601,
+                "z": -11.770152
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G33",
+            "coordinates": {
+                "x": -31.711954,
+                "y": 18.126757,
+                "z": 52.785591
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G34",
+            "coordinates": {
+                "x": -39.812374,
+                "y": 20.911404,
+                "z": 45.970322
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G35",
+            "coordinates": {
+                "x": -46.86451,
+                "y": 23.393579,
+                "z": 37.672966
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "seizType": "Onset"
+        },
+        {
+            "elecID": "G36",
+            "coordinates": {
+                "x": -50.979736,
+                "y": 24.909359,
+                "z": 28.330338
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "seizType": "Early Spread"
+        },
+        {
+            "elecID": "G37",
+            "coordinates": {
+                "x": -52.633209,
+                "y": 26.331869,
+                "z": 18.430317
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G38",
+            "coordinates": {
+                "x": -52.367844,
+                "y": 26.446381,
+                "z": 8.487905
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G39",
+            "coordinates": {
+                "x": -51.269619,
+                "y": 26.544468,
+                "z": -2.590001
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G41",
+            "coordinates": {
+                "x": -27.157948,
+                "y": 27.823296,
+                "z": 52.448502
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G42",
+            "coordinates": {
+                "x": -35.935974,
+                "y": 31.21423,
+                "z": 45.730438
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "seizType": "Onset"
+        },
+        {
+            "elecID": "G43",
+            "coordinates": {
+                "x": -42.683037,
+                "y": 33.078316,
+                "z": 37.729759
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "seizType": "Onset"
+        },
+        {
+            "elecID": "G44",
+            "coordinates": {
+                "x": -47.692024,
+                "y": 35.147957,
+                "z": 28.304565
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "seizType": ""
+        },
+        {
+            "elecID": "G45",
+            "coordinates": {
+                "x": -50.312096,
+                "y": 36.593231,
+                "z": 18.566471
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G46",
+            "coordinates": {
+                "x": -49.17094,
+                "y": 35.782795,
+                "z": 8.004839
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G47",
+            "coordinates": {
+                "x": -46.497387,
+                "y": 35.889549,
+                "z": -2.031842
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G49",
+            "coordinates": {
+                "x": -22.752834,
+                "y": 36.744904,
+                "z": 52.364971
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G50",
+            "coordinates": {
+                "x": -31.735119,
+                "y": 40.139149,
+                "z": 45.710484
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": "Onset"
+        },
+        {
+            "elecID": "G51",
+            "coordinates": {
+                "x": -38.327721,
+                "y": 42.198818,
+                "z": 37.131294
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": "Onset"
+        },
+        {
+            "elecID": "G52",
+            "coordinates": {
+                "x": -43.257446,
+                "y": 44.390778,
+                "z": 28.876678
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G53",
+            "coordinates": {
+                "x": -45.677876,
+                "y": 45.310215,
+                "z": 19.005798
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G54",
+            "coordinates": {
+                "x": -44.611511,
+                "y": 45.25,
+                "z": 8.060094
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G57",
+            "coordinates": {
+                "x": -17.506184,
+                "y": 45.187408,
+                "z": 51.548687
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G58",
+            "coordinates": {
+                "x": -25.530394,
+                "y": 48.970581,
+                "z": 44.290138
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G59",
+            "coordinates": {
+                "x": -32.918507,
+                "y": 51.303841,
+                "z": 36.552235
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G60",
+            "coordinates": {
+                "x": -38.275112,
+                "y": 53.526436,
+                "z": 27.98724
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G61",
+            "coordinates": {
+                "x": -40.755272,
+                "y": 54.214149,
+                "z": 18.12995
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "G62",
+            "coordinates": {
+                "x": -41.78236,
+                "y": 55.392857,
+                "z": 8.573977
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "IF04",
+            "coordinates": {
+                "x": -40.431347,
+                "y": 55.759956,
+                "z": 2.118634
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "IF03",
+            "coordinates": {
+                "x": -32.742241,
+                "y": 57.879784,
+                "z": -7.301847
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "IF02",
+            "coordinates": {
+                "x": -21.079817,
+                "y": 58.127735,
+                "z": -8.367157
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "IF01",
+            "coordinates": {
+                "x": -11.929891,
+                "y": 55.702724,
+                "z": -9.36051
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "AF01",
+            "coordinates": {
+                "x": 8.617244,
+                "y": 66.043777,
+                "z": 17.833874
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "AF02",
+            "coordinates": {
+                "x": 7.904613,
+                "y": 70.730537,
+                "z": 26.893429
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "AF03",
+            "coordinates": {
+                "x": 2.545006,
+                "y": 73.525658,
+                "z": 36.197323
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "AF04",
+            "coordinates": {
+                "x": -5.279553,
+                "y": 69.524513,
+                "z": 42.144604
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "AF05",
+            "coordinates": {
+                "x": -12.430342,
+                "y": 65.116486,
+                "z": 44.062592
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "AF06",
+            "coordinates": {
+                "x": -18.749172,
+                "y": 57.744362,
+                "z": 45.243523
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "PO01",
+            "coordinates": {
+                "x": -17.090292,
+                "y": -71.69136,
+                "z": 15.170178
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "PO02",
+            "coordinates": {
+                "x": -24.348635,
+                "y": -69.476028,
+                "z": 20.983395
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "PO03",
+            "coordinates": {
+                "x": -31.168858,
+                "y": -63.019737,
+                "z": 26.668909
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "PO04",
+            "coordinates": {
+                "x": -36.155212,
+                "y": -55.475922,
+                "z": 30.306328
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "PO05",
+            "coordinates": {
+                "x": -41.102642,
+                "y": -47.758755,
+                "z": 35.105026
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "PO06",
+            "coordinates": {
+                "x": -43.917377,
+                "y": -38.702362,
+                "z": 36.012928
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "PO07",
+            "coordinates": {
+                "x": -48.302357,
+                "y": -30.294516,
+                "z": 37.813683
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "PO08",
+            "coordinates": {
+                "x": -49.555416,
+                "y": -19.784773,
+                "z": 39.216949
+            },
+            "elecType": "S",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DAL01",
+            "coordinates": {
+                "x": 6.0,
+                "y": 23.0,
+                "z": 23.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DAL02",
+            "coordinates": {
+                "x": 1.428571,
+                "y": 24.571429,
+                "z": 24.285714
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DAL03",
+            "coordinates": {
+                "x": -3.142857,
+                "y": 26.142857,
+                "z": 25.571429
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DAL04",
+            "coordinates": {
+                "x": -7.714286,
+                "y": 27.714286,
+                "z": 26.857143
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DAL05",
+            "coordinates": {
+                "x": -12.285714,
+                "y": 29.285714,
+                "z": 28.142857
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DAL06",
+            "coordinates": {
+                "x": -16.857143,
+                "y": 30.857143,
+                "z": 29.428571
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DAL07",
+            "coordinates": {
+                "x": -21.428571,
+                "y": 32.428571,
+                "z": 30.714286
+            },
+            "elecType": "D",
+            "intPopulation": 2,
+            "seizType": "Onset"
+        },
+        {
+            "elecID": "DAL08",
+            "coordinates": {
+                "x": -26.0,
+                "y": 34.0,
+                "z": 32.0
+            },
+            "elecType": "D",
+            "intPopulation": 2,
+            "seizType": "Onset"
+        },
+        {
+            "elecID": "DIL01",
+            "coordinates": {
+                "x": -7.0,
+                "y": 12.0,
+                "z": 10.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DIL02",
+            "coordinates": {
+                "x": -15.25,
+                "y": 14.75,
+                "z": 10.5
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DIL03",
+            "coordinates": {
+                "x": -23.5,
+                "y": 17.5,
+                "z": 11.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DIL04",
+            "coordinates": {
+                "x": -31.75,
+                "y": 20.25,
+                "z": 11.5
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DIL05",
+            "coordinates": {
+                "x": -40.0,
+                "y": 23.0,
+                "z": 12.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DL01",
+            "coordinates": {
+                "x": -10.0,
+                "y": 12.0,
+                "z": 23.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DL02",
+            "coordinates": {
+                "x": -14.714286,
+                "y": 13.142857,
+                "z": 24.142857
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DL03",
+            "coordinates": {
+                "x": -19.428571,
+                "y": 14.285714,
+                "z": 25.285714
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DL04",
+            "coordinates": {
+                "x": -24.142857,
+                "y": 15.428571,
+                "z": 26.428571
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DL05",
+            "coordinates": {
+                "x": -28.857143,
+                "y": 16.571429,
+                "z": 27.571429
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DL06",
+            "coordinates": {
+                "x": -33.571429,
+                "y": 17.714286,
+                "z": 28.714286
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DL07",
+            "coordinates": {
+                "x": -38.285714,
+                "y": 18.857143,
+                "z": 29.857143
+            },
+            "elecType": "D",
+            "intPopulation": 2,
+            "seizType": "Onset"
+        },
+        {
+            "elecID": "DL08",
+            "coordinates": {
+                "x": -43.0,
+                "y": 20.0,
+                "z": 31.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DPL01",
+            "coordinates": {
+                "x": 2.0,
+                "y": -13.0,
+                "z": 21.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DPL02",
+            "coordinates": {
+                "x": -2.714286,
+                "y": -12.0,
+                "z": 22.285714
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DPL03",
+            "coordinates": {
+                "x": -7.428571,
+                "y": -11.0,
+                "z": 23.571429
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DPL04",
+            "coordinates": {
+                "x": -12.142857,
+                "y": -10.0,
+                "z": 24.857143
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DPL05",
+            "coordinates": {
+                "x": -16.857143,
+                "y": -9.0,
+                "z": 26.142857
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DPL06",
+            "coordinates": {
+                "x": -21.571429,
+                "y": -8.0,
+                "z": 27.428571
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DPL07",
+            "coordinates": {
+                "x": -26.285714,
+                "y": -7.0,
+                "z": 28.714286
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DPL08",
+            "coordinates": {
+                "x": -31.0,
+                "y": -6.0,
+                "z": 30.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DSL01",
+            "coordinates": {
+                "x": 13.0,
+                "y": -1.0,
+                "z": 24.0
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DSL02",
+            "coordinates": {
+                "x": 8.857143,
+                "y": 0.285714,
+                "z": 26.428571
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DSL03",
+            "coordinates": {
+                "x": 4.714286,
+                "y": 1.571429,
+                "z": 28.857143
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DSL04",
+            "coordinates": {
+                "x": 0.571429,
+                "y": 2.857143,
+                "z": 31.285714
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DSL05",
+            "coordinates": {
+                "x": -3.571429,
+                "y": 4.142857,
+                "z": 33.714286
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DSL06",
+            "coordinates": {
+                "x": -7.714286,
+                "y": 5.428571,
+                "z": 36.142857
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DSL07",
+            "coordinates": {
+                "x": -11.857143,
+                "y": 6.714286,
+                "z": 38.571429
+            },
+            "elecType": "D",
+            "intPopulation": 0,
+            "seizType": ""
+        },
+        {
+            "elecID": "DSL08",
+            "coordinates": {
+                "x": -16.0,
+                "y": 8.0,
+                "z": 41.0
+            },
+            "elecType": "D",
+            "intPopulation": 2,
+            "seizType": ""
+        }
+    ],
+    "functionalMaps": [
+        {
+            "fmapG1": {
+                "index": 57,
+                "elecID": "G62"
+            },
+            "fmapG2": {
+                "index": 51,
+                "elecID": "G54"
+            },
+            "fmapThreshold": 11,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "possible auditory naming dysfunction",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 44,
+                "elecID": "G46"
+            },
+            "fmapG2": {
+                "index": 37,
+                "elecID": "G38"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "auditory namining",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 29,
+                "elecID": "G30"
+            },
+            "fmapG2": {
+                "index": 21,
+                "elecID": "G22"
+            },
+            "fmapThreshold": 5,
+            "fmapMotor": "tongue deviation",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 56,
+                "elecID": "G61"
+            },
+            "fmapG2": {
+                "index": 50,
+                "elecID": "G53"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 41,
+                "elecID": "G43"
+            },
+            "fmapG2": {
+                "index": 43,
+                "elecID": "G45"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "visual naming",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 50,
+                "elecID": "G53"
+            },
+            "fmapG2": {
+                "index": 43,
+                "elecID": "G45"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "perseveration with presented visual naming objects; named correctly with longer interstimulus intervals",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 0,
+                "elecID": "G01"
+            },
+            "fmapG2": {
+                "index": 8,
+                "elecID": "G09"
+            },
+            "fmapThreshold": 2,
+            "fmapMotor": "elbow flexion",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 16,
+                "elecID": "G17"
+            },
+            "fmapG2": {
+                "index": 24,
+                "elecID": "G25"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "right gaze deviation",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 32,
+                "elecID": "G33"
+            },
+            "fmapG2": {
+                "index": 39,
+                "elecID": "G41"
+            },
+            "fmapThreshold": 15,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 46,
+                "elecID": "G49"
+            },
+            "fmapG2": {
+                "index": 52,
+                "elecID": "G57"
+            },
+            "fmapThreshold": 15,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 1,
+                "elecID": "G02"
+            },
+            "fmapG2": {
+                "index": 9,
+                "elecID": "G10"
+            },
+            "fmapThreshold": 4,
+            "fmapMotor": "hand motor",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 17,
+                "elecID": "G18"
+            },
+            "fmapG2": {
+                "index": 25,
+                "elecID": "G26"
+            },
+            "fmapThreshold": 10,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "head version; atypical focal seizure with impaired awareness",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 33,
+                "elecID": "G34"
+            },
+            "fmapG2": {
+                "index": 40,
+                "elecID": "G42"
+            },
+            "fmapThreshold": 15,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 47,
+                "elecID": "G50"
+            },
+            "fmapG2": {
+                "index": 53,
+                "elecID": "G58"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 2,
+                "elecID": "G03"
+            },
+            "fmapG2": {
+                "index": 10,
+                "elecID": "G11"
+            },
+            "fmapThreshold": 1.5,
+            "fmapMotor": "finger motor",
+            "fmapSensory": "finger sensory",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 18,
+                "elecID": "G19"
+            },
+            "fmapG2": {
+                "index": 26,
+                "elecID": "G27"
+            },
+            "fmapThreshold": 2,
+            "fmapMotor": "tongue/laryngeal motor",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 26,
+                "elecID": "G27"
+            },
+            "fmapG2": {
+                "index": 34,
+                "elecID": "G35"
+            },
+            "fmapThreshold": 4,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "speech arrest",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 34,
+                "elecID": "G35"
+            },
+            "fmapG2": {
+                "index": 41,
+                "elecID": "G43"
+            },
+            "fmapThreshold": 10,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "stimulation at 12mA evoked the patients habitual seizure",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 41,
+                "elecID": "G43"
+            },
+            "fmapG2": {
+                "index": 48,
+                "elecID": "G51"
+            },
+            "fmapThreshold": 11,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "possible impaired comprehension",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 48,
+                "elecID": "G51"
+            },
+            "fmapG2": {
+                "index": 54,
+                "elecID": "G59"
+            },
+            "fmapThreshold": 10,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 55,
+                "elecID": "G60"
+            },
+            "fmapG2": {
+                "index": 49,
+                "elecID": "G52"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 49,
+                "elecID": "G52"
+            },
+            "fmapG2": {
+                "index": 42,
+                "elecID": "G44"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 42,
+                "elecID": "G44"
+            },
+            "fmapG2": {
+                "index": 35,
+                "elecID": "G36"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 27,
+                "elecID": "G28"
+            },
+            "fmapG2": {
+                "index": 19,
+                "elecID": "G20"
+            },
+            "fmapThreshold": 4,
+            "fmapMotor": "tongue/face motor",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 43,
+                "elecID": "G45"
+            },
+            "fmapG2": {
+                "index": 36,
+                "elecID": "G37"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 83,
+                "elecID": "DAL08"
+            },
+            "fmapG2": {
+                "index": 82,
+                "elecID": "DAL07"
+            },
+            "fmapThreshold": 6,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "habitual aura of electric sensation of right arm",
+            "fmapAfterDischarge": "Yes"
+        }
+    ]
+}

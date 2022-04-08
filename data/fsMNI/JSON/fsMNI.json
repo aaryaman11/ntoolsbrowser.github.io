@@ -1,21 +1,1207 @@
 {
-    "subjID":"fsMNI",
-    "totalSeizType":2,
-    "SeizDisplay":["SeizureType3","SeizureType4","intPopulation","funMapping"],
-    "elecID":["G01","G02","G03","G04","G05","G06","G07","G08","G09","G10","G11","G12","G13","G14","G15","G16","G17","G18","G19","G20","G21","G22","G23","G24","G25","G26","G27","G28","G29","G30","G31","G32","G33","G34","G35","G36","G37","G38","G39","G40","G41","G42","G43","G44","G45","G46","G47","G48","G49","G50","G51","G52","G53","G54","G55","G56","G57","G58","G59","G60","G61","G62","G63","G64"],
-    "coorX":[-37.5,-47.5,-55.83333,-59.3,-62.5,-65.3,-65.5,-65,-40.5,-53.5,-59.3,-63.83333,-66.5,-68,-69.83333,-69.7,-41,-53.16667,-60.5,-65.16667,-67.16667,-69.5,-69.7,-70.5,-43.7,-52.5,-60.5,-63.5,-64.5,-68.5,-70.5,-69.5,-42.5,-52.1,-58.5,-63.16667,-64.5,-67.3,-67.5,-67.16667,-36.5,-47.3,-56.5,-61.16667,-66.5,-66.5,-68,-67.3,-32.5,-39.83333,-52.5,-58.5,-63.35714,-64.5,-64.5,-64.5,-25.7,-37.7,-46.5,-53.83333,-60.5,-63.5,-62.5,-59.5],
-    "coorY":[-41.5,-41,-39.16667,-38.9,-37.16667,-35.3,-34.5,-33,-31.5,-29.83333,-27.7,-27.5,-25.83333,-24,-23.83333,-23.3,-22,-19.16667,-17.5,-15.83333,-15.16667,-13.16667,-11.7,-11.5,-10.1,-7.5,-5.83333,-3.5,-3.5,-3.5,0.16667,-0.5,2.5,2.3,5.5,6.16667,6.83333,6.3,11,11.5,12.5,14.7,16.16667,16.16667,17.5,19.5,21,22.3,24.16667,24.83333,26.83333,28.5,28.35714,29.5,30.5,33.5,33.9,36.3,37.5,39.5,39,40.83333,40.83333,41.5],
-    "coorZ":[47.5,38,26.83333,16.3,2.83333,-8.1,-19.5,-33,49.5,38.83333,27.9,16.83333,4.83333,-7,-18.5,-30.1,49.5,41.5,30.5,18.16667,5.5,-7.16667,-17.7,-29.5,50.3,41.5,30.16667,17.5,5.5,-6.5,-17.16667,-27.5,51.5,40.7,28.5,18.5,6.16667,-6.1,-17.5,-27.16667,48.5,39.9,30.16667,19.5,8.5,-3.5,-13.5,-25.3,50.16667,42.16667,30.16667,20.5,10.35714,-1.5,-13.5,-22.5,48.3,40.3,30.5,18.83333,10.5,-1.16667,-11.83333,-22.5],
-    "elecType":["G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"],
-    "intPopulation":[2,2,0,0,0,0,6,0,0,3,0,0,0,0,0,0,5,0,1,0,0,6,0,0,0,1,1,0,0,0,5,0,0,0,1,1,2,0,2,0,1,1,1,0,5,3,0,0,0,3,0,4,0,0,6,0,5,0,0,0,0,0,0,0],
-    "SeizureType3":["","","","Late Spread","","","","","","","","","","","Onset","Early Spread","","","","","","","","","","","","","","","","","","","","","","","","","Onset","Onset","","","","","","Onset","Onset","","","","","","","","","","","","","","",""],
-    "SeizureType4":["","","","","","","","","","","","Onset","Early Spread","","","","","Onset","Onset","","","","","","Onset","Onset","","","","Late Spread","","","","","","","","Very Early Spread","","","","","","","","","","","","","","","","","","","","","","","","","",""],
-    "fmapG1":[62,46,30,61,43,53,1,17,33,49,2,23,26,27,29,31,33,35,37,39,45,47,44,28,45],
-    "fmapG2":[54,38,22,53,45,45,9,25,41,57,10,24,27,28,30,32,34,36,38,40,46,48,36,20,37],
-    "fmapThreshold":[11,12,5,12,12,12,2,12,15,15,4,10,15,12,1.5,2,4,10,11,10,12,12,12,4,12],
-    "fmapMotor":["","","","Right facial (chin, lip)deviation","","","Right facial deviation and right-sided tongue retraction","Right facial deviation","","","Right-sided tongue retraction","Right facial deviation","","","Right sided tongue deviation","Right facial deviation, tongue retraction","","","","","","","","tongue/face motor",""],
-    "fmapSensory":["","","","","","","","","","","","","","","","","","","","","","","","",""],
-    "fmapLanguage":["","Auditory naming impairment","Visual naming impairment","","Auditory naming impairment","Speech Arrest","","","Speech Arrest","Speech Arrest","","","","","","","Speech Arrest","","possible impaired comprehension","","","","","",""],
-    "fmapVisual":["","","","","","","","","","","","","","","","","","","","","","","","",""],
-    "fmapOther":["","","","","","","","","","","","","Intolerable pain on vertex","Intolerable pain on vertex","","","","stimulation at 12mA evoked the patients habitual seizure","","","","","","",""],
-    "fmapAfterDischarge":["Yes","Yes","No","Yes","Yes","Yes","No","No","No","No","No","Yes","Yes","Yes","No","No","No","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes"]}
+    "subjID": "fsMNI",
+    "totalSeizType": 2,
+    "SeizDisplay": [
+        "SeizureType3",
+        "SeizureType4",
+        "intPopulation",
+        "funMapping"
+    ],
+    "electrodes": [
+        {
+            "elecID": "G01",
+            "coordinates": {
+                "x": -37.5,
+                "y": -41.5,
+                "z": 47.5
+            },
+            "elecType": "G",
+            "intPopulation": 2,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G02",
+            "coordinates": {
+                "x": -47.5,
+                "y": -41.0,
+                "z": 38.0
+            },
+            "elecType": "G",
+            "intPopulation": 2,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G03",
+            "coordinates": {
+                "x": -55.83333,
+                "y": -39.16667,
+                "z": 26.83333
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G04",
+            "coordinates": {
+                "x": -59.3,
+                "y": -38.9,
+                "z": 16.3
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "Late Spread",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G05",
+            "coordinates": {
+                "x": -62.5,
+                "y": -37.16667,
+                "z": 2.83333
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G06",
+            "coordinates": {
+                "x": -65.3,
+                "y": -35.3,
+                "z": -8.1
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G07",
+            "coordinates": {
+                "x": -65.5,
+                "y": -34.5,
+                "z": -19.5
+            },
+            "elecType": "G",
+            "intPopulation": 6,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G08",
+            "coordinates": {
+                "x": -65.0,
+                "y": -33.0,
+                "z": -33.0
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G09",
+            "coordinates": {
+                "x": -40.5,
+                "y": -31.5,
+                "z": 49.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G10",
+            "coordinates": {
+                "x": -53.5,
+                "y": -29.83333,
+                "z": 38.83333
+            },
+            "elecType": "G",
+            "intPopulation": 3,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G11",
+            "coordinates": {
+                "x": -59.3,
+                "y": -27.7,
+                "z": 27.9
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G12",
+            "coordinates": {
+                "x": -63.83333,
+                "y": -27.5,
+                "z": 16.83333
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": "Onset"
+        },
+        {
+            "elecID": "G13",
+            "coordinates": {
+                "x": -66.5,
+                "y": -25.83333,
+                "z": 4.83333
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": "Early Spread"
+        },
+        {
+            "elecID": "G14",
+            "coordinates": {
+                "x": -68.0,
+                "y": -24.0,
+                "z": -7.0
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G15",
+            "coordinates": {
+                "x": -69.83333,
+                "y": -23.83333,
+                "z": -18.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "Onset",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G16",
+            "coordinates": {
+                "x": -69.7,
+                "y": -23.3,
+                "z": -30.1
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "Early Spread",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G17",
+            "coordinates": {
+                "x": -41.0,
+                "y": -22.0,
+                "z": 49.5
+            },
+            "elecType": "G",
+            "intPopulation": 5,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G18",
+            "coordinates": {
+                "x": -53.16667,
+                "y": -19.16667,
+                "z": 41.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": "Onset"
+        },
+        {
+            "elecID": "G19",
+            "coordinates": {
+                "x": -60.5,
+                "y": -17.5,
+                "z": 30.5
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "SeizureType3": "",
+            "SeizureType4": "Onset"
+        },
+        {
+            "elecID": "G20",
+            "coordinates": {
+                "x": -65.16667,
+                "y": -15.83333,
+                "z": 18.16667
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G21",
+            "coordinates": {
+                "x": -67.16667,
+                "y": -15.16667,
+                "z": 5.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G22",
+            "coordinates": {
+                "x": -69.5,
+                "y": -13.16667,
+                "z": -7.16667
+            },
+            "elecType": "G",
+            "intPopulation": 6,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G23",
+            "coordinates": {
+                "x": -69.7,
+                "y": -11.7,
+                "z": -17.7
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G24",
+            "coordinates": {
+                "x": -70.5,
+                "y": -11.5,
+                "z": -29.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G25",
+            "coordinates": {
+                "x": -43.7,
+                "y": -10.1,
+                "z": 50.3
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": "Onset"
+        },
+        {
+            "elecID": "G26",
+            "coordinates": {
+                "x": -52.5,
+                "y": -7.5,
+                "z": 41.5
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "SeizureType3": "",
+            "SeizureType4": "Onset"
+        },
+        {
+            "elecID": "G27",
+            "coordinates": {
+                "x": -60.5,
+                "y": -5.83333,
+                "z": 30.16667
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G28",
+            "coordinates": {
+                "x": -63.5,
+                "y": -3.5,
+                "z": 17.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G29",
+            "coordinates": {
+                "x": -64.5,
+                "y": -3.5,
+                "z": 5.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G30",
+            "coordinates": {
+                "x": -68.5,
+                "y": -3.5,
+                "z": -6.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": "Late Spread"
+        },
+        {
+            "elecID": "G31",
+            "coordinates": {
+                "x": -70.5,
+                "y": 0.16667,
+                "z": -17.16667
+            },
+            "elecType": "G",
+            "intPopulation": 5,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G32",
+            "coordinates": {
+                "x": -69.5,
+                "y": -0.5,
+                "z": -27.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G33",
+            "coordinates": {
+                "x": -42.5,
+                "y": 2.5,
+                "z": 51.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G34",
+            "coordinates": {
+                "x": -52.1,
+                "y": 2.3,
+                "z": 40.7
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G35",
+            "coordinates": {
+                "x": -58.5,
+                "y": 5.5,
+                "z": 28.5
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G36",
+            "coordinates": {
+                "x": -63.16667,
+                "y": 6.16667,
+                "z": 18.5
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G37",
+            "coordinates": {
+                "x": -64.5,
+                "y": 6.83333,
+                "z": 6.16667
+            },
+            "elecType": "G",
+            "intPopulation": 2,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G38",
+            "coordinates": {
+                "x": -67.3,
+                "y": 6.3,
+                "z": -6.1
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": "Very Early Spread"
+        },
+        {
+            "elecID": "G39",
+            "coordinates": {
+                "x": -67.5,
+                "y": 11.0,
+                "z": -17.5
+            },
+            "elecType": "G",
+            "intPopulation": 2,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G40",
+            "coordinates": {
+                "x": -67.16667,
+                "y": 11.5,
+                "z": -27.16667
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G41",
+            "coordinates": {
+                "x": -36.5,
+                "y": 12.5,
+                "z": 48.5
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "SeizureType3": "Onset",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G42",
+            "coordinates": {
+                "x": -47.3,
+                "y": 14.7,
+                "z": 39.9
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "SeizureType3": "Onset",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G43",
+            "coordinates": {
+                "x": -56.5,
+                "y": 16.16667,
+                "z": 30.16667
+            },
+            "elecType": "G",
+            "intPopulation": 1,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G44",
+            "coordinates": {
+                "x": -61.16667,
+                "y": 16.16667,
+                "z": 19.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G45",
+            "coordinates": {
+                "x": -66.5,
+                "y": 17.5,
+                "z": 8.5
+            },
+            "elecType": "G",
+            "intPopulation": 5,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G46",
+            "coordinates": {
+                "x": -66.5,
+                "y": 19.5,
+                "z": -3.5
+            },
+            "elecType": "G",
+            "intPopulation": 3,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G47",
+            "coordinates": {
+                "x": -68.0,
+                "y": 21.0,
+                "z": -13.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G48",
+            "coordinates": {
+                "x": -67.3,
+                "y": 22.3,
+                "z": -25.3
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "Onset",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G49",
+            "coordinates": {
+                "x": -32.5,
+                "y": 24.16667,
+                "z": 50.16667
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "Onset",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G50",
+            "coordinates": {
+                "x": -39.83333,
+                "y": 24.83333,
+                "z": 42.16667
+            },
+            "elecType": "G",
+            "intPopulation": 3,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G51",
+            "coordinates": {
+                "x": -52.5,
+                "y": 26.83333,
+                "z": 30.16667
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G52",
+            "coordinates": {
+                "x": -58.5,
+                "y": 28.5,
+                "z": 20.5
+            },
+            "elecType": "G",
+            "intPopulation": 4,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G53",
+            "coordinates": {
+                "x": -63.35714,
+                "y": 28.35714,
+                "z": 10.35714
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G54",
+            "coordinates": {
+                "x": -64.5,
+                "y": 29.5,
+                "z": -1.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G55",
+            "coordinates": {
+                "x": -64.5,
+                "y": 30.5,
+                "z": -13.5
+            },
+            "elecType": "G",
+            "intPopulation": 6,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G56",
+            "coordinates": {
+                "x": -64.5,
+                "y": 33.5,
+                "z": -22.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G57",
+            "coordinates": {
+                "x": -25.7,
+                "y": 33.9,
+                "z": 48.3
+            },
+            "elecType": "G",
+            "intPopulation": 5,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G58",
+            "coordinates": {
+                "x": -37.7,
+                "y": 36.3,
+                "z": 40.3
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G59",
+            "coordinates": {
+                "x": -46.5,
+                "y": 37.5,
+                "z": 30.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G60",
+            "coordinates": {
+                "x": -53.83333,
+                "y": 39.5,
+                "z": 18.83333
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G61",
+            "coordinates": {
+                "x": -60.5,
+                "y": 39.0,
+                "z": 10.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G62",
+            "coordinates": {
+                "x": -63.5,
+                "y": 40.83333,
+                "z": -1.16667
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G63",
+            "coordinates": {
+                "x": -62.5,
+                "y": 40.83333,
+                "z": -11.83333
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        },
+        {
+            "elecID": "G64",
+            "coordinates": {
+                "x": -59.5,
+                "y": 41.5,
+                "z": -22.5
+            },
+            "elecType": "G",
+            "intPopulation": 0,
+            "SeizureType3": "",
+            "SeizureType4": ""
+        }
+    ],
+    "functionalMaps": [
+        {
+            "fmapG1": {
+                "index": 61,
+                "elecID": "G62"
+            },
+            "fmapG2": {
+                "index": 53,
+                "elecID": "G54"
+            },
+            "fmapThreshold": 11,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 45,
+                "elecID": "G46"
+            },
+            "fmapG2": {
+                "index": 37,
+                "elecID": "G38"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "Auditory naming impairment",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 29,
+                "elecID": "G30"
+            },
+            "fmapG2": {
+                "index": 21,
+                "elecID": "G22"
+            },
+            "fmapThreshold": 5,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "Visual naming impairment",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 60,
+                "elecID": "G61"
+            },
+            "fmapG2": {
+                "index": 52,
+                "elecID": "G53"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "Right facial (chin, lip)deviation",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 42,
+                "elecID": "G43"
+            },
+            "fmapG2": {
+                "index": 44,
+                "elecID": "G45"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "Auditory naming impairment",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 52,
+                "elecID": "G53"
+            },
+            "fmapG2": {
+                "index": 44,
+                "elecID": "G45"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "Speech Arrest",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 0,
+                "elecID": "G01"
+            },
+            "fmapG2": {
+                "index": 8,
+                "elecID": "G09"
+            },
+            "fmapThreshold": 2,
+            "fmapMotor": "Right facial deviation and right-sided tongue retraction",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 16,
+                "elecID": "G17"
+            },
+            "fmapG2": {
+                "index": 24,
+                "elecID": "G25"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "Right facial deviation",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 32,
+                "elecID": "G33"
+            },
+            "fmapG2": {
+                "index": 40,
+                "elecID": "G41"
+            },
+            "fmapThreshold": 15,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "Speech Arrest",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 48,
+                "elecID": "G49"
+            },
+            "fmapG2": {
+                "index": 56,
+                "elecID": "G57"
+            },
+            "fmapThreshold": 15,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "Speech Arrest",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 1,
+                "elecID": "G02"
+            },
+            "fmapG2": {
+                "index": 9,
+                "elecID": "G10"
+            },
+            "fmapThreshold": 4,
+            "fmapMotor": "Right-sided tongue retraction",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 22,
+                "elecID": "G23"
+            },
+            "fmapG2": {
+                "index": 23,
+                "elecID": "G24"
+            },
+            "fmapThreshold": 10,
+            "fmapMotor": "Right facial deviation",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 25,
+                "elecID": "G26"
+            },
+            "fmapG2": {
+                "index": 26,
+                "elecID": "G27"
+            },
+            "fmapThreshold": 15,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "Intolerable pain on vertex",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 26,
+                "elecID": "G27"
+            },
+            "fmapG2": {
+                "index": 27,
+                "elecID": "G28"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "Intolerable pain on vertex",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 28,
+                "elecID": "G29"
+            },
+            "fmapG2": {
+                "index": 29,
+                "elecID": "G30"
+            },
+            "fmapThreshold": 1.5,
+            "fmapMotor": "Right sided tongue deviation",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 30,
+                "elecID": "G31"
+            },
+            "fmapG2": {
+                "index": 31,
+                "elecID": "G32"
+            },
+            "fmapThreshold": 2,
+            "fmapMotor": "Right facial deviation, tongue retraction",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 32,
+                "elecID": "G33"
+            },
+            "fmapG2": {
+                "index": 33,
+                "elecID": "G34"
+            },
+            "fmapThreshold": 4,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "Speech Arrest",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "No"
+        },
+        {
+            "fmapG1": {
+                "index": 34,
+                "elecID": "G35"
+            },
+            "fmapG2": {
+                "index": 35,
+                "elecID": "G36"
+            },
+            "fmapThreshold": 10,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "stimulation at 12mA evoked the patients habitual seizure",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 36,
+                "elecID": "G37"
+            },
+            "fmapG2": {
+                "index": 37,
+                "elecID": "G38"
+            },
+            "fmapThreshold": 11,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "possible impaired comprehension",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 38,
+                "elecID": "G39"
+            },
+            "fmapG2": {
+                "index": 39,
+                "elecID": "G40"
+            },
+            "fmapThreshold": 10,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 44,
+                "elecID": "G45"
+            },
+            "fmapG2": {
+                "index": 45,
+                "elecID": "G46"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 46,
+                "elecID": "G47"
+            },
+            "fmapG2": {
+                "index": 47,
+                "elecID": "G48"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 43,
+                "elecID": "G44"
+            },
+            "fmapG2": {
+                "index": 35,
+                "elecID": "G36"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 27,
+                "elecID": "G28"
+            },
+            "fmapG2": {
+                "index": 19,
+                "elecID": "G20"
+            },
+            "fmapThreshold": 4,
+            "fmapMotor": "tongue/face motor",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        },
+        {
+            "fmapG1": {
+                "index": 44,
+                "elecID": "G45"
+            },
+            "fmapG2": {
+                "index": 36,
+                "elecID": "G37"
+            },
+            "fmapThreshold": 12,
+            "fmapMotor": "",
+            "fmapSensory": "",
+            "fmapLanguage": "",
+            "fmapVisual": "",
+            "fmapOther": "",
+            "fmapAfterDischarge": "Yes"
+        }
+    ]
+}

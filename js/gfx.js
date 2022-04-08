@@ -5,13 +5,16 @@ import { getSeizTypeColor, COLOR } from "./color.js";
 // object which contains all of the old functions for rendering from electrodes.js
 // can be called with GFX.function(args)
 const GFX = {
-  drawElectrodeFx: (electrodeDatum, isHighlight) => {
-    // destructuring object properties. it is more readable for me,
-    const { xCoor, yCoor, zCoor, elecID, seizType, elecType } = electrodeDatum;
+  drawElectrodeFx: (electrodeDatum, isHighlight, seizType, bbox = [0, 0, 0]) => {
+
+    const { coordinates, elecID, elecType } = electrodeDatum;
+    const { x, y, z } = coordinates;
+    const [ xOffset, yOffset, zOffset ] = bbox;
     const electrodeXSphere = new X.sphere();
-    electrodeXSphere.center = [xCoor, yCoor, zCoor];
-    electrodeXSphere.visible = electrodeDatum.visible;
+    
+    electrodeXSphere.center = [x + xOffset, y + yOffset, z + zOffset];
     electrodeXSphere.caption = elecID;
+
     // create the smaller magenta electrodes of this particular type
     // TODO: add support for EG/MG with highlight
     if (isSpecialType(elecType)) {
@@ -29,30 +32,15 @@ const GFX = {
 
     return electrodeXSphere;
   },
-  drawFmapFx: (data, electrodes) => {
-    // in the current JSON format, fmapG1 and fmapG2 are full arrays. this will have
-    // to change in the new format
-    const { fmapG1, fmapG2 } = data;
-    const numEntries = fmapG1.length;
-
-    const connections = [];
-
-    for (let i = 0; i < numEntries; i++) {
-      const electrodeStartIndex = fmapG1[i];
-      const electrodeEndIndex = fmapG2[i];
-
-      // since the data is generated from matlab, the indices need to be offset to 0-based
-      const startNode = electrodes[electrodeStartIndex - 1];
-      const endNode = electrodes[electrodeEndIndex - 1];
-
-      if (startNode && endNode) {
-        connections.push(drawFmapConnection(startNode, endNode));
-      }
-    }
-
-    return connections;
+  drawFmapFx: (fmapData, electrodeData) => {
+    return fmapData.map(({ fmapG1, fmapG2}) => {
+      const startNode = electrodeData[fmapG1.index];
+      const endNode = electrodeData[fmapG2.index];
+      return drawFmapConnection(startNode, endNode);
+    });
   },
   drawFmapHighlightFx: (fmap) => {
+    // start and end vector of original connection
     const { start, end } = fmap;
     const highlight = new X.cylinder();
     highlight.radius = 0.4;
@@ -64,14 +52,9 @@ const GFX = {
 
     return highlight;
   },
-  highlightSelectedElectrode: (ID, idArray, selector) => {
-    for (var i = 0; i < idArray.length; i++) {
-      if (idArray[i] === ID) {
-        selector[i].visible = true;
-      } else {
-        selector[i].visible = false;
-      }
-    }
+  highlightSelectedElectrode: (selector, index) => {
+    selector.forEach(s => s.visible = false)
+    selector[index].visible = true;
   },
   redrawFmaps: (fmaps, captions) => {
     fmaps.forEach((fmap, index) => {
@@ -93,11 +76,14 @@ const GFX = {
 const isSpecialType = (type) => type === "EG" || type === "MG";
 
 // create cylinder between to nodes
-const drawFmapConnection = (startNode, endNode) => {
+const drawFmapConnection = (startNode, endNode, radius = 0.3) => {
   const connection = new X.cylinder();
-  connection.radius = 0.3;
-  connection.start = [startNode.xCoor, startNode.yCoor, startNode.zCoor];
-  connection.end = [endNode.xCoor, endNode.yCoor, endNode.zCoor];
+  const { x: x1, y: y1, z: z1 } = startNode.coordinates; 
+  const { x: x2, y: y2, z: z2 } = endNode.coordinates;
+
+  connection.start = [x1, y1, z1];
+  connection.end = [x2, y2, z2];
+  connection.radius = radius;
   connection.visible = false;
 
   return connection;

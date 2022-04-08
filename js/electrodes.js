@@ -1,279 +1,236 @@
-// This file contains functions for formatting json data and displaying graphical 
+// This file contains functions for formatting json data and displaying graphical
 // representations. can possibly revise if we do not want to keep it in that format,
 // and just use indices directly
 
-// ONE MAJOR POTENTIAL POINT OF CONFUSION.
-// This file is large, and since I didn't want to use many globals, many functions 
-// take lots of parameters and it can be a bit confusing to keep track of which parameter
-// represents which data. The most confusing part you may run into is keeping straight what an 
-// "electrodeObject" is vs an "electrodeSphere"
-// An electrodeObject is a bundled javascript object that contains a data point for each property of an electrode.
-// I know that "object" is a very ambiguous name. I am open to suggestions. Electrode Objects look like this
-// for example
-
-// {
-//    elecID: G01
-//    xCoor: 50,
-//    yCoor: 70,
-//    zCoor:, 90,
-//      ...
-// }
-
-// an Electrode Sphere, on the other hand, reads from an electrode object to make an XTK sphere rendered to the screen
-// with those properties. In general, I just find it so much easier to work with an array of objects, rather than
-// one giant object full of arrays.
-
-import { mapInterval } from './mapInterval.js';
-import { getSeizTypeColor, COLOR } from './color.js';
-import { DOMNodes } from './DOMtree.js';
-import { GFX } from './gfx.js'
-
-// package each electrode together as an object for readability and easier iteration
-/**
- * 
- * @param {JSON} jsonData
- * @param {number} index 
- * @param {array} bBox - original bounding box for electrodes. will be reset after call
- * @returns {object} - an object with all of the JSON properties shared at an index
- */
-const getElectrodeObject = (jsonData, index, bBox) => {
-  // set default to first seizure display
-  const defaultSeizType = jsonData.SeizDisplay[0];
-  const [xOffset, yOffset, zOffset] = bBox;
-
-  // creates an electrode object based on the index of the JSON properties.
-  // coordinates are offset by the bounding box
-  const electrodeObject = {
-    elecID: jsonData.elecID[index],
-    xCoor: (jsonData.coorX[index] + xOffset),
-    yCoor: (jsonData.coorY[index] + yOffset),
-    zCoor: (jsonData.coorZ[index] + zOffset),
-    elecType: jsonData.elecType[index],
-    intPopulation: jsonData.intPopulation[index],
-    seizType: jsonData[defaultSeizType][index],
-    visible: true, // a default value for later filtering
-  };
-
-  // the slice in which the electrode appears, based on the coordinates
-  // have to redo the offset of the particular object
-  // the arrays should be changed from 0 to num slices in volume - 1
-  electrodeObject.xSlice = Math.round(mapInterval(
-    (electrodeObject.xCoor - xOffset), [-127.5, 127.5], [0, 255]
-  ));
-
-  electrodeObject.ySlice = Math.round(mapInterval(
-    (electrodeObject.yCoor - yOffset), [-127.5, 127.5], [0, 255]
-  ));
-
-  electrodeObject.zSlice = Math.round(mapInterval(
-    (electrodeObject.zCoor - zOffset), [-127.5, 127.5], [0, 255]
-  ));
-
-  return electrodeObject
-}
+import { mapInterval } from "./mapInterval.js";
+import { getSeizTypeColor } from "./color.js";
+import { DOMNodes } from "./DOMtree.js";
+import { GFX } from "./gfx.js";
 
 // be mindful that NONE occupies index 0
 const getCurrentSelectedIndex = () => {
   const { electrodeMenu } = DOMNodes;
   return electrodeMenu.selectedIndex;
-}
+};
 
 const updateSliceLocation = (sliderControllers, volume, electrode) => {
-  const { xSlice, ySlice, zSlice } = electrode;
+  const numSlices = volume.dimensions[0];
+  const startRange = [-numSlices / 2, numSlices / 2];
+  const endRange = [0, numSlices - 1];
+  const { x, y, z } = electrode.coordinates;
 
-  const xSlider = sliderControllers.find(controller => controller.property === 'indexX');
-  const ySlider = sliderControllers.find(controller => controller.property === 'indexY');
-  const zSlider = sliderControllers.find(controller => controller.property === 'indexZ');
-  
+  const [xSlice, ySlice, zSlice] = [x, y, z].map((coordinate) =>
+    Math.round(mapInterval(coordinate, startRange, endRange))
+  );
+
+  const xSlider = sliderControllers.find(
+    (controller) => controller.property === "indexX"
+  );
+  const ySlider = sliderControllers.find(
+    (controller) => controller.property === "indexY"
+  );
+  const zSlider = sliderControllers.find(
+    (controller) => controller.property === "indexZ"
+  );
+
   // move to the index property that matches with the slice number of the electrode
   volume.visible = !volume.visible;
   xSlider.object.indexX = xSlice;
   ySlider.object.indexY = ySlice;
   zSlider.object.indexZ = zSlice;
-  volume.visible = !volume.visible;   
-}
+  volume.visible = !volume.visible;
+};
 
-// function for adding options based on electrode IDs and jumping slices when one is 
+// function for adding options based on electrode IDs and jumping slices when one is
 // selected
 // TODO: SPLIT INTO TWO FUNCTIONS AT LEAST
 /**
- * 
- * @param {array} elObjects 
- * @param {array} idArray 
- * @param {array} selectionSpheres 
- * @param {JSON} data 
- * @param {X.volume} volume 
+ *
+ * @param {array} elObjects
+ * @param {array} idArray
+ * @param {array} selectionSpheres
+ * @param {JSON} data
+ * @param {X.volume} volume
  */
-const initializeElectrodeIDMenu = (elObjects, idArray, selectionSpheres, data, volumeGUI, volume) => {
+const initializeElectrodeIDMenu = (
+  data,
+  selectionSpheres,
+  volumeGUI,
+  volume
+) => {
   const { electrodeMenu } = DOMNodes;
 
-  electrodeMenu.addEventListener('change', event => {
-    const correspondingData = elObjects.find(e => e.elecID === event.target.value);
-    printElectrodeInfo(correspondingData, idArray, selectionSpheres, data);
-    if (event.target.value !== "None" && correspondingData) 
-      updateSliceLocation(volumeGUI.__controllers, volume, correspondingData);
+  electrodeMenu.addEventListener("change", (event) => {
+    const id = event.target.value;
+    const index = data.electrodes.findIndex((e) => e.elecID === id);
+    const res = data.electrodes.find((e) => e.elecID === id);
 
-  })
+    console.log(res, index);
+    printElectrodeInfo(res, index, selectionSpheres, data);
+    if (id !== "None" && res)
+      updateSliceLocation(volumeGUI.__controllers, volume, res);
+  });
   // append HTML option to drop down menu
-  for (const entry of elObjects) {
-    const newOption = document.createElement('option');
+  for (const entry of data.electrodes) {
+    const newOption = document.createElement("option");
     newOption.value = entry.elecID;
     newOption.innerText = entry.elecID;
     electrodeMenu.appendChild(newOption);
   }
-}
+};
 
 /**
- * 
- * @param {JSON} data 
- * @param {array} spheres 
- * @param {array} fmaps 
+ *
+ * @param {JSON} data
+ * @param {array} spheres
+ * @param {array} fmaps
  */
-const fillSeizureTypeBox = (data, spheres, fmaps) => {
+const initSeizureTypeMenu = (data, spheres, fmaps) => {
   const seizureTypes = data.SeizDisplay;
-  const { seizTypeMenu } = DOMNodes
+  const { seizTypeMenu } = DOMNodes;
 
   // make ALL fmaps visible if user selects "Fun Mapping"
-  seizTypeMenu.addEventListener('change', event => {
+  seizTypeMenu.addEventListener("change", (event) => {
     event.preventDefault();
     event.stopPropagation();
     const selectedType = event.target.value;
-    if (selectedType === "funMapping"){
-      fmaps.forEach(fmap => fmap.visible = true);
+
+    if (selectedType === "funMapping") {
+      fmaps.forEach((fmap) => (fmap.visible = true));
     }
 
-    const selectedSeizType = data[selectedType];
+    const selectedSeizType = getAttributeArray(data.electrodes, selectedType);
     spheres.forEach((sphere, index) => {
       sphere.color = getSeizTypeColor(selectedSeizType[index]);
-    })
-  })
+    });
+  });
 
   // create the menu options for all of patients seizure types
-  seizureTypes.forEach(type => {
-    const newOption = document.createElement('option');
+  seizureTypes.forEach((type) => {
+    const newOption = document.createElement("option");
     newOption.value = type;
     newOption.innerText = type;
     seizTypeMenu.appendChild(newOption);
-  })
-}
+  });
+};
 
 /**
- * 
- * @param {array} electrodeData - The electrode objects
- * @param {array} fmaps - the X.cyilinders
+ *
+ * @param {array} data - electrode data
+ * @param {array} connections - the X.cyilinders
  * @param {array} fmapHighlights - the X.cylinders which highlight
  */
-const addEventsToFmapMenu = (electrodeData, fmaps, fmapHighlights) => {
+const addEventsToFmapMenu = (data, connections, fmapHighlights) => {
   const { fmapMenu, fmapCaption } = DOMNodes;
-  fmapMenu.addEventListener('change', event => {
-    const selected = event.target.value;
-    if (selected !== "none") {
-      GFX.redrawFmaps(fmaps, electrodeData[event.target.value]);
-      fmapCaption.innerText = 'No Functional Mapping Selected';
+  fmapMenu.addEventListener("change", (event) => {
+    const selected = getAttributeArray(data.functionalMaps, event.target.value);
+    if (selected !== "None") {
+      GFX.redrawFmaps(connections, selected);
+      fmapCaption.innerText = "No Functional Mapping Selected";
     } else {
-      fmaps.forEach(fmap => fmap.visible = false);
+      fmaps.forEach((fmap) => (fmap.visible = false));
     }
-    fmapHighlights.forEach(fmap => fmap.visible = false);
-  })
-}
+    fmapHighlights.forEach((fmap) => (fmap.visible = false));
+  });
+};
 
 // find the electrode in the options and display the info on the panel
 /**
- * 
-*  @param {object} selectedElectrode
- * @param {array} idArray - full list of IDs
+ *
+ *  @param {object} selectedElectrode
+ * @param {number} index - index in the data
  * @param {array} selectionSpheres - opaque blue spheres that surround an electrode
- * @param {JSON} data 
+ * @param {JSON} data
  */
-const printElectrodeInfo = (selectedElectrode, idArray, selectionSpheres, data) => {
+const printElectrodeInfo = (
+  selectedElectrode,
+  index,
+  selectionSpheres,
+  data
+) => {
   if (selectedElectrode) {
-    const ID = selectedElectrode.elecID;
-    updateLabels(selectedElectrode, data);
-    GFX.highlightSelectedElectrode(ID, idArray, selectionSpheres);
+    updateLabels(selectedElectrode, index, data);
+    GFX.highlightSelectedElectrode(selectionSpheres, index);
   } else {
     console.log(`Could not find electrode with ID of ${ID}`);
   }
-}
+};
 
 // changes the mosue to a crosshair for responsive selection
 const addMouseHover = (renderer) => {
-  renderer.interactor.onMouseMove= e => {
+  renderer.interactor.onMouseMove = (e) => {
     let hoverObject = renderer.pick(e.clientX, e.clientY);
-    if (hoverObject !== 0 ) {
-      let selectedSphere = renderer.get(hoverObject) ;
+    if (hoverObject !== 0) {
+      let selectedSphere = renderer.get(hoverObject);
       if (selectedSphere.g === "sphere" || selectedSphere.g === "cylinder") {
-        document.body.style.cursor = 'crosshair';
+        document.body.style.cursor = "crosshair";
       } else {
         selectedSphere.visible = true;
         selectedSphere = null;
         hoverObject = 0;
       }
     } else {
-      document.body.style.cursor = 'auto';
+      document.body.style.cursor = "auto";
     }
-  }
-}
+  };
+};
 /**
- * 
+ *
  * @param {object} electrode - the selected electrode object
+ * @param {number} index
  * @param {JSON} data - the JSON
- * 
+ *
  * It might be a bit foolish to have the data in two different formats like this. It would
  * be better if we could have it all as one form, but there are times when having the ready
  * made arrays from the JSON is very useful
  */
 
-//!  the JSON does not get updated with the update button
-// because this function is currently JUST looking at JSON data, 
-// not the updated electrode // objects during edits.
+const updateLabels = (electrode, index, data) => {
+  const { elecID, elecType, intPopulation, coordinates } = electrode;
+  const { x, y, z } = coordinates;
 
-// options: 1. use the new JSON format
-//          2. refactor to remove dependence on passing the itself JSON around
-
-const updateLabels = (electrode, data) => {
-  const { elecID, elecType, intPopulation, xCoor, yCoor, zCoor} = electrode;
   const {
-    seizTypeMenu, 
-    intPopulationLabel, 
-    seizTypeLabel, 
-    IDLabel, 
+    seizTypeMenu,
+    intPopulationLabel,
+    seizTypeLabel,
+    IDLabel,
     elecTypeLabel,
-    coordinateLabel 
+    coordinateLabel,
   } = DOMNodes;
 
   const selectedSeizType = seizTypeMenu.selectedOptions[0].value;
-  // again, relying on the old JSON structure here to be a matrix. will need to change
-  const seizureTypeValues = data[selectedSeizType];
-  const allElectrodeIDs = data.elecID;
+  const seizureTypeValues = getAttributeArray(
+    data.electrodes,
+    selectedSeizType
+  );
 
   IDLabel.innerText = elecID;
   elecTypeLabel.innerText = elecType;
-  coordinateLabel.innerText = `(${Math.round(xCoor)}, ${Math.round(yCoor)}, ${Math.round(zCoor)})`;
-  
+  coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(
+    y
+  )}, ${Math.round(z)})`;
+
   if (selectedSeizType === "intPopulation") {
     intPopulationLabel.innerText = intPopulation;
-    seizTypeLabel.innerText = '';
+    seizTypeLabel.innerText = "";
   } else {
-    const currentElecSeizType = seizureTypeValues[allElectrodeIDs.indexOf(electrode.elecID)];
+    const currentElecSeizType = seizureTypeValues[index];
     seizTypeLabel.innerText = currentElecSeizType;
-    intPopulationLabel.innerText = '';
+    intPopulationLabel.innerText = "";
   }
-
-}
+};
 
 /**
- * 
+ *
+ * @param {JSON} data               - Original JSON data
  * @param {X.renderer3D} renderer   - The main renderer
  * @param {object} datGUI           - GUI controller
  * @param {array} spheres           - Array of X.spheres that represent electrodes
- * @param {JSON} data               - Original JSON data
  * @param {array} selections        - Opaque blue spheres that highlight an electrode
- * @param {array} IDs               - Array of elecIDs
- * @param {array} electrodeObjects  - array of data packaged into objects
  * @param {array} fmaps             - Array of X.cylinders
  * @param {array} fmapHighlights    - Opaque blue cyilnders that surround fmaps
  * @param {X.volume} volumeRendered - The volume displayed on slices
- * 
+ *
  * This function is responsible for way too much. Would be good to find a way to break
  * it down into more reasonable components. It adds an event listener to the canvas,
  * does object picking, highlights an electrode, jumps the slices, and displays
@@ -281,13 +238,18 @@ const updateLabels = (electrode, data) => {
  */
 
 const jumpSlicesOnClick = (
-  renderer, datGUI, spheres, data, 
-  selections, IDs, electrodeObjects,
-  fmaps, fmapHighlights, volumeRendered
+  data,
+  renderer,
+  datGUI,
+  spheres,
+  selections,
+  fmapConnections,
+  fmapHighlights,
+  volumeRendered
 ) => {
   // get the main canvas
   const { canvases, electrodeMenu, fmapCaption } = DOMNodes;
-  canvases[0].addEventListener('click', e => {
+  canvases[0].addEventListener("click", (e) => {
     const clickedObject = renderer.pick(e.clientX, e.clientY);
     // check if it actually has an ID
     if (clickedObject !== 0) {
@@ -298,140 +260,156 @@ const jumpSlicesOnClick = (
         const sphereIndex = spheres.indexOf(selectedObject);
 
         if (sphereIndex >= 0) {
-          // electrodeObjects != xtk spheres!! The electrode objects are an array of objects. the OOP
-          // style allows for all their data points to be bundled together
-          const target = electrodeObjects[sphereIndex];
-          
-          // destructure out the needed properties
-          const { elecID } = target;
+          const target = data.electrodes[sphereIndex];
 
           // highlight and show the needed captions on the menu
-          GFX.highlightSelectedElectrode(elecID, IDs, selections);
-          updateLabels(target, data);
-      
+          GFX.highlightSelectedElectrode(selections, sphereIndex);
+          updateLabels(target, sphereIndex, data);
+
           // sync with electrode menu options
           const electrodeIDMenuOptions = electrodeMenu.options;
           electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
-          
-          updateSliceLocation(datGUI.__controllers, volumeRendered, target);                  
+
+          updateSliceLocation(datGUI.__controllers, volumeRendered, target);
         }
       } else if (selectedObject.g === "cylinder") {
-        const cylinderIndex = fmaps.indexOf(selectedObject);
+        const cylinderIndex = fmapConnections.indexOf(selectedObject);
         if (cylinderIndex >= 0) {
           fmapCaption.innerText = selectedObject.caption;
           GFX.highlightSelectedFmap(fmapHighlights, cylinderIndex);
         }
       }
     }
-  }) // end of event lsitener
-}
+  }); // end of event lsitener
+};
 
-const loadElectrodes = (renderer, volumeGUI, volume, mode, subject, playSignalController) => {
+const getAttributeArray = (data, attr) => {
+  return data.map((datum) => datum[attr]);
+};
+
+const loadElectrodes = (
+  renderer,
+  volumeGUI,
+  volume,
+  mode,
+  subject,
+  playSignalController
+) => {
   (async () => {
     // initial data load
-    const electrodeJSONData = mode === "umb" ?
-      await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
-    : await (await fetch (`${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`)).json()
+    const data =
+      mode === "umb"
+        ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
+        : await (
+            await fetch(
+              `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`
+            )
+          ).json();
 
-    // can choose any property here, but it must have same length as other properties to work
-    const numberOfElectrodes = electrodeJSONData.coorX.length;
-    
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
-
+    const defaultSeizType = getAttributeArray(data.electrodes, data.SeizDisplay[0])
     const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn } = DOMNodes;
 
-    subjectIDLabel.innerText = electrodeJSONData.subjID;
-    numSeizTypeLabel.innerText = electrodeJSONData.totalSeizType;
-
-    // contains the array of IDs from the JSON
-    const electrodeIDs = electrodeJSONData.elecID;
-    
-    const electrodeObjects = Array
-      .apply(null, Array(numberOfElectrodes))
-      .map((_, index) => getElectrodeObject(electrodeJSONData, index, oldBoundingBox));
+    subjectIDLabel.innerText = data.subjID;
+    numSeizTypeLabel.innerText = data.totalSeizType;
 
     // arrays of objects
-    const electrodeSpheres = electrodeObjects.map(el => GFX.drawElectrodeFx(el, false));
-    const selectionSpheres = electrodeObjects.map(el => GFX.drawElectrodeFx(el, true));
-    const fmapConnections = GFX.drawFmapFx(electrodeJSONData, electrodeObjects);
-    const fmapHighlights = fmapConnections.map(fmap => GFX.drawFmapHighlightFx(fmap));
+    const electrodeSpheres = data.electrodes.map((el, index) =>
+      GFX.drawElectrodeFx(el, false, defaultSeizType[index], oldBoundingBox)
+    );
+    const selectionSpheres = data.electrodes.map((el, index) =>
+      GFX.drawElectrodeFx(el, true, defaultSeizType[index], oldBoundingBox)
+    );
+    const fmapConnections = GFX.drawFmapFx(
+      data.functionalMaps,
+      data.electrodes
+    );
+    const fmapHighlights = fmapConnections.map((fmap) =>
+      GFX.drawFmapHighlightFx(fmap)
+    );
 
     // add XTK's graphical representation of data to renderer
-    electrodeSpheres.forEach(el => renderer.add(el));
-    selectionSpheres.forEach(el => renderer.add(el));
-    fmapConnections.forEach(connection => renderer.add(connection));
-    fmapHighlights.forEach(highlight => renderer.add(highlight));
+    electrodeSpheres.forEach((el) => renderer.add(el));
+    selectionSpheres.forEach((el) => renderer.add(el));
+    fmapConnections.forEach((connection) => renderer.add(connection));
+    fmapHighlights.forEach((highlight) => renderer.add(highlight));
 
     //setup electrode signal display
     let playSignal = false;
 
-    playSignalController['start / stop'] = function(){
-
+    playSignalController["start / stop"] = function (){
       let signalFrequency = 250;
 
       playSignal = !playSignal;
 
-      function applySignal(){
-        if(!playSignal) return;
+      function applySignal() {
+        if (!playSignal) return;
 
         electrodeSpheres.forEach(sphere => sphere.color = [Math.random(), Math.random(), Math.random()]);
 
         setTimeout(applySignal, signalFrequency);
-      };
+      }
 
-      if(playSignal)
+      if (playSignal) 
         applySignal();
     };
 
-    // adds the seizure types to the first drop down menu on the panel
-    fillSeizureTypeBox(electrodeJSONData, electrodeSpheres, fmapConnections, volume, renderer);
+    // //* adds the seizure types to the first drop down menu on the panel
+    initSeizureTypeMenu(data, electrodeSpheres, fmapConnections);
 
-    // adds the IDs to the elctrode ID menu and sets up event listeners
-    initializeElectrodeIDMenu(electrodeObjects, electrodeIDs, selectionSpheres, 
-                          electrodeJSONData, volumeGUI, volume);
-    
-    // this needs to be refactored
-    jumpSlicesOnClick(renderer, volumeGUI, electrodeSpheres, electrodeJSONData, selectionSpheres, 
-                         electrodeIDs, electrodeObjects, fmapConnections, fmapHighlights, volume);
+    // //* adds the IDs to the elctrode ID menu and sets up event listeners
+    initializeElectrodeIDMenu(data, selectionSpheres, volumeGUI, volume);
+
+    // //* this needs to be refactored
+    jumpSlicesOnClick(
+      data,
+      renderer,
+      volumeGUI,
+      electrodeSpheres,
+      selectionSpheres,
+      fmapConnections,
+      fmapHighlights,
+      volume
+    );
 
     // adds functionality for hovering over particular electrodes on the scene
     addMouseHover(renderer);
 
-    // adds the event listners to the functional map menu
-    addEventsToFmapMenu(electrodeJSONData, fmapConnections, fmapHighlights);
-    
+    // //* adds the event listners to the functional map menu
+    addEventsToFmapMenu(data, fmapConnections, fmapHighlights);
+
     // create an array of sphere IDs (internal to XTK) for the "show all tags" button
-    const sphereIDs = electrodeSpheres.map(el => el.id);
+    const sphereIDs = electrodeSpheres.map((el) => el.id);
 
     // adds event listener to the show-all-tags button on the menu
-    tagsBtn.addEventListener('click', () => {
+    tagsBtn.addEventListener("click", () => {
       renderer.resetBoundingBox();
       renderer.showAllCaptions(sphereIDs);
     });
 
     // right now, just turns electrodes to "onset" type
-    editBtn.addEventListener('click', () => {
+    editBtn.addEventListener("click", () => {
       const currentIndex = getCurrentSelectedIndex() - 1;
       if (currentIndex < 0) return;
 
-      const currentElectrode = electrodeObjects[currentIndex]
+      const currentElectrode = data.electrodes[currentIndex];
 
       const updatedElectrode = {
         ...currentElectrode,
-        "seizType": "Onset"
-      }
+        seizType: "Onset",
+      };
 
-      electrodeObjects[currentIndex] = updatedElectrode;
-   
+      data.electrodes[currentIndex] = updatedElectrode;
+
       // since this logic is repeated elsewhere, it would be good to abstract
       // to its own function
       electrodeSpheres.forEach((sphere, index) => {
-        sphere.color = getSeizTypeColor(electrodeObjects[index].seizType)
-      })
-    })
+        sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
+      });
+    });
   })();
-}
+};
 
 export { loadElectrodes };
