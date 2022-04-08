@@ -8,10 +8,11 @@ const GFX = {
   drawElectrodeFx: (electrodeDatum, isHighlight, seizType, bbox = [0, 0, 0]) => {
 
     const { coordinates, elecID, elecType } = electrodeDatum;
+    const type = electrodeDatum[seizType]
     const { x, y, z } = coordinates;
     const [ xOffset, yOffset, zOffset ] = bbox;
     const electrodeXSphere = new X.sphere();
-    
+
     electrodeXSphere.center = [x + xOffset, y + yOffset, z + zOffset];
     electrodeXSphere.caption = elecID;
 
@@ -26,7 +27,7 @@ const GFX = {
       electrodeXSphere.radius = 1.3;
       electrodeXSphere.visible = false;
     } else {
-      electrodeXSphere.color = getSeizTypeColor(seizType);
+      electrodeXSphere.color = getSeizTypeColor(type);
       electrodeXSphere.radius = 1;
     }
 

@@ -309,21 +309,22 @@ const loadElectrodes = (
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
-    const defaultSeizType = getAttributeArray(
-      data.electrodes,
-      data.SeizDisplay[0]
-    );
+    const defaultSeizType = data.SeizDisplay[0]
+    // const defaultSeizType = getAttributeArray(
+    //   data.electrodes,
+    //   data.SeizDisplay[0]
+    // );
     const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn } = DOMNodes;
 
     subjectIDLabel.innerText = data.subjID;
     numSeizTypeLabel.innerText = data.totalSeizType;
 
     // arrays of objects
-    const electrodeSpheres = data.electrodes.map((el, index) =>
-      GFX.drawElectrodeFx(el, false, defaultSeizType[index], oldBoundingBox)
+    const electrodeSpheres = data.electrodes.map((el) =>
+      GFX.drawElectrodeFx(el, false, defaultSeizType, oldBoundingBox)
     );
-    const selectionSpheres = data.electrodes.map((el, index) =>
-      GFX.drawElectrodeFx(el, true, defaultSeizType[index], oldBoundingBox)
+    const selectionSpheres = data.electrodes.map((el) =>
+      GFX.drawElectrodeFx(el, true, defaultSeizType, oldBoundingBox)
     );
     const fmapConnections = GFX.drawFmapFx(
       data.functionalMaps,
