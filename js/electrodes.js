@@ -250,7 +250,6 @@ const jumpSlicesOnClick = (
   const { canvases, electrodeMenu, fmapCaption } = DOMNodes;
   canvases[0].addEventListener("click", (e) => {
     // need to handle mouse dragging event too
-    hideMenu()
     const clickedObject = renderer.pick(e.clientX, e.clientY);
     // check if it actually has an ID
     if (clickedObject !== 0) {
@@ -310,8 +309,6 @@ const setupEditMenu = (renderer, data, spheres) => {
         });
       });
     }
- 
-
   })
 }
 
@@ -371,13 +368,10 @@ const editElectrode = (data, index) => {
   data.electrodes[index] = newElectrode;
 }
 
-
-
 const hideMenu = () => {
   const menu = document.getElementById('edit-menu')
   menu.style.display = 'none';
 }
-
 
 const getAttributeArray = (data, attr) => {
   return data.map((datum) => datum[attr]);
@@ -496,7 +490,6 @@ const loadElectrodes = (
       .addEventListener('click', () => {
         const formatSpaces = 4;
         const exportJSON = [JSON.stringify(data, null, formatSpaces)];
-        console.log(exportJSON)
         const url = window.URL.createObjectURL(new Blob(exportJSON, {type: "application/json"}));
         const a = document.createElement('a');
         a.style.display = 'none';
@@ -505,6 +498,12 @@ const loadElectrodes = (
         document.body.append(a);
         a.click();
         window.URL.revokeObjectURL(url);
+      });
+
+
+    document.getElementsByTagName('canvas')[0]
+      .addEventListener('mousedown', () => {
+          hideMenu();
       });
   })();
 };
