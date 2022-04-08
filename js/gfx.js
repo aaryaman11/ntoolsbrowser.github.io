@@ -5,12 +5,16 @@ import { getSeizTypeColor, COLOR } from "./color.js";
 // object which contains all of the old functions for rendering from electrodes.js
 // can be called with GFX.function(args)
 const GFX = {
-  drawElectrodeFx: (electrodeDatum, isHighlight, seizType, bbox = [0, 0, 0]) => {
-
+  drawElectrodeFx: (
+    electrodeDatum,
+    isHighlight,
+    seizType,
+    bbox = [0, 0, 0]
+  ) => {
     const { coordinates, elecID, elecType } = electrodeDatum;
-    const type = electrodeDatum[seizType]
+    const type = electrodeDatum[seizType];
     const { x, y, z } = coordinates;
-    const [ xOffset, yOffset, zOffset ] = bbox;
+    const [xOffset, yOffset, zOffset] = bbox;
     const electrodeXSphere = new X.sphere();
 
     electrodeXSphere.center = [x + xOffset, y + yOffset, z + zOffset];
@@ -33,11 +37,11 @@ const GFX = {
 
     return electrodeXSphere;
   },
-  drawFmapFx: (fmapData, electrodeData) => {
-    return fmapData.map(({ fmapG1, fmapG2}) => {
+  drawFmapFx: (fmapData, electrodeData, bbox) => {
+    return fmapData.map(({ fmapG1, fmapG2 }) => {
       const startNode = electrodeData[fmapG1.index];
       const endNode = electrodeData[fmapG2.index];
-      return drawFmapConnection(startNode, endNode);
+      return drawFmapConnection(startNode, endNode, bbox);
     });
   },
   drawFmapHighlightFx: (fmap) => {
@@ -54,7 +58,7 @@ const GFX = {
     return highlight;
   },
   highlightSelectedElectrode: (selector, index) => {
-    selector.forEach(s => s.visible = false)
+    selector.forEach((s) => (s.visible = false));
     selector[index].visible = true;
   },
   redrawFmaps: (fmaps, captions) => {
@@ -77,14 +81,15 @@ const GFX = {
 const isSpecialType = (type) => type === "EG" || type === "MG";
 
 // create cylinder between to nodes
-const drawFmapConnection = (startNode, endNode, radius = 0.3) => {
+const drawFmapConnection = (startNode, endNode, bbox) => {
   const connection = new X.cylinder();
-  const { x: x1, y: y1, z: z1 } = startNode.coordinates; 
+  const { x: x1, y: y1, z: z1 } = startNode.coordinates;
   const { x: x2, y: y2, z: z2 } = endNode.coordinates;
+  const [ xOffset, yOffset, zOffset ] = bbox;
 
-  connection.start = [x1, y1, z1];
-  connection.end = [x2, y2, z2];
-  connection.radius = radius;
+  connection.start = [x1 + xOffset, y1 + yOffset, z1 + zOffset];
+  connection.end = [x2 + xOffset, y2 + yOffset, z2 + zOffset];
+  connection.radius = 0.3;
   connection.visible = false;
 
   return connection;

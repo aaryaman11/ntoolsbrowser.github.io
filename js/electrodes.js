@@ -310,10 +310,7 @@ const loadElectrodes = (
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
     const defaultSeizType = data.SeizDisplay[0]
-    // const defaultSeizType = getAttributeArray(
-    //   data.electrodes,
-    //   data.SeizDisplay[0]
-    // );
+
     const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn } = DOMNodes;
 
     subjectIDLabel.innerText = data.subjID;
@@ -328,7 +325,8 @@ const loadElectrodes = (
     );
     const fmapConnections = GFX.drawFmapFx(
       data.functionalMaps,
-      data.electrodes
+      data.electrodes,
+      oldBoundingBox
     );
     const fmapHighlights = fmapConnections.map((fmap) =>
       GFX.drawFmapHighlightFx(fmap)
