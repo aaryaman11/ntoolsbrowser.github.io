@@ -302,7 +302,7 @@ const setupEditMenu = (renderer, data, spheres) => {
       menu.style.display = 'block';
       menu.style.left = `${e.pageX}px`;
       menu.style.top = `${e.pageY}px`;
-      
+
       document.getElementById('edit-btn').addEventListener('click', () => {
         editElectrode(data, objectIndex)
         spheres.forEach((sphere, index) => {
@@ -489,32 +489,23 @@ const loadElectrodes = (
       renderer.showAllCaptions(sphereIDs);
     });
 
-
-
     setupEditMenu(renderer, data, electrodeSpheres);
-
-
-    // right now, just turns electrodes to "onset" type
-    // editBtn.addEventListener("click", () => {
-    //   const currentIndex = getCurrentSelectedIndex() - 1;
-    //   if (currentIndex < 0) return;
-
-    //   const currentElectrode = data.electrodes[currentIndex];
-
-    //   const updatedElectrode = {
-    //     ...currentElectrode,
-    //     seizType: "Onset",
-    //   };
-
-    //   data.electrodes[currentIndex] = updatedElectrode;
-
-    //   // since this logic is repeated elsewhere, it would be good to abstract
-    //   // to its own function
-    //   // TODO make sure this uses the selected seiztype. currently breaks fsMNI
-    //   electrodeSpheres.forEach((sphere, index) => {
-    //     sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
-    //   });
-    // });
+    // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
+    // TODO: change the fmap connections if needed 
+    document.getElementById('download-btn')
+      .addEventListener('click', () => {
+        const formatSpaces = 4;
+        const exportJSON = [JSON.stringify(data, null, formatSpaces)];
+        console.log(exportJSON)
+        const url = window.URL.createObjectURL(new Blob(exportJSON, {type: "application/json"}));
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'testing.json';
+        document.body.append(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
   })();
 };
 
