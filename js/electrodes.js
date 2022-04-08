@@ -296,23 +296,13 @@ const setupEditMenu = (renderer, data, spheres) => {
       const selectedObject = renderer.get(clickedObject);
       const objectIndex = spheres.indexOf(selectedObject);
       const selectedElectrode = data.electrodes[objectIndex];
+      const menu = document.getElementById('edit-menu');
 
-      // const updatedElectrode = {
-      //   ...selectedElectrode,
-      //   seizType: "Onset",
-      // };
-      // data.electrodes[objectIndex] = updatedElectrode;
-
-      // spheres.forEach((sphere, index) => {
-      //   sphere.color = getSeizTypeColor(data.electrodes[index].seizType);
-      // });
-
-      // console.log(selectedElectrode);
-      const menu = document.getElementById('edit-menu')
       menu.innerHTML = insertMenuHTML(selectedElectrode);
       menu.style.display = 'block';
       menu.style.left = `${e.pageX}px`;
       menu.style.top = `${e.pageY}px`;
+      
       document.getElementById('edit-btn').addEventListener('click', () => {
         editElectrode(data, objectIndex)
         spheres.forEach((sphere, index) => {
@@ -379,11 +369,6 @@ const editElectrode = (data, index) => {
   }
 
   data.electrodes[index] = newElectrode;
-
-  console.log(newElectrode);
-
-  // console.log(newID, newElecType, newIntPop, newSeizType, newX, newY, newZ);
-
 }
 
 
