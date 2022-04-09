@@ -10,6 +10,10 @@
 canvas {
     min-width: 100%;
 }
+
+ul {
+    list-style-type: none;
+}
 #renderer-container {
     color: black;
 }
@@ -145,11 +149,13 @@ option:hover {
 }
 
 #color-legend{
-    border: 1px solid white;
-    margin-top: 10px;
+    /* border: 1px solid white; */
+    /* margin-top: 10px; */
     font-size: 1rem;
+    left: 15%;
     position: relative;
     display: block;
+    z-index: 0;
 }
 
 #edit-menu {
