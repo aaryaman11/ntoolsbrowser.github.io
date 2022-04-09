@@ -79,11 +79,11 @@ import { loadElectrodes } from "./js/electrodes.js";
 
     signalGUI.add(playSignalController, "start / stop");
 
-    volumeGUI.open();
-    leftHemisphereGUI.open();
-    rightHemisphereGUI.open();
-    slicesGUI.open();
-    signalGUI.open();
+    // volumeGUI.open();
+    // leftHemisphereGUI.open();
+    // rightHemisphereGUI.open();
+    // slicesGUI.open();
+    // signalGUI.open();
 
     // fix original camera position
     threeDRenderer.camera.position = [0, 200, 0];

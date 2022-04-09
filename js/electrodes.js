@@ -206,7 +206,9 @@ const updateLabels = (electrode, index, data) => {
 
   IDLabel.innerText = elecID;
   elecTypeLabel.innerText = elecType;
-  coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(y)}, ${Math.round(z)})`;
+  coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(
+    y
+  )}, ${Math.round(z)})`;
 
   if (selectedSeizType === "intPopulation") {
     intPopulationLabel.innerText = intPopulation;
@@ -286,15 +288,15 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
   const { canvases, electrodeMenu } = DOMNodes;
   canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
-    const clickedObject = renderer.pick(e.clientX, e.clientY)
+    const clickedObject = renderer.pick(e.clientX, e.clientY);
     if (clickedObject !== 0) {
       const selectedObject = renderer.get(clickedObject);
       const objectIndex = spheres.indexOf(selectedObject);
       const selectedElectrode = data.electrodes[objectIndex];
-      const menu = document.getElementById('edit-menu');
+      const menu = document.getElementById("edit-menu");
 
       menu.innerHTML = insertMenuHTML(selectedElectrode);
-      menu.style.display = 'block';
+      menu.style.display = "grid";
       menu.style.left = `${e.pageX}px`;
       menu.style.top = `${e.pageY}px`;
 
@@ -302,7 +304,7 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
       updateLabels(selectedElectrode, objectIndex, data);
       electrodeMenu.options.selectedIndex = objectIndex + 1;
 
-      document.getElementById('edit-btn').addEventListener('click', () => {
+      document.getElementById("edit-btn").addEventListener("click", () => {
         const type = getSelectedSeizType();
         editElectrode(data, objectIndex, type);
 
@@ -311,52 +313,47 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
         });
         hideMenu();
       });
+
+      document.getElementById("cancel-btn") 
+        .addEventListener("click", () => hideMenu());
     }
-  })
-}
+  });
+};
 
 const insertMenuHTML = (electrode) => {
   const { elecID, elecType, intPopulation, coordinates } = electrode;
   const type = getSelectedSeizType();
-  const seizType = type === 'intPopulation' ? '' : electrode[type];
+  const seizType = type === "intPopulation" ? "" : electrode[type];
   const { x, y, z } = coordinates;
-  const markUp = (
-    `<div style="display: block">
-      <div>
-        <label>Electrode ID: </label>
-        <input id="elec-id-edit" type="text" value="${elecID}">
-      </div>
-      <div>
-        <label>Electrode Type: </label>
-        <input id="elec-type-edit" type="text" value="${elecType}">
-      </div>
-      <div>
-        <label>Interical Population: </label>
-        <input id="int-pop-edit" type="text" value="${intPopulation}">
-      </div>
-      <div>
-        <label>Seizure Type: </label>
-        <input id="seiz-type-edit" type="text" value="${seizType}">
-      </div>
-      <div>
-        <label>Coordinates: </label>
-        <input id="coord-edit" type="text" value="${x}, ${y}, ${z}">
-      </div>
-      <div>
-        <button id="edit-btn">Update</button>
-      </div>
-    </div> `
-  )
+  const markUp = `
+    <label>Electrode ID: </label>
+    <input id="elec-id-edit" type="text" value="${elecID}">
+    
+    <label>Electrode Type: </label>
+    <input id="elec-type-edit" type="text" value="${elecType}">
+
+    <label>Interical Population: </label>
+    <input id="int-pop-edit" type="text" value="${intPopulation}">
+
+    <label>Seizure Type: </label>
+    <input id="seiz-type-edit" type="text" value="${seizType}">
+    
+    <label>Coordinates: </label>
+    <input id="coord-edit" type="text" value="${x}, ${y}, ${z}">
+  
+    <button id="edit-btn">Update</button>
+    <button id="cancel-btn">Cancel</button> 
+    `;
   return markUp;
-}
+};
 
 const editElectrode = (data, index, type) => {
-  const newID = document.getElementById('elec-id-edit').value;
-  const newElecType = document.getElementById('elec-type-edit').value;
-  const newIntPop = document.getElementById('int-pop-edit').value;
-  const newSeizType = document.getElementById('seiz-type-edit').value;
-  const coordinates = document.getElementById('coord-edit').value;
-  const [newX, newY, newZ] = coordinates.split(',').map(c => Number(c))
+  const newID = document.getElementById("elec-id-edit").value;
+  const newElecType = document.getElementById("elec-type-edit").value;
+  const newIntPop = document.getElementById("int-pop-edit").value;
+  const newSeizType = document.getElementById("seiz-type-edit").value;
+  const coordinates = document.getElementById("coord-edit").value;
+  const [newX, newY, newZ] = coordinates.split(",").map((c) => Number(c));
 
   const currentElectrode = data.electrodes[index];
   const newElectrode = {
@@ -365,28 +362,27 @@ const editElectrode = (data, index, type) => {
     coordinates: {
       x: newX,
       y: newY,
-      z: newZ
+      z: newZ,
     },
     elecType: newElecType,
     intPopulation: Number(newIntPop),
-  }
+  };
 
-  if (type !== 'intPopulation')
-    newElectrode[type] = newSeizType;
+  if (type !== "intPopulation") newElectrode[type] = newSeizType;
 
   data.electrodes[index] = newElectrode;
   updateLabels(newElectrode, index, data);
-}
+};
 
 const hideMenu = () => {
-  const menu = document.getElementById('edit-menu')
-  menu.style.display = 'none';
-}
+  const menu = document.getElementById("edit-menu");
+  menu.style.display = "none";
+};
 
 const getSelectedSeizType = () => {
   const { seizTypeMenu } = DOMNodes;
   return seizTypeMenu.selectedOptions[0].value;
-}
+};
 
 const getAttributeArray = (data, attr) => {
   return data.map((datum) => datum[attr]);
@@ -414,7 +410,7 @@ const loadElectrodes = (
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
-    const defaultSeizType = data.SeizDisplay[0]
+    const defaultSeizType = data.SeizDisplay[0];
 
     const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn } = DOMNodes;
 
@@ -500,26 +496,25 @@ const loadElectrodes = (
 
     setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres);
     // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
-    // TODO: change the fmap connections if needed 
-    document.getElementById('download-btn')
-      .addEventListener('click', () => {
-        const formatSpaces = 4;
-        const exportJSON = [JSON.stringify(data, null, formatSpaces)];
-        const url = window.URL.createObjectURL(new Blob(exportJSON, {type: "application/json"}));
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'testing.json';
-        document.body.append(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      });
+    // TODO: change the fmap connections if needed
+    document.getElementById("download-btn").addEventListener("click", () => {
+      const formatSpaces = 4;
+      const exportJSON = [JSON.stringify(data, null, formatSpaces)];
+      const url = window.URL.createObjectURL(
+        new Blob(exportJSON, { type: "application/json" })
+      );
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = "testing.json";
+      document.body.append(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
 
-
-    document.getElementsByTagName('canvas')[0]
-      .addEventListener('mousedown', () => {
-          hideMenu();
-      });
+    document
+      .getElementsByTagName("canvas")[0]
+      .addEventListener("mousedown", () => hideMenu());
   })();
 };
 
