@@ -543,9 +543,7 @@ const loadElectrodes = (
   
         for (const sphere of electrodeSpheres) {
   
-          let result = new Float32Array(16);
           let composed = new Float32Array(16);
-          X.matrix.invert(view, result);
           const [G1x, G1y, G1z] = sphere.u;
           const [bx, by, bz] = oldBoundingBox;
   
@@ -565,7 +563,6 @@ const loadElectrodes = (
           const xs = (vWidth / 2) * output[0] + vWidth / 2;
           const ys = (-vHeight / 2) * output[1] + vHeight / 2;
   
-  
           const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
           electrodeDiv.innerHTML = sphere.caption;
           electrodeDiv.style.left = `${xs}px`;
@@ -573,7 +570,6 @@ const loadElectrodes = (
           electrodeDiv.style.position = "absolute";
           electrodeDiv.style.width = `0px`;
           electrodeDiv.style.height = `0px`;
-  
   
           if (xs > vWidth - 8 || ys > vHeight - 8) {
             electrodeDiv.style.display = 'none';

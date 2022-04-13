@@ -87,7 +87,7 @@ import { loadElectrodes } from "./js/electrodes.js";
     // signalGUI.open();
 
     // fix original camera position
-    threeDRenderer.camera.position = [0, 0, 0];
+    threeDRenderer.camera.position = [0, 200, 0];
 
     loadElectrodes(
       threeDRenderer,
