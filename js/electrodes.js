@@ -314,7 +314,8 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
         hideMenu();
       });
 
-      document.getElementById("cancel-btn") 
+      document
+        .getElementById("cancel-btn")
         .addEventListener("click", () => hideMenu());
     }
   });
@@ -412,7 +413,7 @@ const loadElectrodes = (
     const oldBoundingBox = renderer.u;
     const defaultSeizType = data.SeizDisplay[0];
 
-    const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn } = DOMNodes;
+    const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn, canvas } = DOMNodes;
 
     subjectIDLabel.innerText = data.subjID;
     numSeizTypeLabel.innerText = data.totalSeizType;
@@ -489,10 +490,17 @@ const loadElectrodes = (
     const sphereIDs = electrodeSpheres.map((el) => el.id);
 
     // adds event listener to the show-all-tags button on the menu
+    let showTags = false;
     tagsBtn.addEventListener("click", () => {
-      renderer.resetBoundingBox();
-      renderer.showAllCaptions(sphereIDs);
+      showTags = !showTags;
     });
+
+    for (const sphere of electrodeSpheres){
+      const captionDiv = document.createElement("div");
+      captionDiv.className = 'elec-tag';
+      captionDiv.id = `${sphere.caption}-tag`;
+      document.body.appendChild(captionDiv);
+    }
 
     setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres);
     // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
@@ -515,6 +523,71 @@ const loadElectrodes = (
     document
       .getElementsByTagName("canvas")[0]
       .addEventListener("mousedown", () => hideMenu());
+
+
+    // very messy for now, but will clean
+    renderer.onRender = () => {
+      if (showTags) {
+        const canvas = document.getElementsByTagName("canvas")[0];
+        const vWidth = canvas.clientWidth;
+        const vHeight = canvas.clientHeight;
+        const view = renderer.camera.view;
+  
+        const perspective = X.matrix.makePerspective(
+          X.matrix.identity(),
+          45,
+          vWidth / vHeight,
+          1,
+          10000
+        );
+  
+        for (const sphere of electrodeSpheres) {
+  
+          let result = new Float32Array(16);
+          let composed = new Float32Array(16);
+          X.matrix.invert(view, result);
+          const [G1x, G1y, G1z] = sphere.u;
+          const [bx, by, bz] = oldBoundingBox;
+  
+          X.matrix.multiply(perspective, view, composed);
+  
+          let input = new Float32Array(4);
+          let output = new Float32Array(4);
+          input[0] = G1x - bx;
+          input[1] = G1y - by;
+          input[2] = G1z - bz;
+          input[3] = 1.0;
+  
+          X.matrix.multiplyByVec4(composed, input, output);
+          output[0] /= output[3];
+          output[1] /= output[3];
+  
+          const xs = (vWidth / 2) * output[0] + vWidth / 2;
+          const ys = (-vHeight / 2) * output[1] + vHeight / 2;
+  
+  
+          const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
+          electrodeDiv.innerHTML = sphere.caption;
+          electrodeDiv.style.left = `${xs}px`;
+          electrodeDiv.style.top = `${ys}px`;
+          electrodeDiv.style.position = "absolute";
+          electrodeDiv.style.width = `0px`;
+          electrodeDiv.style.height = `0px`;
+  
+  
+          if (xs > vWidth - 8 || ys > vHeight - 8) {
+            electrodeDiv.style.display = 'none';
+          } else {
+            electrodeDiv.style.display = 'block'
+          }
+        }
+      } else {
+        for (const sphere of electrodeSpheres) {
+          const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
+          electrodeDiv.style.display = 'none';
+        }
+      }
+    };
   })();
 };
 

@@ -43,7 +43,8 @@ import { loadElectrodes } from "./js/electrodes.js";
   threeDRenderer.onShowtime = () => {
     // add the GUI once data is done loading
     const gui = new dat.GUI();
-    // gui.domElement.id = 'gui';
+    gui.domElement.id = 'gui';
+    document.getElementById('gui').style.zIndex = 2;
 
     const volumeGUI = gui.addFolder("Volume");
     volumeGUI.add(volume, "opacity", 0, 1);
@@ -86,7 +87,7 @@ import { loadElectrodes } from "./js/electrodes.js";
     // signalGUI.open();
 
     // fix original camera position
-    threeDRenderer.camera.position = [0, 200, 0];
+    threeDRenderer.camera.position = [0, 0, 0];
 
     loadElectrodes(
       threeDRenderer,
