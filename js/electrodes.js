@@ -103,6 +103,8 @@ const initSeizureTypeMenu = (data, spheres, fmaps) => {
     spheres.forEach((sphere, index) => {
       sphere.color = getSeizTypeColor(selectedSeizType[index]);
     });
+    const index = getCurrentSelectedIndex() - 1
+    updateLabels(data.electrodes[index], index, data);
   });
 
   // create the menu options for all of patients seizure types
@@ -215,6 +217,8 @@ const updateLabels = (electrode, index, data) => {
     seizTypeLabel.innerText = "";
   } else {
     const currentElecSeizType = seizureTypeValues[index];
+    const editOption = document.getElementById('seiz-type-edit');
+    editOption.value = currentElecSeizType;
     seizTypeLabel.innerText = currentElecSeizType;
     intPopulationLabel.innerText = "";
   }
@@ -300,6 +304,9 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
       menu.style.left = `${e.pageX}px`;
       menu.style.top = `${e.pageY}px`;
 
+      document.getElementById('seiz-type-edit').value = selectedElectrode[getSelectedSeizType()];
+      document.getElementById('int-pop-edit').value = selectedElectrode.intPopulation;
+
       GFX.highlightSelectedElectrode(selectionSpheres, objectIndex);
       updateLabels(selectedElectrode, objectIndex, data);
       electrodeMenu.options.selectedIndex = objectIndex + 1;
@@ -334,10 +341,28 @@ const insertMenuHTML = (electrode) => {
     <input id="elec-type-edit" type="text" value="${elecType}">
 
     <label>Interical Population: </label>
-    <input id="int-pop-edit" type="text" value="${intPopulation}">
+    <select id="int-pop-edit" value="${intPopulation}">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+    </select>
 
     <label>Seizure Type: </label>
-    <input id="seiz-type-edit" type="text" value="${seizType}">
+    <select id="seiz-type-edit" value="${seizType}">
+      <option value="">None</option>
+      <option value="Onset">Onset</option>
+      <option value="Very Early Spread">Very Early Spread</option>
+      <option value="Early Spread">Early Spread</option>
+      <option value="Late Spread">Late Spread</option>
+      <option value="Rapid Spread">Rapid Spread</opion>
+      <option value="Early Onset">Early Onset</option>
+    </select>
     
     <label>Coordinates: </label>
     <input id="coord-edit" type="text" value="${x}, ${y}, ${z}">
@@ -345,6 +370,8 @@ const insertMenuHTML = (electrode) => {
     <button id="edit-btn">Update</button>
     <button id="cancel-btn">Cancel</button> 
     `;
+    // <input id="seiz-type-edit" type="text" value="${seizType}"></input>
+    // <input id="int-pop-edit" type="text" value="${intPopulation}">
   return markUp;
 };
 
