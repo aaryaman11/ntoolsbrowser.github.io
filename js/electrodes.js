@@ -218,7 +218,8 @@ const updateLabels = (electrode, index, data) => {
   } else {
     const currentElecSeizType = seizureTypeValues[index];
     const editOption = document.getElementById('seiz-type-edit');
-    editOption.value = currentElecSeizType;
+    if (editOption)
+      editOption.value = currentElecSeizType;
     seizTypeLabel.innerText = currentElecSeizType;
     intPopulationLabel.innerText = "";
   }
