@@ -407,14 +407,15 @@ const loadElectrodes = (
       mode === "umb"
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
         : await (await fetch(`${protocol}${URL}`)).json();
+    if (mode === "nyu") {
 
-    const signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
-    let electrodeSignals = [];
-    for(let i = 0; i < signalHeader.length; i++ ){
-      electrodeSignals[i] = await (await fetch(`./data/${subject}/edf/signal_${signalHeader[i].label}.txt`)).text();
-      electrodeSignals[i] = electrodeSignals[i].split(',').map(n => Number(n));
+      const signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
+      let electrodeSignals = [];
+      for(let i = 0; i < signalHeader.length; i++ ){
+        electrodeSignals[i] = await (await fetch(`./data/${subject}/edf/signal_${signalHeader[i].label}.txt`)).text();
+        electrodeSignals[i] = electrodeSignals[i].split(',').map(n => Number(n));
+      }
     }
-
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
