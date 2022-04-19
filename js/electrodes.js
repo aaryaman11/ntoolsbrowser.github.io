@@ -371,8 +371,8 @@ const insertMenuHTML = (electrode) => {
     <button id="edit-btn">Update</button>
     <button id="cancel-btn">Cancel</button> 
     `;
-    // <input id="seiz-type-edit" type="text" value="${seizType}"></input>
-    // <input id="int-pop-edit" type="text" value="${intPopulation}">
+  // <input id="seiz-type-edit" type="text" value="${seizType}"></input>
+  // <input id="int-pop-edit" type="text" value="${intPopulation}">
   return markUp;
 };
 
@@ -432,14 +432,14 @@ const loadElectrodes = (
 
     // initial data load
     const data =
-      mode === "umb"
+      mode === "demo"
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
         : await (await fetch(`${protocol}${URL}`)).json();
-    if (mode === "nyu") {
+    if (mode === "build") {
 
       const signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
       let electrodeSignals = [];
-      for(let i = 0; i < signalHeader.length; i++ ){
+      for (let i = 0; i < signalHeader.length; i++) {
         electrodeSignals[i] = await (await fetch(`./data/${subject}/edf/signal_${signalHeader[i].label}.txt`)).text();
         electrodeSignals[i] = electrodeSignals[i].split(',').map(n => Number(n));
       }
@@ -531,7 +531,7 @@ const loadElectrodes = (
       showTags = !showTags;
     });
 
-    for (const sphere of electrodeSpheres){
+    for (const sphere of electrodeSpheres) {
       const captionDiv = document.createElement("div");
       captionDiv.className = 'elec-tag';
       captionDiv.id = `${sphere.caption}-tag`;
@@ -568,7 +568,7 @@ const loadElectrodes = (
         const vWidth = canvas.clientWidth;
         const vHeight = canvas.clientHeight;
         const view = renderer.camera.view;
-  
+
         const perspective = X.matrix.makePerspective(
           X.matrix.identity(),
           45,
@@ -576,29 +576,29 @@ const loadElectrodes = (
           1,
           10000
         );
-  
+
         for (const sphere of electrodeSpheres) {
-  
+
           let composed = new Float32Array(16);
           const [G1x, G1y, G1z] = sphere.u;
           const [bx, by, bz] = oldBoundingBox;
-  
+
           X.matrix.multiply(perspective, view, composed);
-  
+
           let input = new Float32Array(4);
           let output = new Float32Array(4);
           input[0] = G1x - bx;
           input[1] = G1y - by;
           input[2] = G1z - bz;
           input[3] = 1.0;
-  
+
           X.matrix.multiplyByVec4(composed, input, output);
           output[0] /= output[3];
           output[1] /= output[3];
-  
+
           const xs = (vWidth / 2) * output[0] + vWidth / 2;
           const ys = (-vHeight / 2) * output[1] + vHeight / 2;
-  
+
           const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
           electrodeDiv.innerHTML = sphere.caption;
           electrodeDiv.style.left = `${xs}px`;
@@ -606,7 +606,7 @@ const loadElectrodes = (
           electrodeDiv.style.position = "absolute";
           electrodeDiv.style.width = `0px`;
           electrodeDiv.style.height = `0px`;
-  
+
           if (xs > vWidth - 8 || ys > vHeight - 8) {
             electrodeDiv.style.display = 'none';
           } else {

@@ -75,7 +75,7 @@ import { loadElectrodes } from "./js/electrodes.js";
 
     const signalGUI = gui.addFolder("Electrode Signal");
     const playSignalController = {
-      "start / stop": function () {},
+      "start / stop": function () { },
     };
 
     signalGUI.add(playSignalController, "start / stop");
@@ -116,7 +116,7 @@ import { loadElectrodes } from "./js/electrodes.js";
         seizTypeList.style.visibility = "hidden";
 
         volume.labelmap.file =
-          mode === "umb"
+          mode === "demo"
             ? `./data/${subject}/volume/${subject}_intPopulation_labels.nii`
             : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_intPopulation_labels.nii`;
 
@@ -126,7 +126,7 @@ import { loadElectrodes } from "./js/electrodes.js";
         seizTypeList.style.visibility = "visible";
         intPopList.style.visibility = "hidden";
         volume.labelmap.file =
-          mode === "umb"
+          mode === "demo"
             ? `./data/${subject}/volume/${subject}_${selectedSeizType}_labels.nii`
             : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}_${selectedSeizType}_labels.nii`;
         volume.labelmap.colortable.file =
