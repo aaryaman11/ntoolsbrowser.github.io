@@ -426,7 +426,7 @@ const loadElectrodes = (
   playSignalController
 ) => {
   (async () => {
-    // for 'NYU' mode
+    // for 'NYU' or DEMO mode
     const protocol = window.location.protocol;
     const URL = `//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`;
 

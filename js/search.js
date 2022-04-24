@@ -26,6 +26,12 @@
       console.log('Data not found!');
     }
   }
+  //const fsaverage_Button = document.getElementById('fsaverage-demo');
+  const subject_list = document.getElementById('list')
+  subject_list.addEventListener('change', () => {
+    window.location.href = `./view.html?mode=demo&subject=${subject_list.value}`;
+  });
+
 });
 
 // const urlExists = (url) => {

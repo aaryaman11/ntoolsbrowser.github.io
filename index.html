@@ -17,9 +17,18 @@
         <label class="search-text" for="ntools-search">Subject ID:</label>
         <input id="search-bar" type="text">
         <div id="radio-button-modes">
-          <label class="search-text"> Mode:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-          <label for="umb-rad-button">DEMO</label>
-          <input name="mode" type="radio" id="umb-rad-button" value="DEMO" checked>
+          <select id='list'>
+            <option value='Sample Data'>Sample Data</option>
+            <option value="fsaverage">fsaverage</option>
+            <option value="fsMNI-demo">fsMNI</option>
+            <label class="search-text"> Mode:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+            <label for="umb-rad-button">DEMO</label>
+            <input name="mode" type="radio" id="umb-rad-button" value="DEMO" checked>
+            <!--<input name="mode" type="radio" id="fsaverage-demo" value="fsaverage" checked>>-->
+
+          </select>
+          <!--<label for="fsaverage-demo">fsaverage</label>
+          <input name="mode" type="radio" id="fsavergae-demo" value="fsaverage" checked>-->
           <label for="nyu-rad-button">BUILD</label>
           <input name="mode" type="radio" id="nyu-rad-button" value="BUILD">
         </div>
