@@ -25,7 +25,13 @@
       document.getElementById('err').innerText = 'Data not found!';
       console.log('Data not found!');
     }
+
+    //const subject_id = document.getElementById('list').value;
+    document.getElementById('fsaverage-demo').addEventListener('load', () => {
+      window.location.href = `./view.html?mode=${mode}&subject=${subject}`;
+    });
   }
+
 });
 
 // const urlExists = (url) => {
