@@ -1,43 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>N-Tools Browser</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./css/style.css">
-  <title>ntools</title>
-</head>
-
-<body>
-  <div id="ntools-search-container">
-    <div id="ntools-search">
-      <form id="ntools-form">
-        <span id='err' style='color:red'></span><br>
-        <label class="search-text" for="ntools-search">Subject ID:</label>
-        <input id="search-bar" type="text">
-        <div id="radio-button-modes">
-          <select id='list'>
-            <option value='Sample Data'>Sample Data</option>
-            <option value="fsaverage">fsaverage</option>
-            <option value="fsMNI-demo">fsMNI</option>
-            <label class="search-text"> Mode:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-            <label for="umb-rad-button">DEMO</label>
-            <input name="mode" type="radio" id="umb-rad-button" value="DEMO" checked>
-            <!--<input name="mode" type="radio" id="fsaverage-demo" value="fsaverage" checked>>-->
-
-          </select>
-          <!--<label for="fsaverage-demo">fsaverage</label>
-          <input name="mode" type="radio" id="fsavergae-demo" value="fsaverage" checked>-->
-          <label for="nyu-rad-button">BUILD</label>
-          <input name="mode" type="radio" id="nyu-rad-button" value="BUILD">
-        </div>
-        <button type='button' id="submitbtn">Load Data!</button>
-      </form>
+  <body>
+    <div id="ntools-search-container">
+      <div id="ntools-search">
+        <form id="ntools-form">
+          <span id="err" style="color: red"></span><br />
+          <label class="search-text" for="ntools-search">Subject ID:&nbsp&nbsp&nbsp;</label>
+          <input id="search-bar" type="text" />
+          <button type="button" id="submitbtn">Load Data</button>
+          <div id="sample-container">
+            <br>
+            <label for="list" style="color: white">Sample Data: </label>
+            <select id="list">
+              <option value="none">Choose Sample...</option>
+              <option value="fsaverage">fsaverage</option>
+              <option value="fsMNI-demo">fsMNI</option>
+            </select>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <script src="./js/search.js"></script>
-</body>
-
+    <script src="./js/search.js"></script>
+  </body>
 </html>
