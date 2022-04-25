@@ -435,15 +435,17 @@ const loadElectrodes = (
       mode === "demo"
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
         : await (await fetch(`${protocol}${URL}`)).json();
-    if (mode === "build") {
 
-      const signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
-      let electrodeSignals = [];
+    let electrodeSignals = [];
+    let signalHeader;
+    if (mode === "demo") {
+      signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
       for (let i = 0; i < signalHeader.length; i++) {
         electrodeSignals[i] = await (await fetch(`./data/${subject}/edf/signal_${signalHeader[i].label}.txt`)).text();
         electrodeSignals[i] = electrodeSignals[i].split(',').map(n => Number(n));
       }
     }
+
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
@@ -478,20 +480,47 @@ const loadElectrodes = (
 
     //setup electrode signal display
     let playSignal = false;
+    let signalIndex = 0;
 
     playSignalController["start / stop"] = function () {
-      let signalFrequency = 250;
+      let signalFrequency = 10;
 
       playSignal = !playSignal;
 
       function applySignal() {
         if (!playSignal) return;
 
+        if(signalIndex == electrodeSignals[0].length)
+          signalIndex = 0;
+
+        let max = electrodeSignals[0][signalIndex];
+        let min = electrodeSignals[0][signalIndex];
+
+        for(let i = 0; i < electrodeSignals.length; i++){
+          
+          if(electrodeSignals[i][signalIndex] > max)
+            max = electrodeSignals[i][signalIndex];
+
+          if(electrodeSignals[i][signalIndex] < min)
+            min = electrodeSignals[i][signalIndex];          
+        }
+
+        let colors = [];
+        for(let i = 0; i < electrodeSignals.length; i++){
+          let normalizedSignal = 0;
+
+          normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
+
+          colors[i] = [normalizedSignal, 0, 1 - normalizedSignal];
+        }
+
         electrodeSpheres.forEach(
-          (sphere) =>
-            (sphere.color = [Math.random(), Math.random(), Math.random()])
+          (sphere, i) =>{
+            sphere.color = colors[i];
+          }
         );
 
+        signalIndex++;
         setTimeout(applySignal, signalFrequency);
       }
 
