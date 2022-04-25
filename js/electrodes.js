@@ -438,7 +438,7 @@ const loadElectrodes = (
 
     let electrodeSignals = [];
     let signalHeader;
-    if (mode === "demo") {
+    if (mode === "build") {
       signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
       for (let i = 0; i < signalHeader.length; i++) {
         electrodeSignals[i] = await (await fetch(`./data/${subject}/edf/signal_${signalHeader[i].label}.txt`)).text();
