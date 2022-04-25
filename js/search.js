@@ -1,20 +1,20 @@
 'use strict';
 (main => {
-  document.readyState == 'complete' ? 
-  main() 
-: window.addEventListener('load', main)
+  document.readyState == 'complete' ?
+    main()
+    : window.addEventListener('load', main)
 })(() => {
   document.getElementById('submitbtn').onclick = () => {
     const subject = document.getElementById('search-bar').value;
     const umbButton = document.getElementById('umb-rad-button');
     const protocol = window.location.protocol;
-                      
-    const mode = umbButton.checked ? 'umb' : 'nyu';
-    const url = mode === 'umb' ?
+
+    const mode = umbButton.checked ? 'demo' : 'build';
+    const url = mode === 'demo' ?
       `../data/${subject}/JSON/${subject}.json`
-    : `${protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`;
-    
-    
+      : `${protocol}//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`;
+
+
     const request = new XMLHttpRequest();
     request.open('HEAD', url, false);
     request.send();
@@ -23,9 +23,15 @@
     }
     else {
       document.getElementById('err').innerText = 'Data not found!';
-      console.log('Data not found!');                
+      console.log('Data not found!');
     }
   }
+  //const fsaverage_Button = document.getElementById('fsaverage-demo');
+  const subject_list = document.getElementById('list')
+  subject_list.addEventListener('change', () => {
+    window.location.href = `./view.html?mode=demo&subject=${subject_list.value}`;
+  });
+
 });
 
 // const urlExists = (url) => {
