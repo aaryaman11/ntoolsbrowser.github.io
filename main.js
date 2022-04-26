@@ -124,6 +124,16 @@ import { loadElectrodes } from "./js/electrodes.js";
     const seizTypeList = document.getElementById("seiztype-list");
     const intPopList = document.getElementById("int-pop-list");
 
+    const coronalSlice = document.getElementsByTagName('canvas')[1];
+    coronalSlice.onclick = () => threeDRenderer.camera.position = [0, 200, 0];
+
+    const sagittalSlice = document.getElementsByTagName('canvas')[2];
+    sagittalSlice.onclick = () => threeDRenderer.camera.position = [-200, 0, 0];
+
+    const axialSlice = document.getElementsByTagName('canvas')[3];
+    axialSlice.onclick = () => threeDRenderer.camera.position = [0, 0, 200];
+
+
     displayMenu.addEventListener("change", (event) => {
       event.preventDefault();
       event.stopPropagation();
