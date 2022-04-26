@@ -89,18 +89,14 @@ import { loadElectrodes } from "./js/electrodes.js";
 
     signalGUI.add(playSignalController, "start / stop");
     
-    console.log(volumeGUI)
-
     // work-around for sliders operating on invisible volume
     const sliderControllers = volumeGUI.__controllers;
     const xSlider = sliderControllers.find(c => c.property === "indexX");
-    const ySlider = sliderControllers.find(c => c.property === "indexX");
-    const zSlider = sliderControllers.find(c => c.property === "indexX");
+    const ySlider = sliderControllers.find(c => c.property === "indexY");
+    const zSlider = sliderControllers.find(c => c.property === "indexZ");
     xSlider.__onChange = () => toggleSliceOnScroll();
     ySlider.__onChange = () => toggleSliceOnScroll();
     zSlider.__onChange = () => toggleSliceOnScroll();
-
-
 
     volumeGUI.open();
     // leftHemisphereGUI.open();
