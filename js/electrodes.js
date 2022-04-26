@@ -119,7 +119,7 @@ const initSeizureTypeMenu = (data, spheres, fmaps) => {
 /**
  *
  * @param {array} data - electrode data
- * @param {array} connections - the X.cyilinders
+ * @param {array} connections - the X.cylinders
  * @param {array} fmapHighlights - the X.cylinders which highlight
  */
 const addEventsToFmapMenu = (data, connections, fmapHighlights) => {
@@ -208,9 +208,7 @@ const updateLabels = (electrode, index, data) => {
 
   IDLabel.innerText = elecID;
   elecTypeLabel.innerText = elecType;
-  coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(
-    y
-  )}, ${Math.round(z)})`;
+  coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(y)}, ${Math.round(z)})`;
 
   if (selectedSeizType === "intPopulation") {
     intPopulationLabel.innerText = intPopulation;
@@ -233,7 +231,7 @@ const updateLabels = (electrode, index, data) => {
  * @param {array} spheres           - Array of X.spheres that represent electrodes
  * @param {array} selections        - Opaque blue spheres that highlight an electrode
  * @param {array} fmaps             - Array of X.cylinders
- * @param {array} fmapHighlights    - Opaque blue cyilnders that surround fmaps
+ * @param {array} fmapHighlights    - Opaque blue cylinders that surround fmaps
  * @param {X.volume} volumeRendered - The volume displayed on slices
  *
  * This function is responsible for way too much. Would be good to find a way to break
@@ -286,7 +284,7 @@ const jumpSlicesOnClick = (
         }
       }
     }
-  }); // end of event lsitener
+  }); // end of event listener
 };
 
 const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
@@ -361,7 +359,7 @@ const insertMenuHTML = (electrode) => {
       <option value="Very Early Spread">Very Early Spread</option>
       <option value="Early Spread">Early Spread</option>
       <option value="Late Spread">Late Spread</option>
-      <option value="Rapid Spread">Rapid Spread</opion>
+      <option value="Rapid Spread">Rapid Spread</option>
       <option value="Early Onset">Early Onset</option>
     </select>
     
@@ -371,8 +369,6 @@ const insertMenuHTML = (electrode) => {
     <button id="edit-btn">Update</button>
     <button id="cancel-btn">Cancel</button> 
     `;
-  // <input id="seiz-type-edit" type="text" value="${seizType}"></input>
-  // <input id="int-pop-edit" type="text" value="${intPopulation}">
   return markUp;
 };
 
@@ -401,6 +397,89 @@ const editElectrode = (data, index, type) => {
 
   data.electrodes[index] = newElectrode;
   updateLabels(newElectrode, index, data);
+};
+
+const createElectrodeTags = (spheres) => {
+    for (const sphere of spheres) {
+    const captionDiv = document.createElement("div");
+    captionDiv.className = 'elec-tag';
+    captionDiv.id = `${sphere.caption}-tag`;
+    document.body.appendChild(captionDiv);
+  }
+}
+
+const showElectrodeTags = (showTags, spheres, renderer, bbox) => {
+   if (showTags) {
+      const canvas = document.getElementsByTagName("canvas")[0];
+      const vWidth = canvas.clientWidth;
+      const vHeight = canvas.clientHeight;
+      const view = renderer.camera.view;
+      const fov = 45;
+      const near = 1;
+      const far = 10000;
+
+      const perspective = X.matrix.makePerspective(
+        X.matrix.identity(),
+        fov,
+        vWidth / vHeight,
+        near,
+        far,
+      );
+
+      for (const sphere of spheres) {
+
+        const composed = new Float32Array(16);
+        const [G1x, G1y, G1z] = sphere.u;
+        const [bx, by, bz] = bbox;
+
+        X.matrix.multiply(perspective, view, composed);
+
+        const input = [G1x - bx, G1y - by, G1z - bz, 1.0];
+        const output = new Float32Array(4);
+ 
+        X.matrix.multiplyByVec4(composed, input, output);
+        output[0] /= output[3];
+        output[1] /= output[3];
+
+        const xs = (vWidth / 2) * output[0] + vWidth / 2;
+        const ys = (-vHeight / 2) * output[1] + vHeight / 2;
+
+        const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
+        electrodeDiv.innerHTML = sphere.caption;
+        electrodeDiv.style.left = `${xs}px`;
+        electrodeDiv.style.top = `${ys}px`;
+        electrodeDiv.style.position = "absolute";
+        electrodeDiv.style.width = `0px`;
+        electrodeDiv.style.height = `0px`;
+
+        if (xs > vWidth - 8 || ys > vHeight - 8) {
+          electrodeDiv.style.display = 'none';
+        } else {
+          electrodeDiv.style.display = 'block'
+        }
+      }
+    } else {
+      for (const sphere of spheres) {
+        const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
+        electrodeDiv.style.display = 'none';
+      }
+    }
+};
+
+// https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
+const downloadJSON = (data) => {
+  const formatSpaces = 4;
+  const exportJSON = [JSON.stringify(data, null, formatSpaces)];
+  const url = window.URL.createObjectURL(
+    new Blob(exportJSON, { type: "application/json" })
+  );
+  const a = document.createElement("a");
+  a.style.display = "none";
+  a.href = url;
+  a.download = "testing.json";
+  document.body.append(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
 };
 
 const hideMenu = () => {
@@ -436,14 +515,13 @@ const loadElectrodes = (
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
         : await (await fetch(`${protocol}${URL}`)).json();
 
-   
-
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
     const defaultSeizType = data.SeizDisplay[0];
 
-    const { subjectIDLabel, numSeizTypeLabel, tagsBtn, editBtn, canvas } = DOMNodes;
+    const { subjectIDLabel, numSeizTypeLabel, tagsBtn } = DOMNodes;
+    const loadingText = document.getElementById('loading-text');
 
     subjectIDLabel.innerText = data.subjID;
     numSeizTypeLabel.innerText = data.totalSeizType;
@@ -471,12 +549,10 @@ const loadElectrodes = (
     fmapHighlights.forEach((highlight) => renderer.add(highlight));
 
     //setup electrode signal display
-    let playSignal = false;
     let electrodeSignals = [];
     let signalHeader;
     if (mode === "demo" && subject === "fsMNI") {
       signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
-      const loadingText = document.getElementById('loading-text');
       for (let i = 0; i < signalHeader.length; i++) {
         loadingText.innerText = `Loading Electrode Signals ${i + 1}/${signalHeader.length}`
         const signalFile = `./data/${subject}/edf/signals/signal_${signalHeader[i].label}.signal`;
@@ -490,15 +566,20 @@ const loadElectrodes = (
             const signalGap = 10;
             const step = numBytes * signalGap;
 
-            for (let i = 0; i < data.byteLength; i += step) {
-              view.push(dataView.getFloat64(i, true));
+            for (let j = 0; j < data.byteLength; j += step) {
+              // true means "little endian"
+              view.push(dataView.getFloat64(j, true));
             }
+            
             return view;
           })
           .catch((error) => console.log(error));
       }
       loadingText.innerText = "";
-    }let signalIndex = 0;
+    }
+    
+    let signalIndex = 0;
+    let playSignal = false;
 
     playSignalController["start / stop"] = function () {
       let signalFrequency = 10;
@@ -569,103 +650,26 @@ const loadElectrodes = (
     // //* adds the event listners to the functional map menu
     addEventsToFmapMenu(data, fmapConnections, fmapHighlights);
 
-    // create an array of sphere IDs (internal to XTK) for the "show all tags" button
-    const sphereIDs = electrodeSpheres.map((el) => el.id);
-
     // adds event listener to the show-all-tags button on the menu
     let showTags = false;
     tagsBtn.addEventListener("click", () => {
       showTags = !showTags;
     });
 
-    for (const sphere of electrodeSpheres) {
-      const captionDiv = document.createElement("div");
-      captionDiv.className = 'elec-tag';
-      captionDiv.id = `${sphere.caption}-tag`;
-      document.body.appendChild(captionDiv);
-    }
-
+    createElectrodeTags(electrodeSpheres);
     setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres);
-    // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
+
     // TODO: change the fmap connections if needed
-    document.getElementById("download-btn").addEventListener("click", () => {
-      const formatSpaces = 4;
-      const exportJSON = [JSON.stringify(data, null, formatSpaces)];
-      const url = window.URL.createObjectURL(
-        new Blob(exportJSON, { type: "application/json" })
-      );
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = "testing.json";
-      document.body.append(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-    });
+    document
+      .getElementById("download-btn")
+      .addEventListener("click", () => downloadJSON(data));
 
     document
       .getElementsByTagName("canvas")[0]
       .addEventListener("mousedown", () => hideMenu());
 
-
-    // very messy for now, but will clean
     renderer.onRender = () => {
-      if (showTags) {
-        const canvas = document.getElementsByTagName("canvas")[0];
-        const vWidth = canvas.clientWidth;
-        const vHeight = canvas.clientHeight;
-        const view = renderer.camera.view;
-
-        const perspective = X.matrix.makePerspective(
-          X.matrix.identity(),
-          45,
-          vWidth / vHeight,
-          1,
-          10000
-        );
-
-        for (const sphere of electrodeSpheres) {
-
-          let composed = new Float32Array(16);
-          const [G1x, G1y, G1z] = sphere.u;
-          const [bx, by, bz] = oldBoundingBox;
-
-          X.matrix.multiply(perspective, view, composed);
-
-          let input = new Float32Array(4);
-          let output = new Float32Array(4);
-          input[0] = G1x - bx;
-          input[1] = G1y - by;
-          input[2] = G1z - bz;
-          input[3] = 1.0;
-
-          X.matrix.multiplyByVec4(composed, input, output);
-          output[0] /= output[3];
-          output[1] /= output[3];
-
-          const xs = (vWidth / 2) * output[0] + vWidth / 2;
-          const ys = (-vHeight / 2) * output[1] + vHeight / 2;
-
-          const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
-          electrodeDiv.innerHTML = sphere.caption;
-          electrodeDiv.style.left = `${xs}px`;
-          electrodeDiv.style.top = `${ys}px`;
-          electrodeDiv.style.position = "absolute";
-          electrodeDiv.style.width = `0px`;
-          electrodeDiv.style.height = `0px`;
-
-          if (xs > vWidth - 8 || ys > vHeight - 8) {
-            electrodeDiv.style.display = 'none';
-          } else {
-            electrodeDiv.style.display = 'block'
-          }
-        }
-      } else {
-        for (const sphere of electrodeSpheres) {
-          const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
-          electrodeDiv.style.display = 'none';
-        }
-      }
+      showElectrodeTags(showTags, electrodeSpheres, renderer, oldBoundingBox);
     };
   })();
 };

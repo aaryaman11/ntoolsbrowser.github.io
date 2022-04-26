@@ -11,13 +11,15 @@ import { loadElectrodes } from "./js/electrodes.js";
   const volume = loadVolume(subject);
   const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject);
   const [threeDRenderer, sliceX, sliceY, sliceZ] = initRenderers();
+  const loadingText = document.getElementById('loading-text');
 
   threeDRenderer.add(leftHemisphereMesh);
   threeDRenderer.add(rightHemisphereMesh);
 
   sliceX.add(volume);
   sliceX.render();
-
+  
+  loadingText.innerText = "Rendering Volume...";
   sliceX.onShowtime = () => {
     // this is triggered manually by sliceX.render() just 2 lines above
     // execution happens after volume is loaded
@@ -37,10 +39,12 @@ import { loadElectrodes } from "./js/electrodes.js";
     threeDRenderer.add(volume);
     volume.visible = false;
     threeDRenderer.render(); // this one triggers the loading of LH and then the onShowtime for the 3d renderer
+    
   };
-
+  
   // the onShowtime function gets called automatically, just before the first rendering happens
   threeDRenderer.onShowtime = () => {
+    loadingText.innerText = "";
     // add the GUI once data is done loading
     const gui = new dat.GUI();
     gui.domElement.id = 'gui';
