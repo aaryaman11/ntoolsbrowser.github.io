@@ -436,33 +436,7 @@ const loadElectrodes = (
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
         : await (await fetch(`${protocol}${URL}`)).json();
 
-    let electrodeSignals = [];
-    let signalHeader;
-    if (mode === "demo" && subject === "fsMNI") {
-      signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
-      const loadingText = document.getElementById('loading-text');
-      for (let i = 0; i < signalHeader.length; i++) {
-        loadingText.innerText = `Loading Electrode Signals ${i + 1}/${signalHeader.length}`
-        const signalFile = `./data/${subject}/edf/signals/signal_${signalHeader[i].label}.signal`;
-        electrodeSignals[i] = await fetch(signalFile)
-          .then((response) => response.blob())
-          .then((content) => content.arrayBuffer(content.size))
-          .then((data) => {
-            const view = [];
-            const dataView = new DataView(data);
-            const numBytes = 8;
-            const signalGap = 10;
-            const step = numBytes * signalGap;
-
-            for (let i = 0; i < data.byteLength; i += step) {
-              view.push(dataView.getFloat64(i, true));
-            }
-            return view;
-          })
-          .catch((error) => console.log(error));
-      }
-      loadingText.innerText = "";
-    }
+   
 
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
@@ -498,7 +472,33 @@ const loadElectrodes = (
 
     //setup electrode signal display
     let playSignal = false;
-    let signalIndex = 0;
+    let electrodeSignals = [];
+    let signalHeader;
+    if (mode === "demo" && subject === "fsMNI") {
+      signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
+      const loadingText = document.getElementById('loading-text');
+      for (let i = 0; i < signalHeader.length; i++) {
+        loadingText.innerText = `Loading Electrode Signals ${i + 1}/${signalHeader.length}`
+        const signalFile = `./data/${subject}/edf/signals/signal_${signalHeader[i].label}.signal`;
+        electrodeSignals[i] = await fetch(signalFile)
+          .then((response) => response.blob())
+          .then((content) => content.arrayBuffer(content.size))
+          .then((data) => {
+            const view = [];
+            const dataView = new DataView(data);
+            const numBytes = 8;
+            const signalGap = 10;
+            const step = numBytes * signalGap;
+
+            for (let i = 0; i < data.byteLength; i += step) {
+              view.push(dataView.getFloat64(i, true));
+            }
+            return view;
+          })
+          .catch((error) => console.log(error));
+      }
+      loadingText.innerText = "";
+    }let signalIndex = 0;
 
     playSignalController["start / stop"] = function () {
       let signalFrequency = 10;
