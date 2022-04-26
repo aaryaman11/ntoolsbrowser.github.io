@@ -18,6 +18,11 @@ import { loadElectrodes } from "./js/electrodes.js";
 
   sliceX.add(volume);
   sliceX.render();
+
+   const toggleSliceOnScroll = () => {
+      volume.visible = !volume.visible;
+      volume.visible = !volume.visible;
+    };
   
   loadingText.innerText = "Rendering Volume...";
   sliceX.onShowtime = () => {
@@ -28,10 +33,10 @@ import { loadElectrodes } from "./js/electrodes.js";
     sliceZ.add(volume);
     sliceZ.render();
 
-    const toggleSliceOnScroll = () => {
-      volume.visible = !volume.visible;
-      volume.visible = !volume.visible;
-    };
+    // const toggleSliceOnScroll = () => {
+    //   volume.visible = !volume.visible;
+    //   volume.visible = !volume.visible;
+    // };
     sliceX.onScroll = () => toggleSliceOnScroll();
     sliceY.onScroll = () => toggleSliceOnScroll();
     sliceZ.onScroll = () => toggleSliceOnScroll();
@@ -83,8 +88,21 @@ import { loadElectrodes } from "./js/electrodes.js";
     };
 
     signalGUI.add(playSignalController, "start / stop");
+    
+    console.log(volumeGUI)
 
-    // volumeGUI.open();
+    // work-around for sliders operating on invisible volume
+    const sliderControllers = volumeGUI.__controllers;
+    const xSlider = sliderControllers.find(c => c.property === "indexX");
+    const ySlider = sliderControllers.find(c => c.property === "indexX");
+    const zSlider = sliderControllers.find(c => c.property === "indexX");
+    xSlider.__onChange = () => toggleSliceOnScroll();
+    ySlider.__onChange = () => toggleSliceOnScroll();
+    zSlider.__onChange = () => toggleSliceOnScroll();
+
+
+
+    volumeGUI.open();
     // leftHemisphereGUI.open();
     // rightHemisphereGUI.open();
     // slicesGUI.open();
