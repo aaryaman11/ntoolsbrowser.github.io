@@ -20,8 +20,14 @@ with open('signal_header.json', 'w') as fp:
     json.dump(signal_headers, fp)
 
 for i, sig in enumerate(signals):
-    with open('signal_'+labels[i]+'.txt', 'w') as f:
-        print(*sig, sep=',', file=f)
+    filename = f'signal_{labels[i]}.signal'
+    with open(filename, mode='wb') as f:
+        newFileByteArray = bytes(sig)
+        f.write(newFileByteArray)
+
+# for i, sig in enumerate(signals):
+#     with open('signal_'+labels[i]+'.txt', 'w') as f:
+#         print(*sig, sep=',', file=f)
 
 #with open('signals.json', 'w') as fp:
 #    json.dump(signals, fp)

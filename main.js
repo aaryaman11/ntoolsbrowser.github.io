@@ -84,7 +84,7 @@ import { loadElectrodes } from "./js/electrodes.js";
     // leftHemisphereGUI.open();
     // rightHemisphereGUI.open();
     // slicesGUI.open();
-    // signalGUI.open();
+    signalGUI.open();
 
     // fix original camera position
     threeDRenderer.camera.position = [0, 200, 0];

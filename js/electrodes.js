@@ -438,11 +438,26 @@ const loadElectrodes = (
 
     let electrodeSignals = [];
     let signalHeader;
-    if (mode === "build") {
+    if (mode === "demo" && subject === "fsMNI") {
       signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
       for (let i = 0; i < signalHeader.length; i++) {
-        electrodeSignals[i] = await (await fetch(`./data/${subject}/edf/signal_${signalHeader[i].label}.txt`)).text();
-        electrodeSignals[i] = electrodeSignals[i].split(',').map(n => Number(n));
+        const signalFile = `./data/${subject}/edf/signals/signal_${signalHeader[i].label}.signal`;
+        electrodeSignals[i] = await fetch(signalFile)
+          .then((response) => response.blob())
+          .then((content) => content.arrayBuffer(content.size))
+          .then((data) => {
+            const view = [];
+            const dataView = new DataView(data);
+            const numBytes = 8;
+            const signalGap = 10;
+            const step = numBytes * signalGap;
+
+            for (let i = 0; i < data.byteLength; i += step) {
+              view.push(dataView.getFloat64(i, true));
+            }
+            return view;
+          })
+          .catch((error) => console.log(error));
       }
     }
 

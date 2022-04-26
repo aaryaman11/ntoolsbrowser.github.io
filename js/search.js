@@ -30,6 +30,5 @@ const urlExists = (url) => {
   const request = new XMLHttpRequest();
   request.open('HEAD', url, false);
   request.send();
-  console.log(request);
   return request.status !== 404;
 }   
