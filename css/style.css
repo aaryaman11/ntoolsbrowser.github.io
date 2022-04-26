@@ -203,3 +203,13 @@ option:hover {
     -o-user-select: none;
     pointer-events: none;
 }
+
+#loading-text {
+    position: absolute;
+    color: white;
+    /* left: 40%; */
+    width: 100%;
+    bottom: 95%;
+    pointer-events: none;
+    text-align: center;
+}

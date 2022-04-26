@@ -440,7 +440,9 @@ const loadElectrodes = (
     let signalHeader;
     if (mode === "demo" && subject === "fsMNI") {
       signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
+      const loadingText = document.getElementById('loading-text');
       for (let i = 0; i < signalHeader.length; i++) {
+        loadingText.innerText = `Loading Electrode Signals ${i + 1}/${signalHeader.length}`
         const signalFile = `./data/${subject}/edf/signals/signal_${signalHeader[i].label}.signal`;
         electrodeSignals[i] = await fetch(signalFile)
           .then((response) => response.blob())
@@ -459,6 +461,7 @@ const loadElectrodes = (
           })
           .catch((error) => console.log(error));
       }
+      loadingText.innerText = "";
     }
 
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
