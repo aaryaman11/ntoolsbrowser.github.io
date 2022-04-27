@@ -505,15 +505,16 @@ const loadElectrodes = (
   playSignalController
 ) => {
   (async () => {
-    // for 'NYU' or DEMO mode
+    // for 'NYU' or build mode
     const protocol = window.location.protocol;
-    const URL = `//ievappwpdcpvm01.nyumc.org/?file=${subject}.json`;
+    const baseURL = `ievappwpdcpvm01.nyumc.org`;
+    const directory = `?file=sub-${subject}_ntoolsbrowser.json&bids=ieeg`;
 
     // initial data load
     const data =
       mode === "demo"
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
-        : await (await fetch(`${protocol}${URL}`)).json();
+        : await (await fetch(`${protocol}//${baseURL}/${directory}`)).json();
 
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
@@ -591,6 +592,10 @@ const loadElectrodes = (
     let playSignal = false;
 
     playSignalController["start / stop"] = function () {
+      if (!electrodeSignals.length) {
+        alert("Electrode signal display is not yet implemented for this subject");
+        return;
+      }
       let signalFrequency = 10;
 
       playSignal = !playSignal;
