@@ -553,26 +553,37 @@ const loadElectrodes = (
     let signalHeader;
     if (mode === "demo" && subject === "fsMNI") {
       signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
-      for (let i = 0; i < signalHeader.length; i++) {
-        loadingText.innerText = `Loading Electrode Signals ${i + 1}/${signalHeader.length}`
-        const signalFile = `./data/${subject}/edf/signals/signal_${signalHeader[i].label}.signal`;
-        electrodeSignals[i] = await fetch(signalFile)
-          .then((response) => response.blob())
-          .then((content) => content.arrayBuffer(content.size))
-          .then((data) => {
-            const view = [];
-            const dataView = new DataView(data);
-            const numBytes = 8;
+      const sampleSize = signalHeader.length;
+      const numBytes = 8;
+      const signalPath = `./data/${subject}/edf/signals/${subject}.signal`;
 
-            for (let j = 0; j < data.byteLength; j += numBytes) {
-              // true means "little endian"
-              view.push(dataView.getFloat64(j, true));
+      loadingText.innerText = `Loading Electrode Signals...`
+
+      electrodeSignals = await fetch(signalPath)
+        .then((response) => response.blob())
+        .then((content) => content.arrayBuffer(content.size))
+        .then((data) => {
+          const dataView = new DataView(data);
+          const sizePerSample = dataView.byteLength / sampleSize;
+          const signals = [];
+
+          let currentChunkIndex = 0;
+          for (let j = 0; j < sampleSize; j++) {
+            const view = [];
+            for (
+              let i = sizePerSample * currentChunkIndex;
+              i < sizePerSample * (currentChunkIndex + 1);
+              i += numBytes
+            ) {
+              view.push(dataView.getFloat64(i, true));
             }
-            
-            return view;
-          })
-          .catch((error) => console.log(error));
-      }
+            signals.push(view);
+            currentChunkIndex += 1;
+          }
+
+          return signals;
+        });
+
       loadingText.innerText = "";
     }
     

@@ -3,6 +3,7 @@ import json
 import sys
 
 fileName = sys.argv[1]
+subjectName = input("Enter Subject ID: ")
 
 def electrodeHeader(l):
     return l.startswith('G')
@@ -29,13 +30,19 @@ print("Done")
 
 step = 10
 
-print("Generating Signal Files...")
-for i, sig in enumerate(signals):
-    filename = f'signal_{labels[i]}.signal'
-    with open(filename, mode='wb') as f:
-        newFileByteArray = bytes(sig[::step])
+print("Generating Signal File...")
+filename = f'{subjectName}.signal'
+with open(filename, mode='wb') as f:
+    for signal in signals:
+        newFileByteArray = bytes(signal[::step])
         f.write(newFileByteArray)
 print("Done")
+
+# for i, sig in enumerate(signals):
+#     filename = f'signal_{labels[i]}.signal'
+#     with open(filename, mode='wb') as f:
+#         newFileByteArray = bytes(sig[::step])
+#         f.write(newFileByteArray)
 
 # for i, sig in enumerate(signals):
 #     with open('signal_'+labels[i]+'.txt', 'w') as f:
