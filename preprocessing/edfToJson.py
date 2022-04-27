@@ -7,23 +7,35 @@ fileName = sys.argv[1]
 def electrodeHeader(l):
     return l.startswith('G')
 
+print("Getting Header...")
 header = highlevel.read_edf_header(fileName)
+print("Done")
 
+print("Getting Labels...")
 labels = list(filter(electrodeHeader, header['channels']))
+print("Done")
 
+print("Getting Signals...")
 signals, signal_headers, header = highlevel.read_edf(fileName, ch_names = labels)
+print("Done")
 
 #with open('header.json', 'w') as fp:
 #    json.dump(header, fp)
 
+print("Generating JSON...")
 with open('signal_header.json', 'w') as fp:
     json.dump(signal_headers, fp)
+print("Done")
 
+step = 10
+
+print("Generating Signal Files...")
 for i, sig in enumerate(signals):
     filename = f'signal_{labels[i]}.signal'
     with open(filename, mode='wb') as f:
-        newFileByteArray = bytes(sig)
+        newFileByteArray = bytes(sig[::step])
         f.write(newFileByteArray)
+print("Done")
 
 # for i, sig in enumerate(signals):
 #     with open('signal_'+labels[i]+'.txt', 'w') as f:

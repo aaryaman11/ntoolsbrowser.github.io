@@ -563,10 +563,8 @@ const loadElectrodes = (
             const view = [];
             const dataView = new DataView(data);
             const numBytes = 8;
-            const signalGap = 10;
-            const step = numBytes * signalGap;
 
-            for (let j = 0; j < data.byteLength; j += step) {
+            for (let j = 0; j < data.byteLength; j += numBytes) {
               // true means "little endian"
               view.push(dataView.getFloat64(j, true));
             }
