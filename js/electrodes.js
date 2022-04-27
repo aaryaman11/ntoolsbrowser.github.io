@@ -554,7 +554,7 @@ const loadElectrodes = (
     if (mode === "demo" && subject === "fsMNI") {
       signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
       const sampleSize = signalHeader.length;
-      const numBytes = 8;
+      const numBytes = 4;
       const signalPath = `./data/${subject}/edf/signals/${subject}.signal`;
 
       loadingText.innerText = `Loading Electrode Signals...`
@@ -575,7 +575,7 @@ const loadElectrodes = (
               i < sizePerSample * (currentChunkIndex + 1);
               i += numBytes
             ) {
-              view.push(dataView.getFloat64(i, true));
+              view.push(dataView.getFloat32(i, true));
             }
             signals.push(view);
             currentChunkIndex += 1;
