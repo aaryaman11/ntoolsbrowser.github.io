@@ -172,7 +172,7 @@ const loadVolume = (subject, mode) => {
   const filePath =
     mode === "demo" 
     ? `./data/${subject}/volume/${subject}_T1.nii` 
-    : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_preoperation_T1.nii&bids=ana`;
+    : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_preoperation_T1w.nii&bids=ana`;
 
   const labelmapPath =
     mode === "demo"
