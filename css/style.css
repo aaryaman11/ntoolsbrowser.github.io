@@ -169,6 +169,15 @@ option:hover {
     border-top: 2px solid blue;
 }
 
+.container {
+    width: 100%;
+}
+
+#demo {
+    display: flex;
+    height: 100%;
+}
+
 #color-legend{
     /* border: 1px solid white; */
     /* margin-top: 10px; */
