@@ -31,7 +31,7 @@ print("Done")
 step = 10
 
 print("Generating Signal File...")
-filename = f'{subjectName}.signal'
+filename = f'{subjectName}.bin'
 with open(filename, mode='wb') as f:
     for signal in signals:
         newFileByteArray = bytes(signal[::step])

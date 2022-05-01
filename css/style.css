@@ -82,7 +82,7 @@ button:active {
 
 #electrode-controller {
     position: absolute;
-    height: 70%;
+    height: 100%;
     width: 15%;
     font-family: sans-serif;
     color: white;

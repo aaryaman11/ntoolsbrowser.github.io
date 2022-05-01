@@ -593,7 +593,7 @@ const loadElectrodes = (
       signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
       const sampleSize = signalHeader.length;
       const numBytes = 4;
-      const signalPath = `./data/${subject}/edf/signals/${subject}.signal`;
+      const signalPath = `./data/${subject}/edf/signals/${subject}.bin`;
 
       loadingText.innerText = `Loading Electrode Signals...`
 
@@ -723,6 +723,8 @@ const loadElectrodes = (
     renderer.onRender = () => {
       showElectrodeTags(showTags, electrodeSpheres, renderer, oldBoundingBox);
     };
+
+    // document.getElementById('
   })();
 };
 
