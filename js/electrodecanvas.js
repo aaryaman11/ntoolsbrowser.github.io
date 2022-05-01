@@ -164,8 +164,13 @@ export class ElectrodeCanvas {
       const nextElectrodes = this.sliceMap.get(this.currentSlice + 1);
 
       this.draw2DElectrodes(electrodesAtSlice);
+      
       if (previousElectrodes) this.draw2DElectrodes(previousElectrodes);
       if (nextElectrodes) this.draw2DElectrodes(nextElectrodes);
+      
+      if (this.currentSlice === this.relativeSlice) {
+        this.drawMark(this.relativeX, this.relativeY);
+      }
     }
   }
 
@@ -201,17 +206,13 @@ export class ElectrodeCanvas {
       this.ctx.fillStyle = getColor(e[this.currentType]);
       this.ctx.fill();
 
-      if (this.currentSlice === this.relativeSlice) {
-        this.drawMark(this.relativeX, this.relativeY);
-      }
     }
+
   }
 
   drawMark(x, y) {
-
-
     this.ctx.strokeStyle = "#98ff98";
-    this.ctx.lineWidth = 0.2;
+    this.ctx.lineWidth = 0.5;
 
     this.ctx.beginPath();
     this.ctx.moveTo(x, 0);

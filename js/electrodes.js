@@ -296,11 +296,11 @@ const jumpSlicesOnClick = (
 
           // highlight and show the needed captions on the menu
           GFX.highlightSelectedElectrode(selections, sphereIndex);
-          updateLabels(target, sphereIndex, data);
-
+          
           // sync with electrode menu options
           const electrodeIDMenuOptions = electrodeMenu.options;
           electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
+          updateLabels(target, sphereIndex, data);
 
           updateSliceLocation(datGUI.__controllers, volumeRendered, target, slices);
         }
