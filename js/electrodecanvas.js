@@ -145,7 +145,7 @@ export class ElectrodeCanvas {
       for (let col = 0; col < this.dims[1]; col++) {
         const offset = typedData.length - this.calculateOffset(row, col);
         const value = typedData[offset];
-
+        
         canvasImageData.data[(rowOffset + col) * 4] =
           (value & 0xff) * this.brightness;
         canvasImageData.data[(rowOffset + col) * 4 + 1] =
