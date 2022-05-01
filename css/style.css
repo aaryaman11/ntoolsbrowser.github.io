@@ -179,7 +179,7 @@ option:hover {
 .container {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: right;
     /* z-index: 0; */
 }
 
@@ -189,6 +189,7 @@ option:hover {
     justify-content: center;
     height: 30%;
     width: 100%;
+    border-top: 1px solid gray;
 }
 
 #color-legend{

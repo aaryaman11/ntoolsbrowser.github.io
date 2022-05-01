@@ -51,16 +51,16 @@ const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
   zSlider.object.indexZ = zSlice;
 
   xCanvas.setSliceIndex(xSlice);
+  xCanvas.setRelativeCoordinates(numSlices - ySlice, numSlices - zSlice);
   xCanvas.drawCanvas();
-  xCanvas.drawMark(numSlices - ySlice, numSlices - zSlice);
 
   yCanvas.setSliceIndex(ySlice);
+  yCanvas.setRelativeCoordinates(xSlice, numSlices - zSlice);
   yCanvas.drawCanvas();
-  yCanvas.drawMark(xSlice, numSlices - zSlice);
 
   zCanvas.setSliceIndex(zSlice);
+  zCanvas.setRelativeCoordinates(xSlice, numSlices - ySlice)
   zCanvas.drawCanvas();
-  zCanvas.drawMark(xSlice, numSlices - ySlice)
 
   volume.visible = !volume.visible;
 };

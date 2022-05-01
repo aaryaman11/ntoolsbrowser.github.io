@@ -6,7 +6,6 @@ export class ElectrodeCanvas {
   defaultType;
   currentType;
 
-
   // for .nii parsing and access
   niftiBuffer;
   niftiHeader;
@@ -16,14 +15,12 @@ export class ElectrodeCanvas {
   // axial/sagittal/coronal
   orientation;
   container;
+  brightness;
 
-  // subject name
   subject;
 
   // canvas where rendering will happen
   canvas;
-
-  // 2D context for this canvas
   ctx;
 
   // maps slice# -> [electrodes at slice]
@@ -32,13 +29,18 @@ export class ElectrodeCanvas {
   // middle slice by default
   currentSlice;
 
-  constructor(subject, orientation, container, transforms) {
+  relativeX;
+  relativeY;
+  relativeSlice;
+
+  constructor(subject, orientation, container) {
     this.subject = subject;
     this.orientation = orientation || "axial";
     this.container = container || "sliceX";
     this.canvas = document.getElementById(`${this.container}`);
     this.ctx = this.canvas.getContext("2d");
     this.sliceMap = new Map();
+    this.brightness = 1;
 
     this.initData();
   }
@@ -69,7 +71,7 @@ export class ElectrodeCanvas {
     })();
   }
 
-  parseNifti(name, data, electrodes) {
+  parseNifti(name, data) {
     if (nifti.isCompressed(data)) data = nifti.decompress(data);
     if (nifti.isNIFTI(data)) {
       this.niftiHeader = nifti.readHeader(data);
@@ -81,7 +83,8 @@ export class ElectrodeCanvas {
 
   initSliceMap() {
     const oldInterval = [
-      -(Math.ceil(this.dims[1] / 2)), Math.floor(this.dims[1] / 2) - 1
+      -Math.ceil(this.dims[1] / 2),
+      Math.floor(this.dims[1] / 2) - 1,
     ];
     const newInterval = [0, this.dims[1] - 1];
     for (const e of this.electrodeData) {
@@ -142,12 +145,13 @@ export class ElectrodeCanvas {
       for (let col = 0; col < this.dims[1]; col++) {
         const offset = typedData.length - this.calculateOffset(row, col);
         const value = typedData[offset];
-        
-        const brightness = 1;
 
-        canvasImageData.data[(rowOffset + col) * 4] = (value & 0xff) * brightness;
-        canvasImageData.data[(rowOffset + col) * 4 + 1] = (value & 0xff) * brightness;
-        canvasImageData.data[(rowOffset + col) * 4 + 2] = (value & 0xff) * brightness;
+        canvasImageData.data[(rowOffset + col) * 4] =
+          (value & 0xff) * this.brightness;
+        canvasImageData.data[(rowOffset + col) * 4 + 1] =
+          (value & 0xff) * this.brightness;
+        canvasImageData.data[(rowOffset + col) * 4 + 2] =
+          (value & 0xff) * this.brightness;
         canvasImageData.data[(rowOffset + col) * 4 + 3] = 0xff;
       }
     }
@@ -197,26 +201,33 @@ export class ElectrodeCanvas {
       this.ctx.fillStyle = getColor(e[this.currentType]);
       this.ctx.fill();
 
-
+      if (this.currentSlice === this.relativeSlice) {
+        this.drawMark(this.relativeX, this.relativeY);
+      }
     }
   }
 
   drawMark(x, y) {
+
+
     this.ctx.strokeStyle = "#98ff98";
-    this.ctx.lineWidth = 0.5;
+    this.ctx.lineWidth = 0.2;
 
     this.ctx.beginPath();
-    this.ctx.moveTo(x, 0)
+    this.ctx.moveTo(x, 0);
     this.ctx.lineTo(x, this.canvas.width);
     this.ctx.stroke();
 
     this.ctx.beginPath();
-    this.ctx.moveTo(0, y)
+    this.ctx.moveTo(0, y);
     this.ctx.lineTo(this.canvas.height, y);
     this.ctx.stroke();
-
   }
 
+  setRelativeCoordinates(x, y) {
+    this.relativeX = x;
+    this.relativeY = y;
+  }
 
   initEvents() {
     this.canvas.onwheel = (e) => {
@@ -241,6 +252,7 @@ export class ElectrodeCanvas {
   }
 
   setSliceIndex(index) {
+    this.relativeSlice = index;
     this.currentSlice = index;
   }
 
@@ -249,7 +261,7 @@ export class ElectrodeCanvas {
   }
 
   setData(newData) {
-    this.electrodeData = newData
+    this.electrodeData = newData;
   }
 }
 
@@ -258,16 +270,16 @@ const getColor = (type) => {
     return "#ffffff";
   }
   const formattedType = type
-  .toString()
-  .toLowerCase()
-  .replace(/\s+/g, " ")
-  .trim();
-  
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+
   // console.log(formattedType)
   const colors = {
     // seizure type X
     "": "#ffffff",
-    "onset": "#ff0000",
+    onset: "#ff0000",
     "very early spread": "#ffa600",
     "early spread": "#ffff00",
     "late spread": "#00ff30",
@@ -275,7 +287,7 @@ const getColor = (type) => {
     "early onset": "#00ffff",
 
     // int pop
-    0: "#ffffff", 
+    0: "#ffffff",
     1: "#00ff30", // electric green
     2: "#0000ff", // blue
     3: "#ff00ff", // magenta
@@ -284,7 +296,6 @@ const getColor = (type) => {
     6: "#662b91", // eminence
     7: "#c2c2c2", // silver sand
     8: "#758ca6", // shadow blue
-
   };
 
   return colors[formattedType];
@@ -298,7 +309,6 @@ const mapInterval = (input, inputRange, outputRange) => {
     ((outputEnd - outputStart) / (inputEnd - inputStart)) * (input - inputStart)
   );
 };
-
 
 /*
         The following code for panning and zooming takes inspiration from
@@ -323,7 +333,7 @@ window.onload = function () {
         event.preventDefault();
 
         instance.zoom({
-          deltaScale: Math.sign(event.deltaY) > 0 ? -5 : 5,
+          deltaScale: Math.sign(event.deltaY) > 0 ? -10 : 10,
           x: event.pageX,
           y: event.pageY,
         });
