@@ -1,3 +1,4 @@
+// from https://github.com/rii-mango/NIFTI-Reader-JS
 (function (f) {
   if (typeof exports === "object" && typeof module !== "undefined") {
     module.exports = f();

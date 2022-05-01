@@ -1,3 +1,5 @@
+// inspired by https://github.com/rii-mango/NIFTI-Reader-JS/blob/master/tests/canvas.html
+
 import { renderer } from "./sliceRenderer.js";
 export class ElectrodeCanvas {
   electrodeData;
@@ -33,7 +35,6 @@ export class ElectrodeCanvas {
     this.subject = subject;
     this.orientation = orientation || "axial";
     this.container = container || "sliceX";
-    this.transforms = transforms || null;
     this.canvas = document.getElementById(`${this.container}`);
     this.ctx = this.canvas.getContext("2d");
     this.sliceMap = new Map();
@@ -49,7 +50,6 @@ export class ElectrodeCanvas {
         .then((response) => response.json())
         .then((data) => {
           // side effect?
-          // this.defaultType = data.SeizDisplay[0];
           this.currentType = data.SeizDisplay[0];
           return data.electrodes;
         });
@@ -278,12 +278,12 @@ const mapInterval = (input, inputRange, outputRange) => {
 /*
         The following code for panning and zooming takes inspiration from
         https://betterprogramming.pub/implementation-of-zoom-and-pan-in-69-lines-of-javascript-8b0cb5f221c1
+        //https://github.com/kwdowik/zoom-pan
       */
 
 window.onload = function () {
   (() => {
-    // const containers = document.querySelectorAll('.container');
-    const container = document.querySelectorAll(".container").forEach((c) => {
+    document.querySelectorAll(".container").forEach((c) => {
       const instance = renderer({
         minScale: 0.1,
         maxScale: 30,
@@ -311,11 +311,6 @@ window.onload = function () {
           scale: 1,
         });
       });
-
-      c.addEventListener("mousedown", () => {
-        console.log("Is down");
-        // c.style.zIndex = 0;
-      })
 
       c.addEventListener("mousemove", (event) => {
         if (!event.buttons) {

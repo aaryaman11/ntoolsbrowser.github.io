@@ -1,3 +1,5 @@
+//https://betterprogramming.pub/implementation-of-zoom-and-pan-in-69-lines-of-javascript-8b0cb5f221c1
+//https://github.com/kwdowik/zoom-pan
 const hasPositionChanged = ({ pos, prevPos }) => pos !== prevPos;
 
 const valueInRange = ({ minScale, maxScale, scale }) =>

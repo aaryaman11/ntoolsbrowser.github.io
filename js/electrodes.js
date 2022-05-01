@@ -543,12 +543,11 @@ const loadElectrodes = (
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
         : await (await fetch(`${protocol}//${baseURL}/${directory}`)).json();
 
-    const sliceX = new ElectrodeCanvas(`${subject}`, "sagittal", "sliceX", null);
-    const sliceY = new ElectrodeCanvas(`${subject}`, "coronal", "sliceY", null);
-    const sliceZ = new ElectrodeCanvas(`${subject}`, "axial", "sliceZ", null);
+    const sliceX = new ElectrodeCanvas(`${subject}`, "sagittal", "sliceX" );
+    const sliceY = new ElectrodeCanvas(`${subject}`, "coronal", "sliceY");
+    const sliceZ = new ElectrodeCanvas(`${subject}`, "axial", "sliceZ");
 
     const slices = [sliceX, sliceY, sliceZ]
-    // console.log(slices);
 
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day

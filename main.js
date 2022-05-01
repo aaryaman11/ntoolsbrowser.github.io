@@ -8,48 +8,26 @@ import { loadElectrodes } from "./js/electrodes.js";
     ? main()
     : window.addEventListener("load", main);
 })(() => {
-  const protocol = window.location.protocol;
-  const baseURL = `ievappwpdcpvm01.nyumc.org`;
   const [mode, subject] = parse();
   const volume = loadVolume(subject, mode);
   const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject, mode);
-  // const [threeDRenderer, sliceX, sliceY, sliceZ] = initRenderers();
   const threeDRenderer = initRenderers();
   const loadingText = document.getElementById("loading-text");
 
   threeDRenderer.add(leftHemisphereMesh);
   threeDRenderer.add(rightHemisphereMesh);
 
-  // sliceX.add(volume);
-  // sliceX.render();
-
-  const toggleSliceOnScroll = () => {
-    volume.visible = !volume.visible;
-    volume.visible = !volume.visible;
-  };
+  // const toggleSliceOnScroll = () => {
+  //   volume.visible = !volume.visible;
+  //   volume.visible = !volume.visible;
+  // };
 
   loadingText.innerText = "Rendering Volume...";
-  // sliceX.onShowtime = () => {
-  //   // this is triggered manually by sliceX.render() just 2 lines above
-  //   // execution happens after volume is loaded
-  //   sliceY.add(volume);
-  //   sliceY.render();
-  //   sliceZ.add(volume);
-  //   sliceZ.render();
-
-  //   sliceX.onScroll = () => toggleSliceOnScroll();
-  //   sliceY.onScroll = () => toggleSliceOnScroll();
-  //   sliceZ.onScroll = () => toggleSliceOnScroll();
-
-  //   threeDRenderer.add(volume);
-  //   volume.visible = false;
-  // };
   threeDRenderer.add(volume);
   threeDRenderer.render(); // this one triggers the loading of LH and then the onShowtime for the 3d renderer
   // volume.visible = false;
   // the onShowtime function gets called automatically, just before the first rendering happens
   threeDRenderer.onShowtime = () => {
-    loadingText.innerText = "";
     // add the GUI once data is done loading
     const gui = new dat.GUI();
     gui.domElement.id = "gui";
@@ -143,26 +121,12 @@ import { loadElectrodes } from "./js/electrodes.js";
       if (selectedSeizType === "intPopulation") {
         intPopList.style.visibility = "visible";
         seizTypeList.style.visibility = "hidden";
-
-        // volume.labelmap.file =
-        //   mode === "demo"
-        //     ? `./data/${subject}/volume/${subject}_intPopulation_labels.nii`
-        //     : `${protocol}//${baseURL}/?file=sub-${subject}_intPopulation_labels.nii&bids=ieeg`
-
-        // volume.labelmap.colortable.file = "./data/colormaps/colormap_intpop.txt";
       } else {
         seizTypeList.style.visibility = "visible";
         intPopList.style.visibility = "hidden";
-        // volume.labelmap.file =
-        //   mode === "demo"
-        //     ? `./data/${subject}/volume/${subject}_${selectedSeizType}_labels.nii`
-        //     : `${protocol}//${baseURL}/?file=sub-${subject}_${selectedSeizType}_labels.nii&bids=ieeg`
-
-        // volume.labelmap.colortable.file = "./data/colormaps/colormap_seiztype.txt";
       }
-
-      // volume.modified();
     });
+    loadingText.innerText = "";
   };
 });
 
@@ -174,22 +138,12 @@ const loadVolume = (subject, mode) => {
   const volume = new X.volume();
 
   const filePath =
-    mode === "demo" 
-    ? `./data/${subject}/volume/${subject}_T1.nii` 
-    : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_preoperation_T1w.nii&bids=ana`;
-
-  // const labelmapPath =
-  //   mode === "demo"
-  //     ? `./data/${subject}/volume/${subject}_default_labels.nii`
-  //     : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_default_labels.nii&bids=ieeg`;
-
-  // const colormapPath = `./data/colormaps/colormap_seiztype.txt`;
+    mode === "demo"
+      ? `./data/${subject}/volume/${subject}_T1.nii`
+      : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_preoperation_T1w.nii&bids=ana`;
 
   if (checkUrls(filePath)) {
     volume.file = filePath;
-    // volume.labelmap.file = labelmapPath;
-    // volume.labelmap.colortable.file = colormapPath;
-    // volume.modified();
     return volume;
   }
   return null;
@@ -204,19 +158,19 @@ const loadSurfaces = (subject, mode) => {
   const rightHemisphere = new X.mesh();
 
   const leftHemispherePath =
-    mode === "demo" ? 
-    `./data/${subject}/meshes/${subject}_lh.pial` 
-    : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_freesurferleft.pial&bids=ana`;
+    mode === "demo"
+      ? `./data/${subject}/meshes/${subject}_lh.pial`
+      : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_freesurferleft.pial&bids=ana`;
 
   const rightHemispherePath =
-    mode === "demo" ? 
-    `./data/${subject}/meshes/${subject}_rh.pial` 
-    : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_freesurferright.pial&bids=ana`;
+    mode === "demo"
+      ? `./data/${subject}/meshes/${subject}_rh.pial`
+      : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_freesurferright.pial&bids=ana`;
 
   if (checkUrls(leftHemispherePath, rightHemispherePath)) {
     leftHemisphere.file = leftHemispherePath;
     rightHemisphere.file = rightHemispherePath;
-    
+
     leftHemisphere.color = [1, 1, 1];
     rightHemisphere.color = [1, 1, 1];
 
@@ -241,25 +195,6 @@ const initRenderers = () => {
   threeDRenderer.container = "3d";
   threeDRenderer.init();
 
-  // const sliceX = new X.renderer2D();
-  // sliceX.pickable = false;
-  // sliceX.container = "sliceX";
-  // sliceX.orientation = "X";
-  // sliceX.init();
-
-  // const sliceY = new X.renderer2D();
-  // sliceY.pickable = false;
-  // sliceY.container = "sliceY";
-  // sliceY.orientation = "Y";
-  // sliceY.init();
-
-  // const sliceZ = new X.renderer2D();
-  // sliceZ.pickable = false;
-  // sliceZ.container = "sliceZ";
-  // sliceZ.orientation = "Z";
-  // sliceZ.init();
-
-  // return [threeDRenderer, sliceX, sliceY, sliceZ];
   return threeDRenderer;
 };
 
