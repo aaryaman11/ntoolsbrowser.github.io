@@ -11,13 +11,14 @@
     <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
     <script type="text/javascript" src="https://get.goxtk.com/xtk_edge.js"></script>
     <script type="text/javascript" src="https://get.goXTK.com/xtk_xdat.gui.js"></script>
+    <script type="module" src="./js/nifti-reader.js"></script>
     <script type="module" src='main.js'></script>
 
 
   </head>
   <body>
-    <div id="electrode-controller" class="ui container raised very padded segment">
-      <div id="patient-info" class="container">
+    <div id="electrode-controller" class="uiraised very padded segment">
+      <div id="patient-info" class="">
         <div>
           <label>Subject ID:</label>
           <label id="subject-id-lbl"></label>
@@ -132,16 +133,27 @@
     </div>
     <!-- the container for the renderers -->
     <div id="renderer-container">
-      <div id="3d" style="height: 70%;" class="container raised">
+      <div id="3d" style="height: 70%;" class="">
       </div>
-      <div id="sliceX" class="slice-container"></div>
+      <div id="electrode-slice-container">
+        <div class="container" style="border-top: 2px solid red;">
+          <canvas id="sliceX"> </canvas>
+        </div>
+        <div class="container" style="border-top: 2px solid green;">
+          <canvas id="sliceY"> </canvas>
+        </div>
+        <div class="container" style="border-top: 2px solid blue;">
+          <canvas id="sliceZ"> </canvas>
+        </div>
+      </div>
+      <!-- <div id="sliceX" class="slice-container"></div>
       <div id="sliceY" class="slice-container"></div>
-      <div id="sliceZ" class="slice-container"></div>
+      <div id="sliceZ" class="slice-container"></div> -->
       <div id="loading-text"></div>
     </div>
     
     <!-- container for the edit menu -->
-    <div id="edit-menu" class="container" style="display: none">
+    <div id="edit-menu" class="" style="display: none">
     </div>
   </body>
 </html>

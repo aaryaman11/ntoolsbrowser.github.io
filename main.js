@@ -1,4 +1,5 @@
 import { loadElectrodes } from "./js/electrodes.js";
+// import { ElectrodeCanvas } from "./js/electrodecanvas.js"
 
 ("use strict");
 
@@ -12,14 +13,15 @@ import { loadElectrodes } from "./js/electrodes.js";
   const [mode, subject] = parse();
   const volume = loadVolume(subject, mode);
   const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject, mode);
-  const [threeDRenderer, sliceX, sliceY, sliceZ] = initRenderers();
+  // const [threeDRenderer, sliceX, sliceY, sliceZ] = initRenderers();
+  const threeDRenderer = initRenderers();
   const loadingText = document.getElementById("loading-text");
 
   threeDRenderer.add(leftHemisphereMesh);
   threeDRenderer.add(rightHemisphereMesh);
 
-  sliceX.add(volume);
-  sliceX.render();
+  // sliceX.add(volume);
+  // sliceX.render();
 
   const toggleSliceOnScroll = () => {
     volume.visible = !volume.visible;
@@ -27,23 +29,24 @@ import { loadElectrodes } from "./js/electrodes.js";
   };
 
   loadingText.innerText = "Rendering Volume...";
-  sliceX.onShowtime = () => {
-    // this is triggered manually by sliceX.render() just 2 lines above
-    // execution happens after volume is loaded
-    sliceY.add(volume);
-    sliceY.render();
-    sliceZ.add(volume);
-    sliceZ.render();
+  // sliceX.onShowtime = () => {
+  //   // this is triggered manually by sliceX.render() just 2 lines above
+  //   // execution happens after volume is loaded
+  //   sliceY.add(volume);
+  //   sliceY.render();
+  //   sliceZ.add(volume);
+  //   sliceZ.render();
 
-    sliceX.onScroll = () => toggleSliceOnScroll();
-    sliceY.onScroll = () => toggleSliceOnScroll();
-    sliceZ.onScroll = () => toggleSliceOnScroll();
+  //   sliceX.onScroll = () => toggleSliceOnScroll();
+  //   sliceY.onScroll = () => toggleSliceOnScroll();
+  //   sliceZ.onScroll = () => toggleSliceOnScroll();
 
-    threeDRenderer.add(volume);
-    volume.visible = false;
-    threeDRenderer.render(); // this one triggers the loading of LH and then the onShowtime for the 3d renderer
-  };
-
+  //   threeDRenderer.add(volume);
+  //   volume.visible = false;
+  // };
+  threeDRenderer.add(volume);
+  threeDRenderer.render(); // this one triggers the loading of LH and then the onShowtime for the 3d renderer
+  // volume.visible = false;
   // the onShowtime function gets called automatically, just before the first rendering happens
   threeDRenderer.onShowtime = () => {
     loadingText.innerText = "";
@@ -52,6 +55,7 @@ import { loadElectrodes } from "./js/electrodes.js";
     gui.domElement.id = "gui";
     document.getElementById("gui").style.zIndex = 2;
 
+    volume.visible = false;
     const volumeGUI = gui.addFolder("Volume");
     volumeGUI.add(volume, "opacity", 0, 1);
     volumeGUI.add(volume, "lowerThreshold", volume.min, volume.max);
@@ -95,7 +99,7 @@ import { loadElectrodes } from "./js/electrodes.js";
     ySlider.__onChange = () => toggleSliceOnScroll();
     zSlider.__onChange = () => toggleSliceOnScroll();
 
-    volumeGUI.open();
+    // volumeGUI.open();
     // leftHemisphereGUI.open();
     // rightHemisphereGUI.open();
     // slicesGUI.open();
@@ -121,15 +125,15 @@ import { loadElectrodes } from "./js/electrodes.js";
     const seizTypeList = document.getElementById("seiztype-list");
     const intPopList = document.getElementById("int-pop-list");
 
-    const coronalSlice = document.getElementsByTagName("canvas")[1];
-    coronalSlice.onclick = () => (threeDRenderer.camera.position = [0, 200, 0]);
+    // const coronalSlice = document.getElementsByTagName("canvas")[1];
+    // coronalSlice.onclick = () => (threeDRenderer.camera.position = [0, 200, 0]);
 
-    const sagittalSlice = document.getElementsByTagName("canvas")[2];
-    sagittalSlice.onclick = () =>
-      (threeDRenderer.camera.position = [-200, 0, 0]);
+    // const sagittalSlice = document.getElementsByTagName("canvas")[2];
+    // sagittalSlice.onclick = () =>
+    //   (threeDRenderer.camera.position = [-200, 0, 0]);
 
-    const axialSlice = document.getElementsByTagName("canvas")[3];
-    axialSlice.onclick = () => (threeDRenderer.camera.position = [0, 0, 200]);
+    // const axialSlice = document.getElementsByTagName("canvas")[3];
+    // axialSlice.onclick = () => (threeDRenderer.camera.position = [0, 0, 200]);
 
     displayMenu.addEventListener("change", (event) => {
       event.preventDefault();
@@ -140,24 +144,24 @@ import { loadElectrodes } from "./js/electrodes.js";
         intPopList.style.visibility = "visible";
         seizTypeList.style.visibility = "hidden";
 
-        volume.labelmap.file =
-          mode === "demo"
-            ? `./data/${subject}/volume/${subject}_intPopulation_labels.nii`
-            : `${protocol}//${baseURL}/?file=sub-${subject}_intPopulation_labels.nii&bids=ieeg`
+        // volume.labelmap.file =
+        //   mode === "demo"
+        //     ? `./data/${subject}/volume/${subject}_intPopulation_labels.nii`
+        //     : `${protocol}//${baseURL}/?file=sub-${subject}_intPopulation_labels.nii&bids=ieeg`
 
-        volume.labelmap.colortable.file = "./data/colormaps/colormap_intpop.txt";
+        // volume.labelmap.colortable.file = "./data/colormaps/colormap_intpop.txt";
       } else {
         seizTypeList.style.visibility = "visible";
         intPopList.style.visibility = "hidden";
-        volume.labelmap.file =
-          mode === "demo"
-            ? `./data/${subject}/volume/${subject}_${selectedSeizType}_labels.nii`
-            : `${protocol}//${baseURL}/?file=sub-${subject}_${selectedSeizType}_labels.nii&bids=ieeg`
+        // volume.labelmap.file =
+        //   mode === "demo"
+        //     ? `./data/${subject}/volume/${subject}_${selectedSeizType}_labels.nii`
+        //     : `${protocol}//${baseURL}/?file=sub-${subject}_${selectedSeizType}_labels.nii&bids=ieeg`
 
-        volume.labelmap.colortable.file = "./data/colormaps/colormap_seiztype.txt";
+        // volume.labelmap.colortable.file = "./data/colormaps/colormap_seiztype.txt";
       }
 
-      volume.modified();
+      // volume.modified();
     });
   };
 });
@@ -174,18 +178,18 @@ const loadVolume = (subject, mode) => {
     ? `./data/${subject}/volume/${subject}_T1.nii` 
     : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_preoperation_T1w.nii&bids=ana`;
 
-  const labelmapPath =
-    mode === "demo"
-      ? `./data/${subject}/volume/${subject}_default_labels.nii`
-      : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_default_labels.nii&bids=ieeg`;
+  // const labelmapPath =
+  //   mode === "demo"
+  //     ? `./data/${subject}/volume/${subject}_default_labels.nii`
+  //     : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_default_labels.nii&bids=ieeg`;
 
-  const colormapPath = `./data/colormaps/colormap_seiztype.txt`;
+  // const colormapPath = `./data/colormaps/colormap_seiztype.txt`;
 
-  if (checkUrls(filePath, labelmapPath, colormapPath)) {
+  if (checkUrls(filePath)) {
     volume.file = filePath;
-    volume.labelmap.file = labelmapPath;
-    volume.labelmap.colortable.file = colormapPath;
-    volume.modified();
+    // volume.labelmap.file = labelmapPath;
+    // volume.labelmap.colortable.file = colormapPath;
+    // volume.modified();
     return volume;
   }
   return null;
@@ -237,25 +241,26 @@ const initRenderers = () => {
   threeDRenderer.container = "3d";
   threeDRenderer.init();
 
-  const sliceX = new X.renderer2D();
-  sliceX.pickable = false;
-  sliceX.container = "sliceX";
-  sliceX.orientation = "X";
-  sliceX.init();
+  // const sliceX = new X.renderer2D();
+  // sliceX.pickable = false;
+  // sliceX.container = "sliceX";
+  // sliceX.orientation = "X";
+  // sliceX.init();
 
-  const sliceY = new X.renderer2D();
-  sliceY.pickable = false;
-  sliceY.container = "sliceY";
-  sliceY.orientation = "Y";
-  sliceY.init();
+  // const sliceY = new X.renderer2D();
+  // sliceY.pickable = false;
+  // sliceY.container = "sliceY";
+  // sliceY.orientation = "Y";
+  // sliceY.init();
 
-  const sliceZ = new X.renderer2D();
-  sliceZ.pickable = false;
-  sliceZ.container = "sliceZ";
-  sliceZ.orientation = "Z";
-  sliceZ.init();
+  // const sliceZ = new X.renderer2D();
+  // sliceZ.pickable = false;
+  // sliceZ.container = "sliceZ";
+  // sliceZ.orientation = "Z";
+  // sliceZ.init();
 
-  return [threeDRenderer, sliceX, sliceY, sliceZ];
+  // return [threeDRenderer, sliceX, sliceY, sliceZ];
+  return threeDRenderer;
 };
 
 // matches mode/subject by regex match and removes '=' character

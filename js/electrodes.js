@@ -6,6 +6,7 @@ import { mapInterval } from "./mapInterval.js";
 import { getSeizTypeColor } from "./color.js";
 import { DOMNodes } from "./DOMtree.js";
 import { GFX } from "./gfx.js";
+import { ElectrodeCanvas } from "./electrodecanvas.js"
 
 // be mindful that NONE occupies index 0
 const getCurrentSelectedIndex = () => {
@@ -13,7 +14,7 @@ const getCurrentSelectedIndex = () => {
   return electrodeMenu.selectedIndex;
 };
 
-const updateSliceLocation = (sliderControllers, volume, electrode) => {
+const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
   const numSlices = volume.dimensions[0];
   const startRange = [-numSlices / 2, numSlices / 2];
   const endRange = [0, numSlices - 1];
@@ -22,6 +23,9 @@ const updateSliceLocation = (sliderControllers, volume, electrode) => {
   const [xSlice, ySlice, zSlice] = [x, y, z].map((coordinate) =>
     Math.round(mapInterval(coordinate, startRange, endRange))
   );
+
+  const [xCanvas, yCanvas, zCanvas] = slices;
+  
 
   const xSlider = sliderControllers.find(
     (controller) => controller.property === "indexX"
@@ -35,9 +39,20 @@ const updateSliceLocation = (sliderControllers, volume, electrode) => {
 
   // move to the index property that matches with the slice number of the electrode
   volume.visible = !volume.visible;
+
   xSlider.object.indexX = xSlice;
   ySlider.object.indexY = ySlice;
   zSlider.object.indexZ = zSlice;
+
+  xCanvas.setSliceIndex(xSlice);
+  xCanvas.drawCanvas();
+
+  yCanvas.setSliceIndex(ySlice);
+  yCanvas.drawCanvas();
+
+  zCanvas.setSliceIndex(zSlice);
+  zCanvas.drawCanvas();
+
   volume.visible = !volume.visible;
 };
 
@@ -56,7 +71,8 @@ const initializeElectrodeIDMenu = (
   data,
   selectionSpheres,
   volumeGUI,
-  volume
+  volume,
+  slices
 ) => {
   const { electrodeMenu } = DOMNodes;
 
@@ -67,7 +83,7 @@ const initializeElectrodeIDMenu = (
 
     printElectrodeInfo(res, index, selectionSpheres, data);
     if (id !== "None" && res)
-      updateSliceLocation(volumeGUI.__controllers, volume, res);
+      updateSliceLocation(volumeGUI.__controllers, volume, res, slices);
   });
   // append HTML option to drop down menu
   for (const entry of data.electrodes) {
@@ -84,7 +100,7 @@ const initializeElectrodeIDMenu = (
  * @param {array} spheres
  * @param {array} fmaps
  */
-const initSeizureTypeMenu = (data, spheres, fmaps) => {
+const initSeizureTypeMenu = (data, spheres, fmaps, slices) => {
   const seizureTypes = data.SeizDisplay;
   const { seizTypeMenu } = DOMNodes;
 
@@ -103,6 +119,9 @@ const initSeizureTypeMenu = (data, spheres, fmaps) => {
     spheres.forEach((sphere, index) => {
       sphere.color = getSeizTypeColor(selectedSeizType[index]);
     });
+    
+    slices.forEach(s => s.setSeizType(selectedType))
+    slices.forEach(s => s.drawCanvas());
     const index = getCurrentSelectedIndex() - 1
     updateLabels(data.electrodes[index], index, data);
   });
@@ -188,6 +207,10 @@ const addMouseHover = (renderer) => {
  */
 
 const updateLabels = (electrode, index, data) => {
+  const { electrodeMenu } = DOMNodes;
+  if (electrodeMenu.selectedIndex === 0) {
+    return;
+  }
   const { elecID, elecType, intPopulation, coordinates } = electrode;
   const { x, y, z } = coordinates;
 
@@ -248,7 +271,8 @@ const jumpSlicesOnClick = (
   selections,
   fmapConnections,
   fmapHighlights,
-  volumeRendered
+  volumeRendered,
+  slices
 ) => {
   // get the main canvas
   const { canvases, electrodeMenu, fmapCaption } = DOMNodes;
@@ -274,7 +298,7 @@ const jumpSlicesOnClick = (
           const electrodeIDMenuOptions = electrodeMenu.options;
           electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
 
-          updateSliceLocation(datGUI.__controllers, volumeRendered, target);
+          updateSliceLocation(datGUI.__controllers, volumeRendered, target, slices);
         }
       } else if (selectedObject.g === "cylinder") {
         const cylinderIndex = fmapConnections.indexOf(selectedObject);
@@ -287,7 +311,7 @@ const jumpSlicesOnClick = (
   }); // end of event listener
 };
 
-const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
+const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
   const { canvases, electrodeMenu } = DOMNodes;
   canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
@@ -317,6 +341,9 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres) => {
         spheres.forEach((sphere, index) => {
           sphere.color = getSeizTypeColor(data.electrodes[index][type]);
         });
+        slices.forEach(s => s.setData(data.electrodes));
+        slices.forEach(s => s.initSliceMap())
+        slices.forEach(s => s.drawCanvas())
         hideMenu();
       });
 
@@ -516,6 +543,13 @@ const loadElectrodes = (
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
         : await (await fetch(`${protocol}//${baseURL}/${directory}`)).json();
 
+    const sliceX = new ElectrodeCanvas(`${subject}`, "sagittal", "sliceX", null);
+    const sliceY = new ElectrodeCanvas(`${subject}`, "coronal", "sliceY", null);
+    const sliceZ = new ElectrodeCanvas(`${subject}`, "axial", "sliceZ", null);
+
+    const slices = [sliceX, sliceY, sliceZ]
+    // console.log(slices);
+
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
@@ -641,10 +675,10 @@ const loadElectrodes = (
     };
 
     // //* adds the seizure types to the first drop down menu on the panel
-    initSeizureTypeMenu(data, electrodeSpheres, fmapConnections);
+    initSeizureTypeMenu(data, electrodeSpheres, fmapConnections, slices);
 
-    // //* adds the IDs to the elctrode ID menu and sets up event listeners
-    initializeElectrodeIDMenu(data, selectionSpheres, volumeGUI, volume);
+    // //* adds the IDs to the electrode ID menu and sets up event listeners
+    initializeElectrodeIDMenu(data, selectionSpheres, volumeGUI, volume, slices);
 
     // //* this needs to be refactored
     jumpSlicesOnClick(
@@ -655,7 +689,8 @@ const loadElectrodes = (
       selectionSpheres,
       fmapConnections,
       fmapHighlights,
-      volume
+      volume,
+      slices
     );
 
     // adds functionality for hovering over particular electrodes on the scene
@@ -671,7 +706,7 @@ const loadElectrodes = (
     });
 
     createElectrodeTags(electrodeSpheres);
-    setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres);
+    setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres, slices);
 
     // TODO: change the fmap connections if needed
     document

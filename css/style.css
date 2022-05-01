@@ -8,9 +8,10 @@
     min-width: 640px;
 }
 canvas {
-    min-width: 100%;
-    z-index: 0;
+    /* min-width: 100%; */
+    /* z-index: 0; */
     position: relative;
+    /* z-index: 1; */
 }
 
 ul {
@@ -18,6 +19,7 @@ ul {
 }
 #renderer-container {
     color: black;
+    z-index: 2;
 }
 /* https://stackoverflow.com/questions/25653639/how-do-i-change-the-location-of-the-dat-gui-dropdown */
 #gui { 
@@ -32,11 +34,11 @@ ul {
 }
 
 .ac {
-    z-index: 2;
+    z-index: 3;
 }
 
 .dg {
-    z-index: 2;
+    z-index: 3;
 
 
 }
@@ -144,10 +146,13 @@ option:hover {
 }
 
 .slice-container {
-    background-color: #000;
+    /* background-color: #000;
     width: calc(100% / 3);
     height: 30%;
-    float: left;
+    float: left; */
+    width: calc(100% / 3);
+    height: 30%;
+    z-index: 500;
 }
 
 #3d {
@@ -156,26 +161,34 @@ option:hover {
     width: 100%;
     height: 70%;
     margin-bottom: 2px;
+    z-index: 0;
 }
 #sliceX {
-    border-top: 2px solid red;
+    /* border-top: 2px solid red; */
+    /* z-index: 0; */
 }
 
 #sliceY {
-    border-top: 2px solid green;
+    /* border-top: 2px solid green; */
 }
 
 #sliceZ {
-    border-top: 2px solid blue;
+    /* border-top: 2px solid blue; */
 }
 
 .container {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    /* z-index: 0; */
 }
 
-#demo {
+
+#electrode-slice-container {
     display: flex;
-    height: 100%;
+    justify-content: center;
+    height: 30%;
+    width: 100%;
 }
 
 #color-legend{
@@ -202,7 +215,7 @@ option:hover {
 .elec-tag {
     user-select: none;
     position: relative;
-    /* z-index: 0; */
+    z-index: 1;
     font-weight: bold;
     color: red;
     /* border: 1px solid white; */
