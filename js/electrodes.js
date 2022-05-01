@@ -46,12 +46,15 @@ const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
 
   xCanvas.setSliceIndex(xSlice);
   xCanvas.drawCanvas();
+  xCanvas.drawMark(numSlices - ySlice, numSlices - zSlice);
 
   yCanvas.setSliceIndex(ySlice);
   yCanvas.drawCanvas();
+  yCanvas.drawMark(xSlice, numSlices - zSlice);
 
   zCanvas.setSliceIndex(zSlice);
   zCanvas.drawCanvas();
+  zCanvas.drawMark(xSlice, numSlices - ySlice)
 
   volume.visible = !volume.visible;
 };

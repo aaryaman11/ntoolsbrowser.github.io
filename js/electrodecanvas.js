@@ -6,6 +6,7 @@ export class ElectrodeCanvas {
   defaultType;
   currentType;
 
+
   // for .nii parsing and access
   niftiBuffer;
   niftiHeader;
@@ -178,6 +179,7 @@ export class ElectrodeCanvas {
       } else if (this.orientation === "sagittal") {
         mappedX = Math.round(mapInterval(y, oldInterval, newInterval));
         mappedY = Math.round(mapInterval(z, oldInterval, newInterval));
+
         this.ctx.arc(
           this.dims[1] - mappedX,
           this.dims[1] - mappedY,
@@ -190,8 +192,27 @@ export class ElectrodeCanvas {
       this.ctx.stroke();
       this.ctx.fillStyle = getColor(e[this.currentType]);
       this.ctx.fill();
+
+
     }
   }
+
+  drawMark(x, y) {
+    this.ctx.strokeStyle = "#98ff98";
+    this.ctx.lineWidth = 0.5;
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(x, 0)
+    this.ctx.lineTo(x, this.canvas.width);
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, y)
+    this.ctx.lineTo(this.canvas.height, y);
+    this.ctx.stroke();
+
+  }
+
 
   initEvents() {
     this.canvas.onwheel = (e) => {
