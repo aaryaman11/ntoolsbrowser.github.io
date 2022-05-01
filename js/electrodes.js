@@ -589,11 +589,18 @@ const loadElectrodes = (
     //setup electrode signal display
     let electrodeSignals = [];
     let signalHeader;
-    if (mode === "demo" && subject === "fsMNI") {
-      signalHeader = await (await fetch(`./data/${subject}/edf/signal_header.json`)).json();
+    if (subject !== "fsaverage") {
+
+      signalHeader = 
+        mode === "demo" 
+        ? await (await fetch(`./data/${subject}/edf/signal_header.json`)).json()
+        : await (await fetch(`${protocol}//${baseURL}/sub-${subject}_functionalmapping.json`)).json();
       const sampleSize = signalHeader.length;
       const numBytes = 4;
-      const signalPath = `./data/${subject}/edf/signals/${subject}.bin`;
+      const signalPath = 
+        mode === "demo"
+        ?  `./data/${subject}/edf/signals/${subject}.bin`
+        : `${protocol}//${baseURL}/sub-${subject}_functionalmapping.bin`;
 
       loadingText.innerText = `Loading Electrode Signals...`
 
