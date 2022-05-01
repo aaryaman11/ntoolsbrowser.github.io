@@ -119,11 +119,6 @@ const initSeizureTypeMenu = (data, spheres, fmaps, slices) => {
     event.stopPropagation();
     const selectedType = event.target.value;
 
-    if (selectedType === "funMapping") {
-      fmaps.forEach((fmap) => (fmap.visible = true));
-      return;
-    }
-
     const selectedSeizType = getAttributeArray(data.electrodes, selectedType);
     spheres.forEach((sphere, index) => {
       sphere.color = getSeizTypeColor(selectedSeizType[index]);
@@ -136,7 +131,7 @@ const initSeizureTypeMenu = (data, spheres, fmaps, slices) => {
   });
 
   // create the menu options for all of patients seizure types
-  seizureTypes.forEach((type) => {
+  seizureTypes.slice(0, seizureTypes.length - 1).forEach((type) => {
     const newOption = document.createElement("option");
     newOption.value = type;
     newOption.innerText = type;
