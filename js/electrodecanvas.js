@@ -164,7 +164,7 @@ export class ElectrodeCanvas {
       const nextElectrodes = this.sliceMap.get(this.currentSlice + 1);
 
       this.draw2DElectrodes(electrodesAtSlice);
-      
+
       if (previousElectrodes) this.draw2DElectrodes(previousElectrodes);
       if (nextElectrodes) this.draw2DElectrodes(nextElectrodes);
       
@@ -263,6 +263,10 @@ export class ElectrodeCanvas {
 
   setData(newData) {
     this.electrodeData = newData;
+  }
+
+  setBrightness(value) {
+    this.brightness = value;
   }
 }
 

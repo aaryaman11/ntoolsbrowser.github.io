@@ -724,7 +724,11 @@ const loadElectrodes = (
       showElectrodeTags(showTags, electrodeSpheres, renderer, oldBoundingBox);
     };
 
-    // document.getElementById('
+    document.getElementById('slice-brightness').oninput = (event) => {
+      slices.forEach(s => s.setBrightness(event.target.value));
+      slices.forEach(s => s.drawCanvas())
+      
+    }
   })();
 };
 
