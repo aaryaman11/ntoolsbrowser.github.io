@@ -16,7 +16,13 @@ const getCurrentSelectedIndex = () => {
 
 const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
   const numSlices = volume.dimensions[0];
-  const startRange = [-numSlices / 2, numSlices / 2];
+
+  // e.g. [-128, 127] for a volume w/ 256 dimensions
+  const startRange = [
+    -(Math.ceil(numSlices / 2)), Math.floor(numSlices / 2) - 1
+  ];
+  // console.log(-(Math.ceil(numSlices / 2)), Math.floor(numSlices / 2) - 1)
+  // const startRange = [-128, 127]
   const endRange = [0, numSlices - 1];
   const { x, y, z } = electrode.coordinates;
 

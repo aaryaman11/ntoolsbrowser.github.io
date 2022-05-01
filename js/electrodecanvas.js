@@ -80,7 +80,9 @@ export class ElectrodeCanvas {
   }
 
   initSliceMap() {
-    const oldInterval = [(this.dims[1] - 1) / -2, (this.dims[1] - 1) / 2];
+    const oldInterval = [
+      -(Math.ceil(this.dims[1] / 2)), Math.floor(this.dims[1] / 2) - 1
+    ];
     const newInterval = [0, this.dims[1] - 1];
     for (const e of this.electrodeData) {
       const sliceIndex =
@@ -140,10 +142,12 @@ export class ElectrodeCanvas {
       for (let col = 0; col < this.dims[1]; col++) {
         const offset = typedData.length - this.calculateOffset(row, col);
         const value = typedData[offset];
+        
+        const brightness = 1;
 
-        canvasImageData.data[(rowOffset + col) * 4] = value & 0xff;
-        canvasImageData.data[(rowOffset + col) * 4 + 1] = value & 0xff;
-        canvasImageData.data[(rowOffset + col) * 4 + 2] = value & 0xff;
+        canvasImageData.data[(rowOffset + col) * 4] = (value & 0xff) * brightness;
+        canvasImageData.data[(rowOffset + col) * 4 + 1] = (value & 0xff) * brightness;
+        canvasImageData.data[(rowOffset + col) * 4 + 2] = (value & 0xff) * brightness;
         canvasImageData.data[(rowOffset + col) * 4 + 3] = 0xff;
       }
     }
