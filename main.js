@@ -84,6 +84,7 @@ import { loadElectrodes } from "./js/electrodes.js";
  */
 const loadVolume = (subject, mode) => {
   const volume = new X.volume();
+  volume.pickable = false;
 
   const filePath =
     mode === "demo"

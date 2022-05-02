@@ -340,7 +340,7 @@ window.onload = function () {
         event.preventDefault();
 
         instance.zoom({
-          deltaScale: Math.sign(event.deltaY) > 0 ? -10 : 10,
+          deltaScale: Math.sign(event.deltaY) > 0 ? -15 : 15,
           x: event.pageX,
           y: event.pageY,
         });
