@@ -14,7 +14,7 @@ const getCurrentSelectedIndex = () => {
   return electrodeMenu.selectedIndex;
 };
 
-const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
+const updateSliceLocation = (volume, electrode, slices) => {
   const numSlices = volume.dimensions[0];
 
   // e.g. [-128, 127] for a volume w/ 256 dimensions
@@ -29,25 +29,6 @@ const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
   );
 
   const [xCanvas, yCanvas, zCanvas] = slices;
-  
-
-  const xSlider = sliderControllers.find(
-    (controller) => controller.property === "indexX"
-  );
-  const ySlider = sliderControllers.find(
-    (controller) => controller.property === "indexY"
-  );
-  const zSlider = sliderControllers.find(
-    (controller) => controller.property === "indexZ"
-  );
-
-  // move to the index property that matches with the slice number of the electrode
-  volume.visible = !volume.visible;
-
-  // update the 3D volume
-  xSlider.object.indexX = xSlice;
-  ySlider.object.indexY = ySlice;
-  zSlider.object.indexZ = zSlice;
 
   // update the slice canvases
   xCanvas.setSliceIndex(xSlice);
@@ -62,7 +43,6 @@ const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
   zCanvas.setRelativeCoordinates(xSlice, numSlices - ySlice)
   zCanvas.drawCanvas();
 
-  volume.visible = !volume.visible;
 };
 
 // function for adding options based on electrode IDs and jumping slices when one is
@@ -79,7 +59,6 @@ const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
 const initializeElectrodeIDMenu = (
   data,
   selectionSpheres,
-  volumeGUI,
   volume,
   slices
 ) => {
@@ -92,7 +71,7 @@ const initializeElectrodeIDMenu = (
 
     printElectrodeInfo(res, index, selectionSpheres, data);
     if (event.target.value !== "None" && res)
-      updateSliceLocation(volumeGUI.__controllers, volume, res, slices);
+      updateSliceLocation(volume, res, slices);
   });
   // append HTML option to drop down menu
   for (const entry of data.electrodes) {
@@ -275,7 +254,6 @@ const updateLabels = (electrode, index, data) => {
 const jumpSlicesOnClick = (
   data,
   renderer,
-  datGUI,
   spheres,
   selections,
   fmapConnections,
@@ -313,7 +291,7 @@ const jumpSlicesOnClick = (
         updateLabels(target, sphereIndex, data);
 
         // move slices to corresponding location
-        updateSliceLocation(datGUI.__controllers, volumeRendered, target, slices);
+        updateSliceLocation(volumeRendered, target, slices);
       }
       // same ideas as above, just with fmaps
     } else if (selectedObject.g === "cylinder") {
@@ -514,7 +492,7 @@ const showElectrodeTags = (showTags, spheres, renderer, bbox) => {
 };
 
 // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
-const downloadJSON = (data) => {
+const downloadJSON = (data, subject) => {
   const formatSpaces = 4;
   const exportJSON = [JSON.stringify(data, null, formatSpaces)];
   const url = window.URL.createObjectURL(
@@ -523,7 +501,7 @@ const downloadJSON = (data) => {
   const a = document.createElement("a");
   a.style.display = "none";
   a.href = url;
-  a.download = "testing.json";
+  a.download = `sub-${subject}_ntoolsbrowser.json&bids=ieeg`;
   document.body.append(a);
   a.click();
   window.URL.revokeObjectURL(url);
@@ -545,7 +523,6 @@ const getAttributeArray = (data, attr) => {
 
 const loadElectrodes = (
   renderer,
-  volumeGUI,
   volume,
   mode,
   subject,
@@ -571,8 +548,7 @@ const loadElectrodes = (
     // put in array for easy function passing
     const slices = [sliceX, sliceY, sliceZ]
 
-    // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
-    // by the bounding box, then reset it. hopefully this can be fixed one day
+    // tags need the original bounding box. renderer.resetBoundingBox() might work too
     const oldBoundingBox = renderer.u;
 
     const defaultSeizType = data.SeizDisplay[0];
@@ -713,13 +689,12 @@ const loadElectrodes = (
     initSeizureTypeMenu(data, electrodeSpheres, slices);
 
     // //* adds the IDs to the electrode ID menu and sets up event listeners
-    initializeElectrodeIDMenu(data, selectionSpheres, volumeGUI, volume, slices);
+    initializeElectrodeIDMenu(data, selectionSpheres, volume, slices);
 
     // //* this needs to be refactored
     jumpSlicesOnClick(
       data,
       renderer,
-      volumeGUI,
       electrodeSpheres,
       selectionSpheres,
       fmapConnections,
@@ -746,7 +721,7 @@ const loadElectrodes = (
     // TODO: change the fmap connections if needed
     document
       .getElementById("download-btn")
-      .addEventListener("click", () => downloadJSON(data));
+      .addEventListener("click", () => downloadJSON(data, subject));
 
     document
       .getElementsByTagName("canvas")[0]

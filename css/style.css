@@ -152,11 +152,16 @@ option:hover {
     margin-bottom: 2px;
     z-index: 0;
 }
-#sliceX { }
+#sliceX:hover { border: 0.5px solid white; }
+
 
 #sliceY { }
 
 #sliceZ { }
+   
+.electrode-slice:hover {
+    border: 1px solid gray;
+}   
 
 .container {
     width: 100%;
@@ -170,7 +175,6 @@ option:hover {
     justify-content: center;
     height: 30%;
     width: 100%;
-    border-top: 1px solid gray;
 }
 
 #color-legend{

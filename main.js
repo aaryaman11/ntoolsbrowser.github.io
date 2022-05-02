@@ -1,5 +1,4 @@
 import { loadElectrodes } from "./js/electrodes.js";
-// import { ElectrodeCanvas } from "./js/electrodecanvas.js"
 
 ("use strict");
 
@@ -8,42 +7,23 @@ import { loadElectrodes } from "./js/electrodes.js";
     ? main()
     : window.addEventListener("load", main);
 })(() => {
-  const [mode, subject] = parse();
+  const [mode, subject] = parseURL();
   const volume = loadVolume(subject, mode);
   const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject, mode);
   const threeDRenderer = initRenderers();
 
   threeDRenderer.add(leftHemisphereMesh);
   threeDRenderer.add(rightHemisphereMesh);
-
-  // const toggleSliceOnScroll = () => {
-  //   volume.visible = !volume.visible;
-  //   volume.visible = !volume.visible;
-  // };
-
-
   threeDRenderer.add(volume);
-  threeDRenderer.render(); // this triggers the onShowtime for the 3d renderer
+  threeDRenderer.render(); // triggers the onShowtime for 3d renderer
 
-  // the onShowtime function gets called automatically, just before the first rendering happens
+  // onShowtime gets called automatically, before first rendering happens
   threeDRenderer.onShowtime = () => {
-    // add the GUI once data is done loading
+
     const gui = new dat.GUI();
     gui.domElement.id = "gui";
-    // document.getElementById("gui").style.zIndex = 2;
 
     volume.visible = false;
-    const volumeGUI = gui.addFolder("Volume");
-    // volumeGUI.add(volume, "opacity", 0, 1);
-    // volumeGUI.add(volume, "lowerThreshold", volume.min, volume.max);
-    // volumeGUI.add(volume, "upperThreshold", volume.min, volume.max);
-    // volumeGUI.add(volume, "windowLow", volume.min, volume.max);
-    // volumeGUI.add(volume, "windowHigh", volume.min, volume.max);
-
-    // slice indicies
-    volumeGUI.add(volume, "indexX", 0, volume.dimensions[0] - 1);
-    volumeGUI.add(volume, "indexY", 0, volume.dimensions[1] - 1);
-    volumeGUI.add(volume, "indexZ", 0, volume.dimensions[2] - 1);
 
     // hemisphere GUIs
     const leftHemisphereGUI = gui.addFolder("Left Hemisphere");
@@ -56,10 +36,6 @@ import { loadElectrodes } from "./js/electrodes.js";
     rightHemisphereGUI.add(rightHemisphereMesh, "opacity", 0, 1);
     rightHemisphereGUI.addColor(rightHemisphereMesh, "color");
 
-    // making slices invisible
-    const slicesGUI = gui.addFolder("Slices");
-    slicesGUI.add(volume, "visible");
-
     const signalGUI = gui.addFolder("Electrode Signal");
     const playSignalController = {
       "start / stop": function () {},
@@ -67,19 +43,9 @@ import { loadElectrodes } from "./js/electrodes.js";
 
     signalGUI.add(playSignalController, "start / stop");
 
-    // work-around for sliders operating on invisible volume
-    // const sliderControllers = volumeGUI.__controllers;
-    // const xSlider = sliderControllers.find((c) => c.property === "indexX");
-    // const ySlider = sliderControllers.find((c) => c.property === "indexY");
-    // const zSlider = sliderControllers.find((c) => c.property === "indexZ");
-    // xSlider.__onChange = () => toggleSliceOnScroll();
-    // ySlider.__onChange = () => toggleSliceOnScroll();
-    // zSlider.__onChange = () => toggleSliceOnScroll();
-
-    // volumeGUI.open();
     // leftHemisphereGUI.open();
     // rightHemisphereGUI.open();
-    slicesGUI.open();
+    // slicesGUI.open();
     signalGUI.open();
 
     // fix original camera position
@@ -87,7 +53,6 @@ import { loadElectrodes } from "./js/electrodes.js";
 
     loadElectrodes(
       threeDRenderer,
-      volumeGUI,
       volume,
       mode,
       subject,
@@ -150,23 +115,23 @@ const loadSurfaces = (subject, mode) => {
       ? `./data/${subject}/meshes/${subject}_rh.pial`
       : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_freesurferright.pial&bids=ana`;
 
-  if (checkUrls(leftHemispherePath, rightHemispherePath)) {
-    leftHemisphere.file = leftHemispherePath;
-    rightHemisphere.file = rightHemispherePath;
-
-    leftHemisphere.color = [1, 1, 1];
-    rightHemisphere.color = [1, 1, 1];
-
-    leftHemisphere.opacity = 0.5;
-    rightHemisphere.opacity = 0.5;
-
-    leftHemisphere.pickable = false;
-    rightHemisphere.pickable = false;
-
-    return [leftHemisphere, rightHemisphere];
+  if (!checkUrls(leftHemispherePath, rightHemispherePath)) {
+    return null;
   }
 
-  return null;
+  leftHemisphere.file = leftHemispherePath;
+  rightHemisphere.file = rightHemispherePath;
+
+  leftHemisphere.color = [1, 1, 1];
+  rightHemisphere.color = [1, 1, 1];
+
+  leftHemisphere.opacity = 0.5;
+  rightHemisphere.opacity = 0.5;
+
+  leftHemisphere.pickable = false;
+  rightHemisphere.pickable = false;
+
+  return [leftHemisphere, rightHemisphere];
 };
 /**
  * Initializes the renderers and sets them to their needed container
@@ -182,7 +147,7 @@ const initRenderers = () => {
 };
 
 // matches mode/subject by regex match and removes '=' character
-const parse = () => {
+const parseURL = () => {
   const userSearch = document.location.search;
   return [...userSearch.matchAll("=[a-zA-Z]+")].map((match) =>
     match[0].slice(1)
