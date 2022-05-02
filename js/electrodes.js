@@ -488,7 +488,7 @@ const downloadJSON = (data, subject) => {
   const a = document.createElement("a");
   a.style.display = "none";
   a.href = url;
-  a.download = `sub-${subject}_ntoolsbrowser.json&bids=ieeg`;
+  a.download = `sub-${subject}_ntoolsbrowser.json`;
   document.body.append(a);
   a.click();
   window.URL.revokeObjectURL(url);
