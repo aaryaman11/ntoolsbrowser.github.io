@@ -21,8 +21,6 @@ const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
   const startRange = [
     -(Math.ceil(numSlices / 2)), Math.floor(numSlices / 2) - 1
   ];
-  // console.log(-(Math.ceil(numSlices / 2)), Math.floor(numSlices / 2) - 1)
-  // const startRange = [-128, 127]
   const endRange = [0, numSlices - 1];
   const { x, y, z } = electrode.coordinates;
 
@@ -46,10 +44,12 @@ const updateSliceLocation = (sliderControllers, volume, electrode, slices) => {
   // move to the index property that matches with the slice number of the electrode
   volume.visible = !volume.visible;
 
+  // update the 3D volume
   xSlider.object.indexX = xSlice;
   ySlider.object.indexY = ySlice;
   zSlider.object.indexZ = zSlice;
 
+  // update the slice canvases
   xCanvas.setSliceIndex(xSlice);
   xCanvas.setRelativeCoordinates(numSlices - ySlice, numSlices - zSlice);
   xCanvas.drawCanvas();
@@ -86,12 +86,12 @@ const initializeElectrodeIDMenu = (
   const { electrodeMenu } = DOMNodes;
 
   electrodeMenu.addEventListener("change", (event) => {
-    const id = event.target.value;
-    const index = data.electrodes.findIndex((e) => e.elecID === id);
-    const res = data.electrodes.find((e) => e.elecID === id);
+    // the index of the selected options will be the same as the electrode array
+    const index = getCurrentSelectedIndex() - 1;
+    const res = data.electrodes[index];
 
     printElectrodeInfo(res, index, selectionSpheres, data);
-    if (id !== "None" && res)
+    if (event.target.value !== "None" && res)
       updateSliceLocation(volumeGUI.__controllers, volume, res, slices);
   });
   // append HTML option to drop down menu
@@ -109,28 +109,32 @@ const initializeElectrodeIDMenu = (
  * @param {array} spheres
  * @param {array} fmaps
  */
-const initSeizureTypeMenu = (data, spheres, fmaps, slices) => {
+const initSeizureTypeMenu = (data, spheres, slices) => {
   const seizureTypes = data.SeizDisplay;
   const { seizTypeMenu } = DOMNodes;
 
-  // make ALL fmaps visible if user selects "Fun Mapping"
   seizTypeMenu.addEventListener("change", (event) => {
     event.preventDefault();
     event.stopPropagation();
     const selectedType = event.target.value;
 
     const selectedSeizType = getAttributeArray(data.electrodes, selectedType);
+
+    // update colors on 3D and 2D
     spheres.forEach((sphere, index) => {
       sphere.color = getSeizTypeColor(selectedSeizType[index]);
     });
     
     slices.forEach(s => s.setSeizType(selectedType))
     slices.forEach(s => s.drawCanvas());
+
+    // update display panel info
     const index = getCurrentSelectedIndex() - 1
     updateLabels(data.electrodes[index], index, data);
   });
 
   // create the menu options for all of patients seizure types
+  // if fmaps is ever removed entirely from SeizDisplay in the JSON, remove the slice
   seizureTypes.slice(0, seizureTypes.length - 1).forEach((type) => {
     const newOption = document.createElement("option");
     newOption.value = type;
@@ -177,7 +181,7 @@ const printElectrodeInfo = (
     updateLabels(selectedElectrode, index, data);
     GFX.highlightSelectedElectrode(selectionSpheres, index);
   } else {
-    console.log(`Could not find electrode with ID of ${ID}`);
+    alert(`Could not find electrode with ID of ${ID}`);
   }
 };
 
@@ -211,10 +215,11 @@ const addMouseHover = (renderer) => {
  */
 
 const updateLabels = (electrode, index, data) => {
-  const { electrodeMenu } = DOMNodes;
-  if (electrodeMenu.selectedIndex === 0) {
+  // return if "None" is selected
+  if (getCurrentSelectedIndex() - 1 === 0) {
     return;
   }
+
   const { elecID, elecType, intPopulation, coordinates } = electrode;
   const { x, y, z } = coordinates;
 
@@ -237,6 +242,7 @@ const updateLabels = (electrode, index, data) => {
   elecTypeLabel.innerText = elecType;
   coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(y)}, ${Math.round(z)})`;
 
+  // chooses whether to display intpop or seizure type info on the display and edit menus
   if (selectedSeizType === "intPopulation") {
     intPopulationLabel.innerText = intPopulation;
     seizTypeLabel.innerText = "";
@@ -280,38 +286,45 @@ const jumpSlicesOnClick = (
 ) => {
   // get the main canvas
   const { canvases, electrodeMenu, fmapCaption } = DOMNodes;
+
   canvases[0].addEventListener("click", (e) => {
-    // need to handle mouse dragging event too
+
+    // gets the 'uniqueID' from XTK, which is just an integer
     const clickedObject = renderer.pick(e.clientX, e.clientY);
     // check if it actually has an ID
-    if (clickedObject !== 0) {
-      const selectedObject = renderer.get(clickedObject);
-      // ".g" is an object property that corresponds to the selected X.object's name
-      if (selectedObject.g === "sphere") {
-        // find the actual electrode in the array of XTK spheres
-        const sphereIndex = spheres.indexOf(selectedObject);
+    if (clickedObject === 0) return;
+    
+    const selectedObject = renderer.get(clickedObject);
 
-        if (sphereIndex >= 0) {
-          const target = data.electrodes[sphereIndex];
+    // ".g" is an object property that corresponds to the selected X.object's name (minified)
+    if (selectedObject.g === "sphere") {
 
-          // highlight and show the needed captions on the menu
-          GFX.highlightSelectedElectrode(selections, sphereIndex);
-          
-          // sync with electrode menu options
-          const electrodeIDMenuOptions = electrodeMenu.options;
-          electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
-          updateLabels(target, sphereIndex, data);
+      // find the actual electrode in the array of XTK spheres
+      const sphereIndex = spheres.indexOf(selectedObject);
 
-          updateSliceLocation(datGUI.__controllers, volumeRendered, target, slices);
-        }
-      } else if (selectedObject.g === "cylinder") {
-        const cylinderIndex = fmapConnections.indexOf(selectedObject);
-        if (cylinderIndex >= 0) {
-          fmapCaption.innerText = selectedObject.caption;
-          GFX.highlightSelectedFmap(fmapHighlights, cylinderIndex);
-        }
+      if (sphereIndex >= 0) {
+        const target = data.electrodes[sphereIndex];
+
+        // highlight and show the needed captions on the menu
+        GFX.highlightSelectedElectrode(selections, sphereIndex);
+        
+        // sync with electrode menu options
+        const electrodeIDMenuOptions = electrodeMenu.options;
+        electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
+        updateLabels(target, sphereIndex, data);
+
+        // move slices to corresponding location
+        updateSliceLocation(datGUI.__controllers, volumeRendered, target, slices);
+      }
+      // same ideas as above, just with fmaps
+    } else if (selectedObject.g === "cylinder") {
+      const cylinderIndex = fmapConnections.indexOf(selectedObject);
+      if (cylinderIndex >= 0) {
+        fmapCaption.innerText = selectedObject.caption;
+        GFX.highlightSelectedFmap(fmapHighlights, cylinderIndex);
       }
     }
+    
   }); // end of event listener
 };
 
@@ -320,41 +333,45 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
   canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
     const clickedObject = renderer.pick(e.clientX, e.clientY);
-    if (clickedObject !== 0) {
-      const selectedObject = renderer.get(clickedObject);
-      const objectIndex = spheres.indexOf(selectedObject);
-      const selectedElectrode = data.electrodes[objectIndex];
-      const menu = document.getElementById("edit-menu");
 
-      menu.innerHTML = insertMenuHTML(selectedElectrode);
-      menu.style.display = "grid";
-      menu.style.left = `${e.pageX}px`;
-      menu.style.top = `${e.pageY}px`;
+    if (clickedObject === 0) return; 
+    
+    const selectedObject = renderer.get(clickedObject);
+    const objectIndex = spheres.indexOf(selectedObject);
+    const selectedElectrode = data.electrodes[objectIndex];
+    const menu = document.getElementById("edit-menu");
 
-      document.getElementById('seiz-type-edit').value = selectedElectrode[getSelectedSeizType()];
-      document.getElementById('int-pop-edit').value = selectedElectrode.intPopulation;
+    menu.innerHTML = insertMenuHTML(selectedElectrode);
+    menu.style.display = "grid";
+    menu.style.left = `${e.pageX}px`;
+    menu.style.top = `${e.pageY}px`;
 
-      GFX.highlightSelectedElectrode(selectionSpheres, objectIndex);
-      updateLabels(selectedElectrode, objectIndex, data);
-      electrodeMenu.options.selectedIndex = objectIndex + 1;
+    document.getElementById('seiz-type-edit').value = selectedElectrode[getSelectedSeizType()];
+    document.getElementById('int-pop-edit').value = selectedElectrode.intPopulation;
 
-      document.getElementById("edit-btn").addEventListener("click", () => {
-        const type = getSelectedSeizType();
-        editElectrode(data, objectIndex, type);
+    GFX.highlightSelectedElectrode(selectionSpheres, objectIndex);
+    updateLabels(selectedElectrode, objectIndex, data);
+    electrodeMenu.options.selectedIndex = objectIndex + 1;
 
-        spheres.forEach((sphere, index) => {
-          sphere.color = getSeizTypeColor(data.electrodes[index][type]);
-        });
-        slices.forEach(s => s.setData(data.electrodes));
-        slices.forEach(s => s.initSliceMap())
-        slices.forEach(s => s.drawCanvas())
-        hideMenu();
+    document.getElementById("edit-btn").addEventListener("click", () => {
+      const type = getSelectedSeizType();
+      editElectrode(data, objectIndex, type);
+
+      spheres.forEach((sphere, index) => {
+        sphere.color = getSeizTypeColor(data.electrodes[index][type]);
       });
 
-      document
-        .getElementById("cancel-btn")
-        .addEventListener("click", () => hideMenu());
-    }
+      // changing the data requires regeneration of each electrode slices map
+      slices.forEach(s => s.setData(data.electrodes));
+      slices.forEach(s => s.initSliceMap())
+      slices.forEach(s => s.drawCanvas())
+      hideMenu();
+    });
+
+    document
+      .getElementById("cancel-btn")
+      .addEventListener("click", () => hideMenu());
+    
   });
 };
 
@@ -547,15 +564,18 @@ const loadElectrodes = (
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
         : await (await fetch(`${protocol}//${baseURL}/${directory}`)).json();
 
+    // three canvas slices displaying 2D electrodes
     const sliceX = new ElectrodeCanvas(`${subject}`, "sagittal", "sliceX" );
     const sliceY = new ElectrodeCanvas(`${subject}`, "coronal", "sliceY");
     const sliceZ = new ElectrodeCanvas(`${subject}`, "axial", "sliceZ");
 
+    // put in array for easy function passing
     const slices = [sliceX, sliceY, sliceZ]
 
     // this is a work-around from a glitch with the "show all tags" button. we have to offset each coordinate
     // by the bounding box, then reset it. hopefully this can be fixed one day
     const oldBoundingBox = renderer.u;
+
     const defaultSeizType = data.SeizDisplay[0];
 
     const { subjectIDLabel, numSeizTypeLabel, tagsBtn } = DOMNodes;
@@ -586,16 +606,21 @@ const loadElectrodes = (
     fmapConnections.forEach((connection) => renderer.add(connection));
     fmapHighlights.forEach((highlight) => renderer.add(highlight));
 
-    //setup electrode signal display
+    // setup electrode signal display
     let electrodeSignals = [];
     let signalHeader;
+
+    // fsaverage in the demos is currently without a signal .bin
     if (subject !== "fsaverage") {
 
       signalHeader = 
         mode === "demo" 
         ? await (await fetch(`./data/${subject}/edf/signal_header.json`)).json()
         : await (await fetch(`${protocol}//${baseURL}/sub-${subject}_functionalmapping.json`)).json();
+
       const sampleSize = signalHeader.length;
+
+      // binary file is Float32. change to 8 if Float64 is used
       const numBytes = 4;
       const signalPath = 
         mode === "demo"
@@ -608,22 +633,23 @@ const loadElectrodes = (
         .then((response) => response.blob())
         .then((content) => content.arrayBuffer(content.size))
         .then((data) => {
+          // dataview can decode the binary data inside the signal file
           const dataView = new DataView(data);
           const sizePerSample = dataView.byteLength / sampleSize;
           const signals = [];
 
-          let currentChunkIndex = 0;
+          // chunk the array into equal parts. the binary data for each signal is listed in order
+          // the bin file has no metadata
           for (let j = 0; j < sampleSize; j++) {
             const view = [];
             for (
-              let i = sizePerSample * currentChunkIndex;
-              i < sizePerSample * (currentChunkIndex + 1);
+              let i = sizePerSample * j;
+              i < sizePerSample * (j + 1);
               i += numBytes
             ) {
               view.push(dataView.getFloat32(i, true));
             }
             signals.push(view);
-            currentChunkIndex += 1;
           }
 
           return signals;
@@ -734,8 +760,8 @@ const loadElectrodes = (
     document.getElementById('slice-brightness').oninput = (event) => {
       slices.forEach(s => s.setBrightness(event.target.value));
       slices.forEach(s => s.drawCanvas())
-      
     }
+
   })();
 };
 

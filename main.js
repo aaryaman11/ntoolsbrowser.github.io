@@ -12,7 +12,6 @@ import { loadElectrodes } from "./js/electrodes.js";
   const volume = loadVolume(subject, mode);
   const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject, mode);
   const threeDRenderer = initRenderers();
-  const loadingText = document.getElementById("loading-text");
 
   threeDRenderer.add(leftHemisphereMesh);
   threeDRenderer.add(rightHemisphereMesh);
@@ -22,24 +21,24 @@ import { loadElectrodes } from "./js/electrodes.js";
   //   volume.visible = !volume.visible;
   // };
 
-  loadingText.innerText = "Rendering Volume...";
+
   threeDRenderer.add(volume);
-  threeDRenderer.render(); // this one triggers the loading of LH and then the onShowtime for the 3d renderer
-  // volume.visible = false;
+  threeDRenderer.render(); // this triggers the onShowtime for the 3d renderer
+
   // the onShowtime function gets called automatically, just before the first rendering happens
   threeDRenderer.onShowtime = () => {
     // add the GUI once data is done loading
     const gui = new dat.GUI();
     gui.domElement.id = "gui";
-    document.getElementById("gui").style.zIndex = 2;
+    // document.getElementById("gui").style.zIndex = 2;
 
     volume.visible = false;
     const volumeGUI = gui.addFolder("Volume");
-    volumeGUI.add(volume, "opacity", 0, 1);
-    volumeGUI.add(volume, "lowerThreshold", volume.min, volume.max);
-    volumeGUI.add(volume, "upperThreshold", volume.min, volume.max);
-    volumeGUI.add(volume, "windowLow", volume.min, volume.max);
-    volumeGUI.add(volume, "windowHigh", volume.min, volume.max);
+    // volumeGUI.add(volume, "opacity", 0, 1);
+    // volumeGUI.add(volume, "lowerThreshold", volume.min, volume.max);
+    // volumeGUI.add(volume, "upperThreshold", volume.min, volume.max);
+    // volumeGUI.add(volume, "windowLow", volume.min, volume.max);
+    // volumeGUI.add(volume, "windowHigh", volume.min, volume.max);
 
     // slice indicies
     volumeGUI.add(volume, "indexX", 0, volume.dimensions[0] - 1);
@@ -69,18 +68,18 @@ import { loadElectrodes } from "./js/electrodes.js";
     signalGUI.add(playSignalController, "start / stop");
 
     // work-around for sliders operating on invisible volume
-    const sliderControllers = volumeGUI.__controllers;
-    const xSlider = sliderControllers.find((c) => c.property === "indexX");
-    const ySlider = sliderControllers.find((c) => c.property === "indexY");
-    const zSlider = sliderControllers.find((c) => c.property === "indexZ");
-    xSlider.__onChange = () => toggleSliceOnScroll();
-    ySlider.__onChange = () => toggleSliceOnScroll();
-    zSlider.__onChange = () => toggleSliceOnScroll();
+    // const sliderControllers = volumeGUI.__controllers;
+    // const xSlider = sliderControllers.find((c) => c.property === "indexX");
+    // const ySlider = sliderControllers.find((c) => c.property === "indexY");
+    // const zSlider = sliderControllers.find((c) => c.property === "indexZ");
+    // xSlider.__onChange = () => toggleSliceOnScroll();
+    // ySlider.__onChange = () => toggleSliceOnScroll();
+    // zSlider.__onChange = () => toggleSliceOnScroll();
 
     // volumeGUI.open();
     // leftHemisphereGUI.open();
     // rightHemisphereGUI.open();
-    // slicesGUI.open();
+    slicesGUI.open();
     signalGUI.open();
 
     // fix original camera position
@@ -95,38 +94,22 @@ import { loadElectrodes } from "./js/electrodes.js";
       playSignalController
     );
 
-    // this should ideally reset the colormap and labelmap of volume
-    // whenever the menu is changed. It also will put the appropriate
-    // color legend on the screen
-
-    const displayMenu = document.getElementById("seizure-display-menu");
     const seizTypeList = document.getElementById("seiztype-list");
     const intPopList = document.getElementById("int-pop-list");
 
-    // const coronalSlice = document.getElementsByTagName("canvas")[1];
-    // coronalSlice.onclick = () => (threeDRenderer.camera.position = [0, 200, 0]);
-
-    // const sagittalSlice = document.getElementsByTagName("canvas")[2];
-    // sagittalSlice.onclick = () =>
-    //   (threeDRenderer.camera.position = [-200, 0, 0]);
-
-    // const axialSlice = document.getElementsByTagName("canvas")[3];
-    // axialSlice.onclick = () => (threeDRenderer.camera.position = [0, 0, 200]);
-
-    displayMenu.addEventListener("change", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const selectedSeizType = event.target.value;
-
-      if (selectedSeizType === "intPopulation") {
-        intPopList.style.visibility = "visible";
-        seizTypeList.style.visibility = "hidden";
-      } else {
-        seizTypeList.style.visibility = "visible";
-        intPopList.style.visibility = "hidden";
-      }
-    });
-    loadingText.innerText = "";
+    // toggle color legends for intpop and seiztype
+    document.getElementById("seizure-display-menu")
+      .addEventListener("change", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.target.value === "intPopulation") {
+          intPopList.style.visibility = "visible";
+          seizTypeList.style.visibility = "hidden";
+        } else {
+          seizTypeList.style.visibility = "visible";
+          intPopList.style.visibility = "hidden";
+        }
+      });
   };
 });
 
