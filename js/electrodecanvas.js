@@ -63,7 +63,7 @@ export class ElectrodeCanvas {
         .then((response) => response.blob())
         .then((content) => content.arrayBuffer())
         .then((buffer) => buffer);
-      this.parseNifti(`${this.subject}`, this.niftiBuffer, this.electrodeData);
+      this.parseNifti(this.niftiBuffer);
       // .catch((error) => console.log(error));
       this.initSliceMap();
       this.initEvents();
@@ -71,7 +71,7 @@ export class ElectrodeCanvas {
     })();
   }
 
-  parseNifti(name, data) {
+  parseNifti(data) {
     if (nifti.isCompressed(data)) data = nifti.decompress(data);
     if (nifti.isNIFTI(data)) {
       this.niftiHeader = nifti.readHeader(data);
@@ -145,7 +145,7 @@ export class ElectrodeCanvas {
       for (let col = 0; col < this.dims[1]; col++) {
         const offset = typedData.length - this.calculateOffset(row, col);
         const value = typedData[offset];
-        
+
         canvasImageData.data[(rowOffset + col) * 4] =
           (value & 0xff) * this.brightness;
         canvasImageData.data[(rowOffset + col) * 4 + 1] =
@@ -167,7 +167,7 @@ export class ElectrodeCanvas {
 
       if (previousElectrodes) this.draw2DElectrodes(previousElectrodes);
       if (nextElectrodes) this.draw2DElectrodes(nextElectrodes);
-      
+
       if (this.currentSlice === this.relativeSlice) {
         this.drawMark(this.relativeX, this.relativeY);
       }
@@ -205,9 +205,7 @@ export class ElectrodeCanvas {
       this.ctx.stroke();
       this.ctx.fillStyle = getColor(e[this.currentType]);
       this.ctx.fill();
-
     }
-
   }
 
   drawMark(x, y) {
@@ -248,13 +246,17 @@ export class ElectrodeCanvas {
     };
   }
 
-  rotate() {
-    this.canvas.style.transform = "rotate(180deg)";
+  setSliceIndex(index) {
+    this.currentSlice = index;
   }
 
-  setSliceIndex(index) {
+  setUserPosition(index) {
     this.relativeSlice = index;
-    this.currentSlice = index;
+  }
+
+  resetPosition() {
+    this.currentSlice =
+      this.relativeSlice == null ? this.currentSlice : this.relativeSlice;
   }
 
   setSeizType(type) {

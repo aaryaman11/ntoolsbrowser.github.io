@@ -32,14 +32,17 @@ const updateSliceLocation = (volume, electrode, slices) => {
 
   // update the slice canvases
   xCanvas.setSliceIndex(xSlice);
+  xCanvas.setUserPosition(xSlice);
   xCanvas.setRelativeCoordinates(numSlices - ySlice, numSlices - zSlice);
   xCanvas.drawCanvas();
 
   yCanvas.setSliceIndex(ySlice);
+  yCanvas.setUserPosition(ySlice);
   yCanvas.setRelativeCoordinates(xSlice, numSlices - zSlice);
   yCanvas.drawCanvas();
 
   zCanvas.setSliceIndex(zSlice);
+  zCanvas.setUserPosition(zSlice);
   zCanvas.setRelativeCoordinates(xSlice, numSlices - ySlice)
   zCanvas.drawCanvas();
 
@@ -145,7 +148,7 @@ const addEventsToFmapMenu = (data, connections, fmapHighlights) => {
 // find the electrode in the options and display the info on the panel
 /**
  *
- *  @param {object} selectedElectrode
+ * @param {object} selectedElectrode
  * @param {number} index - index in the data
  * @param {array} selectionSpheres - opaque blue spheres that surround an electrode
  * @param {JSON} data
@@ -353,14 +356,10 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
 };
 
 const insertMenuHTML = (electrode) => {
-  const { elecID, elecType, intPopulation, coordinates } = electrode;
+  const { elecType, intPopulation } = electrode;
   const type = getSelectedSeizType();
   const seizType = type === "intPopulation" ? "" : electrode[type];
-  const { x, y, z } = coordinates;
   const markUp = `
-    <label>Electrode ID: </label>
-    <input id="elec-id-edit" type="text" value="${elecID}">
-    
     <label>Electrode Type: </label>
     <input id="elec-type-edit" type="text" value="${elecType}">
 
@@ -387,10 +386,7 @@ const insertMenuHTML = (electrode) => {
       <option value="Rapid Spread">Rapid Spread</option>
       <option value="Early Onset">Early Onset</option>
     </select>
-    
-    <label>Coordinates: </label>
-    <input id="coord-edit" type="text" value="${x}, ${y}, ${z}">
-  
+
     <button id="edit-btn">Update</button>
     <button id="cancel-btn">Cancel</button> 
     `;
@@ -398,22 +394,13 @@ const insertMenuHTML = (electrode) => {
 };
 
 const editElectrode = (data, index, type) => {
-  const newID = document.getElementById("elec-id-edit").value;
   const newElecType = document.getElementById("elec-type-edit").value;
   const newIntPop = document.getElementById("int-pop-edit").value;
   const newSeizType = document.getElementById("seiz-type-edit").value;
-  const coordinates = document.getElementById("coord-edit").value;
-  const [newX, newY, newZ] = coordinates.split(",").map((c) => Number(c));
 
   const currentElectrode = data.electrodes[index];
   const newElectrode = {
     ...currentElectrode,
-    elecID: newID,
-    coordinates: {
-      x: newX,
-      y: newY,
-      z: newZ,
-    },
     elecType: newElecType,
     intPopulation: Number(newIntPop),
   };
@@ -735,6 +722,27 @@ const loadElectrodes = (
       slices.forEach(s => s.setBrightness(event.target.value));
       slices.forEach(s => s.drawCanvas())
     }
+
+    document.getElementById('sliceX-control').oninput = (event) => {
+      sliceX.setSliceIndex(parseInt(event.target.value));
+      sliceX.drawCanvas();
+    }
+
+    document.getElementById('sliceY-control').oninput = (event) => {
+      sliceY.setSliceIndex(parseInt(event.target.value));
+      sliceY.drawCanvas();
+    }
+
+    document.getElementById('sliceZ-control').oninput = (event) => {
+      sliceZ.setSliceIndex(parseInt(event.target.value));
+      sliceZ.drawCanvas();
+    }
+
+    document.getElementById('sync-btn').addEventListener('click', () => {
+      slices.forEach(s => s.resetPosition())
+      slices.forEach(s => s.drawCanvas());
+    });
+
 
   })();
 };

@@ -1,4 +1,5 @@
  html, body { 
+    font-family: sans-serif;
     background-color:#000;
     margin: 0;
     padding: 0;
@@ -78,13 +79,29 @@ button:active {
     position: absolute;
     height: 70%;
     width: 15%;
-    font-family: sans-serif;
     color: white;
     display: block;
     background-color: #303030;
-    padding: 10px;
+    padding: 5px;
     z-index: 2;
     min-width: 10%;
+    border-bottom: 1px solid white;
+}
+
+#slice-controller {
+    display: flex;
+    flex-flow: column;
+    align-items: left;
+    justify-content: flex-start;
+    position: absolute;
+    height: 30%;
+    background-color: #303030;
+    top: 70%;
+    z-index: 2;
+    min-width: 10%;
+    width: 15%;
+    color: white;
+    padding: 5px;
 }
 
 /* #electrode-controller:hover {
@@ -152,16 +169,9 @@ option:hover {
     margin-bottom: 2px;
     z-index: 0;
 }
-#sliceX:hover { border: 0.5px solid white; }
-
-
-#sliceY { }
-
-#sliceZ { }
-   
-.electrode-slice:hover {
-    border: 1px solid gray;
-}   
+#sliceX:hover { border: 1px solid red; }
+#sliceY:hover { border: 1px solid green; }
+#sliceZ:hover { border: 1px solid blue; }
 
 .container {
     width: 100%;
@@ -179,7 +189,7 @@ option:hover {
 
 #color-legend{
     font-size: 1rem;
-    left: 15%;
+    left: 20%;
     position: relative;
     display: block;
     z-index: 0;
@@ -193,7 +203,7 @@ option:hover {
     color: white;
     width: 25%;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
 }
 
 .elec-tag {

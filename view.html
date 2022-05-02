@@ -11,8 +11,6 @@
     <script type="text/javascript" src="https://get.goXTK.com/xtk_xdat.gui.js"></script>
     <script type="module" src="./js/nifti-reader.js"></script>
     <script type="module" src='main.js'></script>
-
-
   </head>
   <body>
     <div id="electrode-controller" class="ui raised segment">
@@ -25,12 +23,13 @@
           <label>Number of Seizure Types:</label>
           <label id="num-seiz-types-lbl"></label>
         </div>
+        <br>
       </div>
-          <label for="electrode-types">Select Seizure Type</label> 
+          <label for="electrode-types">Seizure Type</label> 
             <select name="electrode-types" id="seizure-display-menu"></select>
         <br><br>
         <div>
-          <label for="electrode">Select Electrode ID</label>
+          <label for="electrode">Select Electrode</label>
           <select name="electrodes" id="electrode-menu">
             <option value="none">None</option>
           </select>
@@ -67,7 +66,7 @@
             </button>
           </div>
           <br>
-          <label for="fmaps">Select Functional Map</label>
+          <label for="fmaps">Functional Map</label>
           <select name="fmaps" id="fmap-menu">
             <option value="none">None</option>
             <option value="fmapMotor">Motor</option>
@@ -80,8 +79,7 @@
           <br><br>
           <label id="fmap-caption">No Functional Mapping Selected</label>
           <br><br><br>
-          <label for="">Image Brightness</label>
-          <input id="slice-brightness" type="range" min="0" max="5" value="1" step="0.01">
+          
         </div>
       </div>
     </div>
@@ -130,7 +128,7 @@
         </li>
       </ul>
     </div>
-    
+
     <div id="renderer-container">
       <div id="3d" style="height: 70%;" class="">
       </div>
@@ -149,6 +147,22 @@
     </div>
     
     <div id="edit-menu" class="" style="display: none">
+    </div>
+
+    <div id="slice-controller">
+      <label for="">Brightness:</label>
+      <input id="slice-brightness" type="range" min="0" max="5" value="1" step="0.01">
+
+      <label for="">Sagittal Index:</label>
+      <input id="sliceX-control" type="range" min="0" max="255" value="128" step="1">
+
+      <label for="">Coronal Index:</label>
+      <input id="sliceY-control" type="range" min="0" max="255" value="128" step="1">
+
+      <label for="">Axial Index:</label>
+      <input id="sliceZ-control" type="range" min="0" max="255" value="128" step="1">
+      <br>
+      <button id="sync-btn">Sync Slices</button>
     </div>
   </body>
 </html>
