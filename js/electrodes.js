@@ -177,12 +177,11 @@ const printElectrodeInfo = (
   selectionSpheres,
   data
 ) => {
-  if (selectedElectrode) {
-    updateLabels(selectedElectrode, index, data);
-    GFX.highlightSelectedElectrode(selectionSpheres, index);
-  } else {
-    alert(`Could not find electrode with ID of ${ID}`);
-  }
+  if (!selectedElectrode) {
+    return;
+  } 
+  updateLabels(selectedElectrode, index, data);
+  GFX.highlightSelectedElectrode(selectionSpheres, index);
 };
 
 // changes the mosue to a crosshair for responsive selection
@@ -216,7 +215,7 @@ const addMouseHover = (renderer) => {
 
 const updateLabels = (electrode, index, data) => {
   // return if "None" is selected
-  if (getCurrentSelectedIndex() - 1 === 0) {
+  if (getCurrentSelectedIndex() - 1 === 0 || electrode == null) {
     return;
   }
 
@@ -711,7 +710,7 @@ const loadElectrodes = (
     };
 
     // //* adds the seizure types to the first drop down menu on the panel
-    initSeizureTypeMenu(data, electrodeSpheres, fmapConnections, slices);
+    initSeizureTypeMenu(data, electrodeSpheres, slices);
 
     // //* adds the IDs to the electrode ID menu and sets up event listeners
     initializeElectrodeIDMenu(data, selectionSpheres, volumeGUI, volume, slices);
