@@ -518,7 +518,7 @@ const loadElectrodes = (
   (async () => {
     // for 'NYU' or build mode
     const protocol = window.location.protocol;
-    const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ieeg&?file=sub-${subject}`;
+    const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ieeg&file=sub-${subject}`;
 
     // initial data load
     const data =
