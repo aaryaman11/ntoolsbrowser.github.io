@@ -58,7 +58,7 @@ const getSeizTypeColor = (type) => {
     // default (no color)
     "": COLOR.white,
   };
-  return electrodeColors[lowerCaseType];
+  return electrodeColors[lowerCaseType] ?? COLOR.white;
 };
 
 export { getSeizTypeColor, COLOR };

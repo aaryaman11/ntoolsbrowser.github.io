@@ -290,7 +290,7 @@ const getColor = (type) => {
     8: "#758ca6", // shadow blue
   };
 
-  return colors[formattedType];
+  return colors[formattedType] ?? "#ffffff";
 };
 
 const mapInterval = (input, inputRange, outputRange) => {
