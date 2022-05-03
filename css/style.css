@@ -15,6 +15,12 @@ canvas {
 ul {
     list-style-type: none;
 }
+
+label {
+    user-select: none;
+    pointer-events: none;
+}
+
 #renderer-container {
     color: black;
     z-index: 2;
@@ -68,12 +74,12 @@ button:active {
     
 }
 
-.label {
+/* .label {
     text-shadow: -1px 1px 1px rgb(0,0,0);
     margin-left: 25px;
     font-size: 20px;
     z-index: 10;
-}
+} */
 
 #electrode-controller {
     position: absolute;
@@ -181,7 +187,6 @@ option:hover {
 
 
 #electrode-slice-container {
-    
     display: flex;
     justify-content: center;
     height: 30%;
@@ -190,9 +195,8 @@ option:hover {
 
 #color-legend{
     font-size: 1rem;
-    left: 20%;
+    left: 15%;
     position: relative;
-    display: block;
     z-index: 0;
 }
 
@@ -211,9 +215,8 @@ option:hover {
     user-select: none;
     position: relative;
     z-index: 1;
-    font-weight: bold;
+    /* font-weight: bold; */
     color: red;
-    /* border: 1px solid white; */
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
