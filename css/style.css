@@ -181,6 +181,7 @@ option:hover {
 
 
 #electrode-slice-container {
+    
     display: flex;
     justify-content: center;
     height: 30%;

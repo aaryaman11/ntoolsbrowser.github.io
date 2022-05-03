@@ -150,7 +150,7 @@ const initRenderers = () => {
 // matches mode/subject by regex match and removes '=' character
 const parseURL = () => {
   const userSearch = document.location.search;
-  return [...userSearch.matchAll("=[a-zA-Z]+")].map((match) =>
+  return [...userSearch.matchAll("=[a-zA-Z0-9]+")].map((match) =>
     match[0].slice(1)
   );
 };
