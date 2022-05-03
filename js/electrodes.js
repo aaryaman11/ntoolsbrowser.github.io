@@ -518,14 +518,13 @@ const loadElectrodes = (
   (async () => {
     // for 'NYU' or build mode
     const protocol = window.location.protocol;
-    const baseURL = `ievappwpdcpvm01.nyumc.org`;
-    const directory = `?file=sub-${subject}_ntoolsbrowser.json&bids=ieeg`;
+    const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ieeg&?file=sub-${subject}`;
 
     // initial data load
     const data =
       mode === "demo"
         ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
-        : await (await fetch(`${protocol}//${baseURL}/${directory}`)).json();
+        : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
 
     // three canvas slices displaying 2D electrodes
     const sliceX = new ElectrodeCanvas(data, volume, "sagittal", "sliceX");
@@ -578,7 +577,7 @@ const loadElectrodes = (
       signalHeader = 
         mode === "demo" 
         ? await (await fetch(`./data/${subject}/edf/${subject}_signal_header.json`)).json()
-        : await (await fetch(`${protocol}//${baseURL}/sub-${subject}_functionalmapping.json&bids=ieeg`)).json();
+        : await (await fetch(`${protocol}//${baseURL}_functionalmapping.json`)).json();
 
       const sampleSize = signalHeader.length;
 
@@ -587,7 +586,7 @@ const loadElectrodes = (
       const signalPath = 
         mode === "demo"
         ?  `./data/${subject}/edf/signals/${subject}.bin`
-        : `${protocol}//${baseURL}/sub-${subject}_functionalmapping.bin`;
+        : `${protocol}//${baseURL}_functionalmapping.bin`;
 
       loadingText.innerText = `Loading Electrode Signals...`
 

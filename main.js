@@ -7,9 +7,7 @@ import { loadElectrodes } from "./js/electrodes.js";
     ? main()
     : window.addEventListener("load", main);
 })(() => {
-  const protocol = window.location.protocol;
-  const baseURL = `ievappwpdcpvm01.nyumc.org/?file=sub-`
-
+  
   const volume = new X.volume();
   const leftHemisphereMesh = new X.mesh();
   const rightHemisphereMesh = new X.mesh();
@@ -24,6 +22,9 @@ import { loadElectrodes } from "./js/electrodes.js";
 
   // configure files
   const [mode, subject] = parseURL();
+  const protocol = window.location.protocol;
+  const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ana&?file=sub-${subject}`
+
   if (mode === "demo") {
     const volumePath = `./data/${subject}/volume/${subject}_T1.nii`;
     const lhPath = `./data/${subject}/meshes/${subject}_lh.pial`;
@@ -35,9 +36,10 @@ import { loadElectrodes } from "./js/electrodes.js";
     rightHemisphereMesh.file = rhPath;
     leftHemisphereMesh.file = lhPath;
   } else {
-    const volumeURL = `${protocol}//${baseURL}${subject}_preoperation_T1w.nii&bids=ana`;
-    const lhURL = `${protocol}//${baseURL}${subject}_freesurferleft.pial&bids=ana`;
-    const rhURL = `${protocol}//${baseURL}${subject}_freesurferright.pial&bids=ana`;
+    const volumeURL = `${protocol}//${baseURL}_preoperation_T1w.nii`;
+    const lhURL = `${protocol}//${baseURL}_freesurferleft.pial`;
+    const rhURL = `${protocol}//${baseURL}_freesurferright.pial`;
+    console.log(volumeURL);
     if (!checkUrls(volumeURL, lhURL, rhURL)){
       return;
     }
