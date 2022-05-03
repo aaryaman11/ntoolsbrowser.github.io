@@ -35,7 +35,7 @@ import { loadElectrodes } from "./js/electrodes.js";
     rightHemisphereMesh.file = rhPath;
     leftHemisphereMesh.file = lhPath;
   } else {
-    const volumeURL = `${protocol}//${baseURL}${subject}_preoperation_T1w&bids=ana`;
+    const volumeURL = `${protocol}//${baseURL}${subject}_preoperation_T1w.nii&bids=ana`;
     const lhURL = `${protocol}//${baseURL}${subject}_freesurferleft.pial&bids=ana`;
     const rhURL = `${protocol}//${baseURL}${subject}_freesurferright.pial&bids=ana`;
     if (!checkUrls(volumeURL, lhURL, rhURL)){

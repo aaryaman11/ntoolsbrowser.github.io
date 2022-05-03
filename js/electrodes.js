@@ -578,7 +578,7 @@ const loadElectrodes = (
       signalHeader = 
         mode === "demo" 
         ? await (await fetch(`./data/${subject}/edf/${subject}_signal_header.json`)).json()
-        : await (await fetch(`${protocol}//${baseURL}/sub-${subject}_functionalmapping.json`)).json();
+        : await (await fetch(`${protocol}//${baseURL}/sub-${subject}_functionalmapping.json&bids=ieeg`)).json();
 
       const sampleSize = signalHeader.length;
 
