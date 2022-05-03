@@ -23,7 +23,7 @@ import { loadElectrodes } from "./js/electrodes.js";
   // configure files
   const [mode, subject] = parseURL();
   const protocol = window.location.protocol;
-  const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ana&?file=sub-${subject}`
+  const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ana&file=sub-${subject}`
 
   if (mode === "demo") {
     const volumePath = `./data/${subject}/volume/${subject}_T1.nii`;
