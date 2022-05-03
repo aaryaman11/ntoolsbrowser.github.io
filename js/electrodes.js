@@ -528,9 +528,9 @@ const loadElectrodes = (
         : await (await fetch(`${protocol}//${baseURL}/${directory}`)).json();
 
     // three canvas slices displaying 2D electrodes
-    const sliceX = new ElectrodeCanvas(`${subject}`, "sagittal", "sliceX" );
-    const sliceY = new ElectrodeCanvas(`${subject}`, "coronal", "sliceY");
-    const sliceZ = new ElectrodeCanvas(`${subject}`, "axial", "sliceZ");
+    const sliceX = new ElectrodeCanvas(data, volume, "sagittal", "sliceX");
+    const sliceY = new ElectrodeCanvas(data, volume, "coronal", "sliceY");
+    const sliceZ = new ElectrodeCanvas(data, volume, "axial", "sliceZ");
 
     // put in array for easy function passing
     const slices = [sliceX, sliceY, sliceZ]

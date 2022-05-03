@@ -10,6 +10,7 @@ export class ElectrodeCanvas {
   niftiBuffer;
   niftiHeader;
   niftiImage;
+  volume;
   dims;
 
   // axial/sagittal/coronal
@@ -17,7 +18,6 @@ export class ElectrodeCanvas {
   container;
   brightness;
 
-  subject;
 
   // canvas where rendering will happen
   canvas;
@@ -33,44 +33,29 @@ export class ElectrodeCanvas {
   relativeY;
   relativeSlice;
 
-  constructor(subject, orientation, container) {
-    this.subject = subject;
+  constructor(data, volume, orientation, container) {
+    this.electrodeData = data.electrodes;
+    this.currentType = data.SeizDisplay[0];
     this.orientation = orientation || "axial";
     this.container = container || "sliceX";
     this.canvas = document.getElementById(`${this.container}`);
     this.ctx = this.canvas.getContext("2d");
     this.sliceMap = new Map();
     this.brightness = 1;
+    this.volume = volume;
 
     this.initData();
   }
 
   initData() {
-    (async () => {
-      this.electrodeData = await fetch(
-        `../data/${this.subject}/JSON/${this.subject}.json`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          // side effect?
-          this.currentType = data.SeizDisplay[0];
-          return data.electrodes;
-        });
-
-      this.niftiBuffer = await fetch(
-        `../data/${this.subject}/volume/${this.subject}_T1.nii`
-      )
-        .then((response) => response.blob())
-        .then((content) => content.arrayBuffer())
-        .then((buffer) => buffer);
-      this.parseNifti(this.niftiBuffer);
-      // .catch((error) => console.log(error));
+      // 'ab' is XTKs minified array buffer.
+      this.parseNifti(this.volume.ab);
       this.initSliceMap();
       this.initEvents();
       this.drawCanvas();
-    })();
   }
 
+  // TODO change to XTKs already parsed volume data
   parseNifti(data) {
     if (nifti.isCompressed(data)) data = nifti.decompress(data);
     if (nifti.isNIFTI(data)) {
