@@ -7,17 +7,56 @@ import { loadElectrodes } from "./js/electrodes.js";
     ? main()
     : window.addEventListener("load", main);
 })(() => {
-  const [mode, subject] = parseURL();
-  const volume = loadVolume(subject, mode);
-  const [leftHemisphereMesh, rightHemisphereMesh] = loadSurfaces(subject, mode);
-  const threeDRenderer = initRenderers();
+  const protocol = window.location.protocol;
+  const baseURL = `ievappwpdcpvm01.nyumc.org/?file=sub-`
 
+  const volume = new X.volume();
+  const leftHemisphereMesh = new X.mesh();
+  const rightHemisphereMesh = new X.mesh();
+
+  volume.pickable = false;
+  leftHemisphereMesh.pickable = false;
+  rightHemisphereMesh.pickable = false;
+  leftHemisphereMesh.color = [1, 1, 1];
+  rightHemisphereMesh.color = [1, 1, 1];
+  leftHemisphereMesh.opacity = 0.5;
+  rightHemisphereMesh.opacity = 0.5;
+
+  // configure files
+  const [mode, subject] = parseURL();
+  if (mode === "demo") {
+    const volumePath = `./data/${subject}/volume/${subject}_T1.nii`;
+    const lhPath = `./data/${subject}/meshes/${subject}_lh.pial`;
+    const rhPath = `./data/${subject}/meshes/${subject}_rh.pial`;
+    if (!checkUrls(volumePath, lhPath, rhPath))
+      return;
+    
+    volume.file = volumePath;
+    rightHemisphereMesh.file = rhPath;
+    leftHemisphereMesh.file = lhPath;
+  } else {
+    const volumeURL = `${protocol}//${baseURL}${subject}_preoperation_T1w&bids=ana`;
+    const lhURL = `${protocol}//${baseURL}${subject}_freesurferleft.pial&bids=ana`;
+    const rhURL = `${protocol}//${baseURL}${subject}_freesurferright.pial&bids=ana`;
+    if (!checkUrls(volumeURL, lhURL, rhURL)){
+      return;
+    }
+
+    volume.file = volumeURL;
+    leftHemisphereMesh.file = lhURL;
+    rightHemisphereMesh.file = rhURL;
+  }
+
+  // set up 3D renderer
+  const threeDRenderer = new X.renderer3D();
+  threeDRenderer.container = "3d";
+  threeDRenderer.init();
   threeDRenderer.add(leftHemisphereMesh);
   threeDRenderer.add(rightHemisphereMesh);
   threeDRenderer.add(volume);
-  threeDRenderer.render(); // triggers the onShowtime for 3d renderer
+  threeDRenderer.render(); // triggers the onShowtime 
 
-  // onShowtime gets called automatically, before first rendering happens
+  // onShowtime gets called before first rendering happens
   threeDRenderer.onShowtime = () => {
 
     const gui = new dat.GUI();
@@ -78,75 +117,6 @@ import { loadElectrodes } from "./js/electrodes.js";
   };
 });
 
-/**
- * loads the .nii data into a X.volume and returns it
- * @returns {X.volume}
- */
-const loadVolume = (subject, mode) => {
-  const volume = new X.volume();
-  volume.pickable = false;
-
-  const filePath =
-    mode === "demo"
-      ? `./data/${subject}/volume/${subject}_T1.nii`
-      : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_preoperation_T1w.nii&bids=ana`;
-
-  if (checkUrls(filePath)) {
-    volume.file = filePath;
-    return volume;
-  }
-  return null;
-};
-
-/**
- * Loads the .pial data into two X.meshes and returns them
- * @returns {[X.mesh, X.mesh]}
- */
-const loadSurfaces = (subject, mode) => {
-  const leftHemisphere = new X.mesh();
-  const rightHemisphere = new X.mesh();
-
-  const leftHemispherePath =
-    mode === "demo"
-      ? `./data/${subject}/meshes/${subject}_lh.pial`
-      : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_freesurferleft.pial&bids=ana`;
-
-  const rightHemispherePath =
-    mode === "demo"
-      ? `./data/${subject}/meshes/${subject}_rh.pial`
-      : `${window.location.protocol}//ievappwpdcpvm01.nyumc.org/?file=sub-${subject}_freesurferright.pial&bids=ana`;
-
-  if (!checkUrls(leftHemispherePath, rightHemispherePath)) {
-    return null;
-  }
-
-  leftHemisphere.file = leftHemispherePath;
-  rightHemisphere.file = rightHemispherePath;
-
-  leftHemisphere.color = [1, 1, 1];
-  rightHemisphere.color = [1, 1, 1];
-
-  leftHemisphere.opacity = 0.5;
-  rightHemisphere.opacity = 0.5;
-
-  leftHemisphere.pickable = false;
-  rightHemisphere.pickable = false;
-
-  return [leftHemisphere, rightHemisphere];
-};
-/**
- * Initializes the renderers and sets them to their needed container
- * @returns {[X.renderer3D, x.renderer2D, X.renderer2D, X.renderer2D]}
- */
-
-const initRenderers = () => {
-  const threeDRenderer = new X.renderer3D();
-  threeDRenderer.container = "3d";
-  threeDRenderer.init();
-
-  return threeDRenderer;
-};
-
 // matches mode/subject by regex match and removes '=' character
 const parseURL = () => {
   const userSearch = document.location.search;
@@ -161,7 +131,7 @@ const checkUrls = (...urls) => {
     request.open("HEAD", url, false);
     request.send();
     if (request.status === 404) {
-      alert(`File ${url} not found.`);
+      alert(`Could not load file from ${url}`)
       return false;
     }
   }
