@@ -136,6 +136,8 @@ const addEventsToFmapMenu = (data, connections, fmapHighlights) => {
     if (selected !== "None") {
       GFX.redrawFmaps(connections, selected);
       DOM.fmapCaption.innerText = "No Functional Mapping Selected";
+      DOM.fmapThreshold.innerText = "";
+      DOM.fmapDischarge.innerText = "";
     } else {
       fmaps.forEach((fmap) => (fmap.visible = false));
     }
@@ -289,7 +291,11 @@ const jumpSlicesOnClick = (
     } else if (selectedObject.g === "cylinder") {
       const cylinderIndex = fmapConnections.indexOf(selectedObject);
       if (cylinderIndex >= 0) {
+        const threshold = getAttributeArray(data.functionalMaps, 'fmapThreshold')
+        const discharge = getAttributeArray(data.functionalMaps, 'fmapAfterDischarge');
         fmapCaption.innerText = selectedObject.caption;
+        DOM.fmapThreshold.innerText = `Threshold: ${threshold[cylinderIndex]}`;
+        DOM.fmapDischarge.innerText = `Discharge: ${discharge[cylinderIndex]}`;
         GFX.highlightSelectedFmap(fmapHighlights, cylinderIndex);
       }
     }

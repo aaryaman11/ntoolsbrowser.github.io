@@ -3,6 +3,8 @@ const DOMNodes = {
   electrodeMenu: document.getElementById("electrode-menu"),
   fmapMenu: document.getElementById('fmap-menu'),
   fmapCaption: document.getElementById("fmap-caption"),
+  fmapThreshold: document.getElementById("fmap-threshold"),
+  fmapDischarge: document.getElementById("fmap-after-discharge"),
 
   intPopulationLabel: document.getElementById("int-population-label-inner"),
   seizTypeLabel: document.getElementById("seiz-type-label-inner"),

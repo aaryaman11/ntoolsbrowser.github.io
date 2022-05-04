@@ -1,71 +1,83 @@
 <html>
   <head>
     <title>N-Tools Browser</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"> 
-    <link rel="stylesheet" href="./css/style.css">
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/web-streams-polyfill@2.0.2/dist/ponyfill.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
-    <script type="text/javascript" src="https://get.goxtk.com/xtk_edge.js"></script>
-    <script type="text/javascript" src="https://get.goXTK.com/xtk_xdat.gui.js"></script>
-    <script type="module" src='main.js'></script>
+    <script
+      type="text/javascript"
+      src="https://get.goxtk.com/xtk_edge.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://get.goXTK.com/xtk_xdat.gui.js"
+    ></script>
+    <script type="module" src="main.js"></script>
   </head>
+
   <body>
-    <div id="electrode-controller" class="ui raised segment">
+    <div id="electrode-controller" class="">
       <div id="patient-info" class="">
-        <div>
+        <div class="info-label">
           <label>Subject ID:</label>
           <label id="subject-id-lbl"></label>
         </div>
-        <div>
+        <div class="info-label">
           <label>Number of Seizure Types:</label>
           <label id="num-seiz-types-lbl"></label>
         </div>
-        <br>
       </div>
-          <label for="electrode-types">Seizure Type</label> 
-            <select name="electrode-types" id="seizure-display-menu"></select>
-        <br><br>
-        <div>
-          <label for="electrode">Select Electrode</label>
+      <br />
+      <div id="main-labels">
+        <div class="info-label">
+          <label for="electrode">Select Electrode:</label>
           <select name="electrodes" id="electrode-menu">
             <option value="none">None</option>
           </select>
-          <div>
-            <div id="electrode-type-label">
-              <label>Electrode ID: </label>
-              <label id="electrode-id-label-inner"></label>
-            </div>
-            <div id="electrode-type-label">
-              <label>Electrode Type: </label>
-              <label id="electrode-type-label-inner"></label>
-            </div>
-            <div id="int-population-label">
-              <label>Interictal Population: </label>
-              <label id="int-population-label-inner"></label>
-            </div>
-            <div id="seiz-type-label">
-              <label>Seizure Type: </label>    
-              <label id="seiz-type-label-inner"></label>
-            </div>
-              <div id="coordinates-label">
-              <label>Coordinates: </label>    
-              <label id="coordinates-label-inner"></label>
-            </div>
+        </div>
+        <div id="electrode-info">
+          <div id="electrode-type-label" class="info-label">
+            <label>Electrode ID:</label>
+            <label id="electrode-id-label-inner"></label>
           </div>
-          <div>
-            <label for="show-tags-btn">Display Electrode Tags</label>
-            <input type="checkbox" id="show-tags-btn" name="show-tags-btn">
+          <div id="electrode-type-label" class="info-label">
+            <label>Electrode Type:</label>
+            <label id="electrode-type-label-inner"></label>
           </div>
-          <br>
-          <div>
-            <button id="download-btn">
-              Download Data
-            </button>
+          <div id="int-population-label" class="info-label">
+            <label>Interictal Population:</label>
+            <label id="int-population-label-inner"></label>
           </div>
-          <br>
-          <label for="fmaps">Functional Map</label>
+          <div id="seiz-type-label" class="info-label">
+            <label>Seizure Type:</label>
+            <label id="seiz-type-label-inner"></label>
+          </div>
+          <div id="coordinates-label" class="info-label">
+            <label>Coordinates:</label>
+            <label id="coordinates-label-inner"></label>
+          </div>
+        </div>
+        <div>
+          <label for="show-tags-btn">Display Electrode Tags</label>
+          <input type="checkbox" id="show-tags-btn" name="show-tags-btn" />
+        </div>
+        <br />
+        <div>
+          <button id="download-btn">Download Data</button>
+        </div>
+        <br />
+        <div class="info-label">
+          <label for="electrode-types">Seizure Type:</label>
+          <select name="electrode-types" id="seizure-display-menu"></select>
+        </div>
+        <div class="info-label">
+          <label for="fmaps">Functional Map:</label>
           <select name="fmaps" id="fmap-menu">
             <option value="none">None</option>
             <option value="fmapMotor">Motor</option>
@@ -73,69 +85,43 @@
             <option value="fmapLanguage">Language</option>
             <option value="fmapVisual">Visual</option>
             <option value="fmapOther">Other</option>
-            <option value="fmapAfterDischarge">After Discharge</option>
+            <!-- <option value="fmapAfterDischarge">After Discharge</option> -->
           </select>
-          <br><br>
-          <label id="fmap-caption">No Functional Mapping Selected</label>
-          <br><br><br>
-          
         </div>
+        <br />
+        <label id="fmap-caption">No Functional Mapping Selected</label>
+        <label id="fmap-threshold"></label>
+        <label id="fmap-after-discharge"></label>
+        <br />
       </div>
     </div>
     <div id="color-legend">
-      <ul id="seiztype-list" style="position: absolute;">
-        <li style="color: rgb(255, 0, 0)">
-          Onset
-        </li>
-        <li style="color: rgb(255, 91, 32)">
-          Very Early Spread
-        </li>
-        <li style="color: rgb(255, 255, 0)">
-          Early Spread
-        </li>
-        <li style="color: rgb(0, 255, 49)">
-          Late Spread
-        </li>
+      <ul id="seiztype-list" style="position: absolute">
+        <li style="color: rgb(255, 0, 0)">Onset</li>
+        <li style="color: rgb(255, 91, 32)">Very Early Spread</li>
+        <li style="color: rgb(255, 255, 0)">Early Spread</li>
+        <li style="color: rgb(0, 255, 49)">Late Spread</li>
       </ul>
       <ul id="int-pop-list" style="visibility: hidden; position: absolute">
-        <li style="color: rgb(255, 255, 255)">
-          Int Population 0
-        </li>
-        <li style="color: rgb(0, 255, 50)">
-          Int Population 1
-        </li>
-        <li style="color: rgb(0, 0, 255)">
-          Int Population 2
-        </li>
-        <li style="color: rgb(255, 0, 255)">
-          Int Population 3
-        </li>
-        <li style="color: rgb(0, 255, 255)">
-          Int Population 4
-        </li>
-        <li style="color: rgb(69, 119, 51)">
-          Int Population 5
-        </li>
-        <li style="color: rgb(103, 43, 146)">
-          Int Population 6
-        </li>
-        <li style="color: rgb(194, 194, 194)">
-          Int Population 7
-        </li>
-        <li style="color: rgb(118, 140, 165)">
-          Int Population 8
-        </li>
+        <li style="color: rgb(255, 255, 255)">Int Population 0</li>
+        <li style="color: rgb(0, 255, 50)">Int Population 1</li>
+        <li style="color: rgb(0, 0, 255)">Int Population 2</li>
+        <li style="color: rgb(255, 0, 255)">Int Population 3</li>
+        <li style="color: rgb(0, 255, 255)">Int Population 4</li>
+        <li style="color: rgb(69, 119, 51)">Int Population 5</li>
+        <li style="color: rgb(103, 43, 146)">Int Population 6</li>
+        <li style="color: rgb(194, 194, 194)">Int Population 7</li>
+        <li style="color: rgb(118, 140, 165)">Int Population 8</li>
       </ul>
     </div>
-
     <div id="renderer-container">
-      <div id="3d" style="height: 70%;"></div>
+      <div id="3d" style="height: 70%"></div>
       <div id="electrode-slice-container">
         <div class="container">
           <canvas id="sliceX" class="electrode-slice"> </canvas>
         </div>
         <div class="container">
-          <canvas id="sliceY" class="electrode-slice">  </canvas>
+          <canvas id="sliceY" class="electrode-slice"> </canvas>
         </div>
         <div class="container">
           <canvas id="sliceZ" class="electrode-slice"> </canvas>
@@ -144,22 +130,51 @@
     </div>
 
     <div id="loading-text"></div>
-    <div id="edit-menu" class="" style="display: none"> </div>
+    <div id="edit-menu" class="" style="display: none"></div>
 
     <div id="slice-controller">
       <label for="">Brightness:</label>
-      <input id="slice-brightness" type="range" min="0" max="5" value="1" step="0.01">
+      <input
+        id="slice-brightness"
+        type="range"
+        min="0"
+        max="5"
+        value="1"
+        step="0.01"
+      />
 
       <label for="">Sagittal Index:</label>
-      <input id="sliceX-control" type="range" min="0" max="255" value="128" step="1">
+      <input
+        id="sliceX-control"
+        type="range"
+        min="0"
+        max="255"
+        value="128"
+        step="1"
+      />
 
       <label for="">Coronal Index:</label>
-      <input id="sliceY-control" type="range" min="0" max="255" value="128" step="1">
+      <input
+        id="sliceY-control"
+        type="range"
+        min="0"
+        max="255"
+        value="128"
+        step="1"
+      />
 
       <label for="">Axial Index:</label>
-      <input id="sliceZ-control" type="range" min="0" max="255" value="128" step="1">
-      <br>
+      <input
+        id="sliceZ-control"
+        type="range"
+        min="0"
+        max="255"
+        value="128"
+        step="1"
+      />
+      <br />
       <button id="sync-btn">Sync Slices</button>
     </div>
+    <!-- <div id="close-menu">X</div> -->
   </body>
 </html>
