@@ -747,8 +747,6 @@ const loadElectrodes = (
       slices.forEach(s => s.resetPosition())
       slices.forEach(s => s.drawCanvas());
     });
-
-
   })();
 };
 
