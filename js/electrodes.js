@@ -4,14 +4,13 @@
 
 import { mapInterval } from "./mapInterval.js";
 import { getSeizTypeColor } from "./color.js";
-import { DOMNodes } from "./DOMtree.js";
+import { DOMNodes as DOM } from "./DOMtree.js";
 import { GFX } from "./gfx.js";
 import { ElectrodeCanvas } from "./electrodecanvas.js"
 
 // be mindful that NONE occupies index 0
 const getCurrentSelectedIndex = () => {
-  const { electrodeMenu } = DOMNodes;
-  return electrodeMenu.selectedIndex;
+  return DOM.electrodeMenu.selectedIndex;
 };
 
 const updateSliceLocation = (volume, electrode, slices) => {
@@ -68,9 +67,7 @@ const initializeElectrodeIDMenu = (
   volume,
   slices
 ) => {
-  const { electrodeMenu } = DOMNodes;
-
-  electrodeMenu.addEventListener("change", (event) => {
+  DOM.electrodeMenu.addEventListener("change", (event) => {
     // the index of the selected options will be the same as the electrode array
     const index = getCurrentSelectedIndex() - 1;
     const res = data.electrodes[index];
@@ -84,7 +81,7 @@ const initializeElectrodeIDMenu = (
     const newOption = document.createElement("option");
     newOption.value = entry.elecID;
     newOption.innerText = entry.elecID;
-    electrodeMenu.appendChild(newOption);
+    DOM.electrodeMenu.appendChild(newOption);
   }
 };
 
@@ -96,9 +93,8 @@ const initializeElectrodeIDMenu = (
  */
 const initSeizureTypeMenu = (data, spheres, slices) => {
   const seizureTypes = data.SeizDisplay;
-  const { seizTypeMenu } = DOMNodes;
 
-  seizTypeMenu.addEventListener("change", (event) => {
+  DOM.seizTypeMenu.addEventListener("change", (event) => {
     event.preventDefault();
     event.stopPropagation();
     const selectedType = event.target.value;
@@ -124,7 +120,7 @@ const initSeizureTypeMenu = (data, spheres, slices) => {
     const newOption = document.createElement("option");
     newOption.value = type;
     newOption.innerText = type;
-    seizTypeMenu.appendChild(newOption);
+    DOM.seizTypeMenu.appendChild(newOption);
   });
 };
 
@@ -135,12 +131,11 @@ const initSeizureTypeMenu = (data, spheres, slices) => {
  * @param {array} fmapHighlights - the X.cylinders which highlight
  */
 const addEventsToFmapMenu = (data, connections, fmapHighlights) => {
-  const { fmapMenu, fmapCaption } = DOMNodes;
-  fmapMenu.addEventListener("change", (event) => {
+  DOM.fmapMenu.addEventListener("change", (event) => {
     const selected = getAttributeArray(data.functionalMaps, event.target.value);
     if (selected !== "None") {
       GFX.redrawFmaps(connections, selected);
-      fmapCaption.innerText = "No Functional Mapping Selected";
+      DOM.fmapCaption.innerText = "No Functional Mapping Selected";
     } else {
       fmaps.forEach((fmap) => (fmap.visible = false));
     }
@@ -207,36 +202,27 @@ const updateLabels = (electrode, index, data) => {
   const { elecID, elecType, intPopulation, coordinates } = electrode;
   const { x, y, z } = coordinates;
 
-  const {
-    seizTypeMenu,
-    intPopulationLabel,
-    seizTypeLabel,
-    IDLabel,
-    elecTypeLabel,
-    coordinateLabel,
-  } = DOMNodes;
-
-  const selectedSeizType = seizTypeMenu.selectedOptions[0].value;
+  const selectedSeizType = DOM.seizTypeMenu.selectedOptions[0].value;
   const seizureTypeValues = getAttributeArray(
     data.electrodes,
     selectedSeizType
   );
 
-  IDLabel.innerText = elecID;
-  elecTypeLabel.innerText = elecType;
-  coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(y)}, ${Math.round(z)})`;
+  DOM.IDLabel.innerText = elecID;
+  DOM.elecTypeLabel.innerText = elecType;
+  DOM.coordinateLabel.innerText = `(${Math.round(x)}, ${Math.round(y)}, ${Math.round(z)})`;
 
   // chooses whether to display intpop or seizure type info on the display and edit menus
   if (selectedSeizType === "intPopulation") {
-    intPopulationLabel.innerText = intPopulation;
-    seizTypeLabel.innerText = "";
+    DOM.intPopulationLabel.innerText = intPopulation;
+    DOM.seizTypeLabel.innerText = "";
   } else {
     const currentElecSeizType = seizureTypeValues[index];
     const editOption = document.getElementById('seiz-type-edit');
     if (editOption)
       editOption.value = currentElecSeizType;
-    seizTypeLabel.innerText = currentElecSeizType;
-    intPopulationLabel.innerText = "";
+    DOM.seizTypeLabel.innerText = currentElecSeizType;
+    DOM.intPopulationLabel.innerText = "";
   }
 };
 
@@ -268,7 +254,7 @@ const jumpSlicesOnClick = (
   slices
 ) => {
   // get the main canvas
-  const { canvases, electrodeMenu, fmapCaption } = DOMNodes;
+  const { canvases, electrodeMenu, fmapCaption } = DOM;
 
   canvases[0].addEventListener("click", (e) => {
 
@@ -312,7 +298,7 @@ const jumpSlicesOnClick = (
 };
 
 const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
-  const { canvases, electrodeMenu } = DOMNodes;
+  const { canvases, electrodeMenu } = DOM;
   canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
     const clickedObject = renderer.pick(e.clientX, e.clientY);
@@ -503,7 +489,7 @@ const hideMenu = () => {
 };
 
 const getSelectedSeizType = () => {
-  const { seizTypeMenu } = DOMNodes;
+  const { seizTypeMenu } = DOM;
   return seizTypeMenu.selectedOptions[0].value;
 };
 
@@ -542,11 +528,10 @@ const loadElectrodes = (
 
     const defaultSeizType = data.SeizDisplay[0];
 
-    const { subjectIDLabel, numSeizTypeLabel, tagsBtn } = DOMNodes;
     const loadingText = document.getElementById('loading-text');
 
-    subjectIDLabel.innerText = data.subjID;
-    numSeizTypeLabel.innerText = data.totalSeizType;
+    DOM.subjectIDLabel.innerText = data.subjID;
+    DOM.numSeizTypeLabel.innerText = data.totalSeizType;
 
     // arrays of objects
     const electrodeSpheres = data.electrodes.map((el) =>
@@ -700,7 +685,7 @@ const loadElectrodes = (
 
     // adds event listener to the show-all-tags button on the menu
     let showTags = false;
-    tagsBtn.addEventListener("click", () => {
+    DOM.tagsBtn.addEventListener("click", () => {
       showTags = !showTags;
     });
 
