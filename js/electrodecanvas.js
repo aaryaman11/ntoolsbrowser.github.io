@@ -202,15 +202,25 @@ export class ElectrodeCanvas {
     this.canvas.onwheel = (e) => {
       if (e.ctrlKey) return;
 
+      // this.volume.visible = !this.volume.visible;
       if (this.currentSlice < this.dims[1] && e.wheelDelta > 0) {
         this.currentSlice += 1;
+        if (this.orientation === "sagittal") this.volume.indexX += 1;
+        else if (this.orientation === "coronal") this.volume.indexY += 1;
+        else if (this.orientation === "axial") this.volume.indexZ += 1;
+
         this.drawCanvas();
+        // this.volume.visible = !this.volume.visible;
         return;
       }
 
       if (this.currentSlice > -1 && e.wheelDelta < 0) {
         this.currentSlice -= 1;
+        if (this.orientation === "sagittal") this.volume.indexX -= 1;
+        else if (this.orientation === "coronal") this.volume.indexY -= 1;
+        else if (this.orientation === "axial") this.volume.indexZ -= 1;
         this.drawCanvas();
+        // this.volume.visible = !this.volume.visible;
         return;
       }
     };
@@ -225,8 +235,13 @@ export class ElectrodeCanvas {
   }
 
   resetPosition() {
-    this.currentSlice =
-      this.relativeSlice == null ? this.currentSlice : this.relativeSlice;
+    if (this.relativeSlice == null) return;
+    this.currentSlice = this.relativeSlice;
+    if (this.orientation === "sagittal") this.volume.indexX = this.relativeSlice;
+    else if (this.orientation === "coronal") this.volume.indexY = this.relativeSlice;
+    else if (this.orientation === "axial") this.volume.indexZ = this.relativeSlice;
+
+    
   }
 
   setSeizType(type) {

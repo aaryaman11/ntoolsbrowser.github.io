@@ -35,16 +35,19 @@ const updateSliceLocation = (volume, electrode, slices) => {
   xCanvas.setUserPosition(xSlice);
   xCanvas.setRelativeCoordinates(numSlices - ySlice, numSlices - zSlice);
   xCanvas.drawCanvas();
+  volume.indexX = xSlice;
 
   yCanvas.setSliceIndex(ySlice);
   yCanvas.setUserPosition(ySlice);
   yCanvas.setRelativeCoordinates(xSlice, numSlices - zSlice);
   yCanvas.drawCanvas();
+  volume.indexY = ySlice;
 
   zCanvas.setSliceIndex(zSlice);
   zCanvas.setUserPosition(zSlice);
   zCanvas.setRelativeCoordinates(xSlice, numSlices - ySlice)
   zCanvas.drawCanvas();
+  volume.indexZ = zSlice;
 
 };
 
@@ -723,16 +726,19 @@ const loadElectrodes = (
     }
 
     document.getElementById('sliceX-control').oninput = (event) => {
+      volume.indexX = (parseInt(event.target.value));
       sliceX.setSliceIndex(parseInt(event.target.value));
       sliceX.drawCanvas();
     }
 
     document.getElementById('sliceY-control').oninput = (event) => {
+      volume.indexY = (parseInt(event.target.value));
       sliceY.setSliceIndex(parseInt(event.target.value));
       sliceY.drawCanvas();
     }
 
     document.getElementById('sliceZ-control').oninput = (event) => {
+      volume.indexZ = (parseInt(event.target.value));
       sliceZ.setSliceIndex(parseInt(event.target.value));
       sliceZ.drawCanvas();
     }

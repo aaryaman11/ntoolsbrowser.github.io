@@ -65,6 +65,10 @@ import { loadElectrodes } from "./js/electrodes.js";
     gui.domElement.id = "gui";
 
     volume.visible = false;
+    const volumeGUI = gui.addFolder("Volume");
+    volumeGUI.add(volume, "visible");
+
+    // slice indicies
 
     // hemisphere GUIs
     const leftHemisphereGUI = gui.addFolder("Left Hemisphere");
