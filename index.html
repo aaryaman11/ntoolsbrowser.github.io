@@ -1,34 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/style.css" />
-    <title>N-Tools Browser</title>
-  </head>
 
-  <body>
-    <div id="ntools-search-container">
-      <div id="ntools-search">
-        <form id="ntools-form">
-          <span id="err" style="color: red"></span><br />
-          <label class="search-text" for="ntools-search">Subject ID:&nbsp&nbsp&nbsp;</label>
-          <input id="search-bar" type="text" />
-          <button type="button" id="submitbtn">Load Data</button>
-          <div id="sample-container">
-            <br>
-            <label for="list" style="color: white">Sample Data: </label>
-            <select id="list">
-              <option value="none">Choose Sample...</option>
-              <option value="fsaverage">fsaverage</option>
-              <option value="fsMNI">fsMNI</option>
-            </select>
-          </div>
-        </form>
-      </div>
+<head>
+  <script src="https://unpkg.com/cornerstone-core/dist/cornerstone.min.js
+    "></script>
+  <script src="https://unpkg.com/cornerstone-wado-image-loader"></script>
+  <script src="https://unpkg.com/dicom-parser"></script>
+  <script>
+    cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+    cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
+
+    function onDragOver(e) {
+
+      // stop browser processing right away
+      e.stopPropagation();
+      e.preventDefault();
+
+    };
+
+    function onDrop(e) {
+
+      // stop browser processing right away
+      e.stopPropagation();
+      e.preventDefault();
+
+      var f = e.dataTransfer.files[0];
+
+      var i = cornerstoneWADOImageLoader.wadouri.fileManager.add(f);
+
+
+      cornerstone.loadImage(i).then(function (image) {
+
+        console.log('Loaded', image);
+
+        var viewer = document.getElementById('viewer');
+        cornerstone.enable(viewer);
+        cornerstone.displayImage(viewer, image);
+
+      });
+
+    };
+
+    window.onload = function () {
+
+      document.body.addEventListener('dragover', onDragOver);
+      document.body.addEventListener('drop', onDrop);
+
+    };
+
+  </script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <title>N-Tools Browser</title>
+</head>
+
+<body>
+  <div id="ntools-search-container">
+    <div id="ntools-search">
+      <form id="ntools-form">
+        <span id="err" style="color: red"></span><br />
+        <label class="search-text" for="ntools-search">Subject ID:&nbsp&nbsp&nbsp;</label>
+        <input id="search-bar" type="text" />
+        <button type="button" id="submitbtn">Load Data</button>
+        <div id="sample-container">
+          <br>
+          <label for="list" style="color: white">Sample Data: </label>
+          <select id="list">
+            <option value="none">Choose Sample...</option>
+            <option value="fsaverage">fsaverage</option>
+            <option value="fsMNI">fsMNI</option>
+          </select>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <script src="./js/search.js"></script>
-  </body>
+  <script src="./js/search.js"></script>
+</body>
+
 </html>
