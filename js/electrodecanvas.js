@@ -1,6 +1,6 @@
-// inspired by https://github.com/rii-mango/NIFTI-Reader-JS/blob/master/tests/canvas.html
-
 import { renderer } from "./sliceRenderer.js";
+import { mapInterval } from "./mapInterval.js";
+
 export class ElectrodeCanvas {
   electrodeData;
   defaultType;
@@ -21,6 +21,8 @@ export class ElectrodeCanvas {
 
   // maps slice# -> [electrodes at slice]
   sliceMap;
+  oldInterval;
+  newInterval;
 
   // middle slice by default
   currentSlice;
@@ -32,7 +34,7 @@ export class ElectrodeCanvas {
   constructor(data, volume, orientation, container) {
     this.electrodeData = data.electrodes;
     this.currentType = data.SeizDisplay[0];
-    this.orientation = orientation || "axial";
+    this.orientation = orientation || "sagittal";
     this.container = container || "sliceX";
     this.canvas = document.getElementById(`${this.container}`);
     this.ctx = this.canvas.getContext("2d");
@@ -41,30 +43,30 @@ export class ElectrodeCanvas {
     this.volume = volume;
     this.dims = volume.dimensions;
     this.currentSlice = Math.round(this.dims[1] / 2);
+    this.oldInterval = [
+      -Math.ceil(this.dims[1] / 2),
+      Math.floor(this.dims[1] / 2) - 1,
+    ];
+    this.newInterval = [0, this.dims[1] - 1];
 
     this.initData();
   }
 
   initData() {
-      this.initSliceMap();
-      this.initEvents();
-      this.drawCanvas();
+    this.initSliceMap();
+    this.initEvents();
+    this.drawCanvas();
   }
 
   initSliceMap() {
-    const oldInterval = [
-      -Math.ceil(this.dims[1] / 2),
-      Math.floor(this.dims[1] / 2) - 1,
-    ];
-    const newInterval = [0, this.dims[1] - 1];
     for (const e of this.electrodeData) {
       const sliceIndex =
         this.orientation === "axial"
-          ? Math.round(mapInterval(e.coordinates.z, oldInterval, newInterval))
+          ? Math.round(mapInterval(e.coordinates.z, this.oldInterval, this.newInterval))
           : this.orientation === "coronal"
-          ? Math.round(mapInterval(e.coordinates.y, oldInterval, newInterval))
+          ? Math.round(mapInterval(e.coordinates.y, this.oldInterval, this.newInterval))
           : this.orientation === "sagittal"
-          ? Math.round(mapInterval(e.coordinates.x, oldInterval, newInterval))
+          ? Math.round(mapInterval(e.coordinates.x, this.oldInterval, this.newInterval))
           : null;
 
       if (this.sliceMap.has(sliceIndex)) {
@@ -78,6 +80,10 @@ export class ElectrodeCanvas {
 
   /*
    **/
+  /* formula for finding the i,j,k coordinate for a nifti is found on page 11 of the following
+     https://www.nitrc.org/docman/view.php/26/204/TheNIfTI
+     one can treat either slice, row, or col as i, j, or k
+  */
   calculateOffset(row, col) {
     if (this.orientation === "axial")
       return (
@@ -110,6 +116,7 @@ export class ElectrodeCanvas {
       this.canvas.height
     );
 
+    // inspired by https://github.com/rii-mango/NIFTI-Reader-JS/blob/master/tests/canvas.html
     for (let row = 0; row < this.dims[1]; row++) {
       const rowOffset = row * this.dims[1];
       for (let col = 0; col < this.dims[1]; col++) {
@@ -128,6 +135,10 @@ export class ElectrodeCanvas {
 
     this.ctx.putImageData(canvasImageData, 0, 0);
 
+    /* this currently draws the electrodes at the current slice, as well as 
+       the two adjacent slices if they have electrodes. draw 2D electrodes
+       takes a second arg for radius, and can be set to 1 for adjacent slices
+    */
     if (this.sliceMap.has(this.currentSlice)) {
       const electrodesAtSlice = this.sliceMap.get(this.currentSlice);
       const previousElectrodes = this.sliceMap.get(this.currentSlice - 1);
@@ -145,31 +156,22 @@ export class ElectrodeCanvas {
   }
 
   draw2DElectrodes(electrodes, size = 2) {
-    const oldInterval = [(this.dims[1] - 1) / -2, (this.dims[1] - 1) / 2];
-    const newInterval = [0, this.dims[1] - 1];
     for (const e of electrodes) {
       this.ctx.beginPath();
       const { x, y, z } = e.coordinates;
       let mappedX, mappedY;
       if (this.orientation === "axial") {
-        mappedX = Math.round(mapInterval(x, oldInterval, newInterval));
-        mappedY = Math.round(mapInterval(y, oldInterval, newInterval));
+        mappedX = Math.round(mapInterval(x, this.oldInterval, this.newInterval));
+        mappedY = Math.round(mapInterval(y, this.oldInterval, this.newInterval));
         this.ctx.arc(mappedX, this.dims[1] - mappedY, size, 0, 2 * Math.PI);
       } else if (this.orientation === "coronal") {
-        mappedX = Math.round(mapInterval(x, oldInterval, newInterval));
-        mappedY = Math.round(mapInterval(z, oldInterval, newInterval));
+        mappedX = Math.round(mapInterval(x, this.oldInterval, this.newInterval));
+        mappedY = Math.round(mapInterval(z, this.oldInterval, this.newInterval));
         this.ctx.arc(mappedX, this.dims[1] - mappedY, size, 0, 2 * Math.PI);
       } else if (this.orientation === "sagittal") {
-        mappedX = Math.round(mapInterval(y, oldInterval, newInterval));
-        mappedY = Math.round(mapInterval(z, oldInterval, newInterval));
-
-        this.ctx.arc(
-          this.dims[1] - mappedX,
-          this.dims[1] - mappedY,
-          size,
-          0,
-          2 * Math.PI
-        );
+        mappedX = Math.round(mapInterval(y, this.oldInterval, this.newInterval));
+        mappedY = Math.round(mapInterval(z, this.oldInterval, this.newInterval));
+        this.ctx.arc( this.dims[1] - mappedX, this.dims[1] - mappedY, size, 0, 2 * Math.PI);
       }
 
       this.ctx.stroke();
@@ -202,7 +204,6 @@ export class ElectrodeCanvas {
     this.canvas.onwheel = (e) => {
       if (e.ctrlKey) return;
 
-      // this.volume.visible = !this.volume.visible;
       if (this.currentSlice < this.dims[1] && e.wheelDelta > 0) {
         this.currentSlice += 1;
         if (this.orientation === "sagittal") this.volume.indexX += 1;
@@ -210,7 +211,6 @@ export class ElectrodeCanvas {
         else if (this.orientation === "axial") this.volume.indexZ += 1;
 
         this.drawCanvas();
-        // this.volume.visible = !this.volume.visible;
         return;
       }
 
@@ -220,7 +220,6 @@ export class ElectrodeCanvas {
         else if (this.orientation === "coronal") this.volume.indexY -= 1;
         else if (this.orientation === "axial") this.volume.indexZ -= 1;
         this.drawCanvas();
-        // this.volume.visible = !this.volume.visible;
         return;
       }
     };
@@ -236,12 +235,14 @@ export class ElectrodeCanvas {
 
   resetPosition() {
     if (this.relativeSlice == null) return;
-    this.currentSlice = this.relativeSlice;
-    if (this.orientation === "sagittal") this.volume.indexX = this.relativeSlice;
-    else if (this.orientation === "coronal") this.volume.indexY = this.relativeSlice;
-    else if (this.orientation === "axial") this.volume.indexZ = this.relativeSlice;
 
-    
+    this.currentSlice = this.relativeSlice;
+    if (this.orientation === "sagittal")
+      this.volume.indexX = this.relativeSlice;
+    else if (this.orientation === "coronal")
+      this.volume.indexY = this.relativeSlice;
+    else if (this.orientation === "axial")
+      this.volume.indexZ = this.relativeSlice;
   }
 
   setSeizType(type) {
@@ -255,7 +256,7 @@ export class ElectrodeCanvas {
   setBrightness(value) {
     this.brightness = value;
   }
-}
+} // end Class ElectrodeCanvas
 
 const getColor = (type) => {
   if (!type) {
@@ -267,7 +268,6 @@ const getColor = (type) => {
     .replace(/\s+/g, " ")
     .trim();
 
-  // console.log(formattedType)
   const colors = {
     // seizure type X
     "": "#ffffff",
@@ -293,20 +293,11 @@ const getColor = (type) => {
   return colors[formattedType] ?? "#ffffff";
 };
 
-const mapInterval = (input, inputRange, outputRange) => {
-  const [inputStart, inputEnd] = inputRange;
-  const [outputStart, outputEnd] = outputRange;
-  return (
-    outputStart +
-    ((outputEnd - outputStart) / (inputEnd - inputStart)) * (input - inputStart)
-  );
-};
-
 /*
-        The following code for panning and zooming takes inspiration from
-        https://betterprogramming.pub/implementation-of-zoom-and-pan-in-69-lines-of-javascript-8b0cb5f221c1
-        //https://github.com/kwdowik/zoom-pan
-      */
+  The following code for panning and zooming takes inspiration from
+  https://betterprogramming.pub/implementation-of-zoom-and-pan-in-69-lines-of-javascript-8b0cb5f221c1
+  //https://github.com/kwdowik/zoom-pan
+*/
 
 window.onload = function () {
   (() => {

@@ -3,6 +3,7 @@
     background-color:#000;
     margin: 0;
     padding: 0;
+    font-size: 0.9rem;
     height: 100%;
     overflow: hidden !important;  
     box-sizing: border-box;
@@ -20,6 +21,14 @@ label {
     user-select: none;
     pointer-events: none;
 }
+
+.info-label {
+    display: flex;
+    /* justify-content: space-evenly; */
+    justify-content: space-between;
+}
+
+/* .select */
 
 #renderer-container {
     color: black;
@@ -74,24 +83,29 @@ button:active {
     
 }
 
-/* .label {
-    text-shadow: -1px 1px 1px rgb(0,0,0);
-    margin-left: 25px;
-    font-size: 20px;
-    z-index: 10;
-} */
-
 #electrode-controller {
     position: absolute;
+    display: flex;
+    justify-content: right;
+    flex-direction: column;
+    align-items: top;
+    /* align-self: auto; */
     height: 70%;
     width: 15%;
     color: white;
-    display: block;
+    /* display: block; */
     background-color: #303030;
     padding: 5px;
     z-index: 2;
     min-width: 10%;
     border-bottom: 1px solid white;
+}
+
+#main-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: right;
 }
 
 #slice-controller {
@@ -101,6 +115,7 @@ button:active {
     justify-content: flex-start;
     position: absolute;
     height: 30%;
+    /* width: 16%; */
     background-color: #303030;
     top: 70%;
     z-index: 2;
@@ -195,7 +210,10 @@ option:hover {
 
 #color-legend{
     font-size: 1rem;
-    left: 15%;
+    left: 16%;
+    /* padding: 0px; */
+    /* margin-top: 0px; */
+    /* bottom: 100%; */
     position: relative;
     z-index: 0;
 }
@@ -216,6 +234,7 @@ option:hover {
     position: relative;
     z-index: 1;
     /* font-weight: bold; */
+    font-weight: 550;
     color: red;
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
@@ -231,4 +250,19 @@ option:hover {
     bottom: 95%;
     pointer-events: none;
     text-align: center;
+}
+
+#electrode-info {
+    /* display: flex;
+    flex-direction: column;
+    align-items: space-around; */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 1fr);
+    align-items: stretch;
+    /* border: 1px solid gray; */
+    /* padding: 1em; */
+    /* grid-gap: 50px; */
+    /* grid-column-gap: 2rem; */
+    
 }
