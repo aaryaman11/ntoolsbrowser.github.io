@@ -7,9 +7,6 @@ export class ElectrodeCanvas {
   currentType;
 
   // for .nii parsing and access
-  niftiBuffer;
-  niftiHeader;
-  niftiImage;
   volume;
   dims;
 
@@ -17,7 +14,6 @@ export class ElectrodeCanvas {
   orientation;
   container;
   brightness;
-
 
   // canvas where rendering will happen
   canvas;
@@ -43,27 +39,16 @@ export class ElectrodeCanvas {
     this.sliceMap = new Map();
     this.brightness = 1;
     this.volume = volume;
+    this.dims = volume.dimensions;
+    this.currentSlice = Math.round(this.dims[1] / 2);
 
     this.initData();
   }
 
   initData() {
-      // 'ab' is XTKs minified array buffer.
-      this.parseNifti(this.volume.ab);
       this.initSliceMap();
       this.initEvents();
       this.drawCanvas();
-  }
-
-  // TODO change to XTKs already parsed volume data
-  parseNifti(data) {
-    if (nifti.isCompressed(data)) data = nifti.decompress(data);
-    if (nifti.isNIFTI(data)) {
-      this.niftiHeader = nifti.readHeader(data);
-      this.niftiImage = nifti.readImage(this.niftiHeader, data);
-      this.dims = this.niftiHeader.dims;
-      this.currentSlice = Math.round(this.dims[1] / 2);
-    }
   }
 
   initSliceMap() {
@@ -115,11 +100,11 @@ export class ElectrodeCanvas {
   }
 
   drawCanvas() {
-    // const coordinates = this.electrodeData.map((e) => e.coordinates);
     this.canvas.width = this.dims[1];
     this.canvas.height = this.dims[2];
 
-    const typedData = new Uint8Array(this.niftiImage);
+    // volume.K is XTK's nifti image buffer
+    const typedData = this.volume.K;
     const canvasImageData = this.ctx.createImageData(
       this.canvas.width,
       this.canvas.height
