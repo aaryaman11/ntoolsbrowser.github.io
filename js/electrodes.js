@@ -308,12 +308,11 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
     const selectedObject = renderer.get(clickedObject);
     const objectIndex = spheres.indexOf(selectedObject);
     const selectedElectrode = data.electrodes[objectIndex];
-    const menu = document.getElementById("edit-menu");
 
-    menu.innerHTML = insertMenuHTML(selectedElectrode);
-    menu.style.display = "grid";
-    menu.style.left = `${e.pageX}px`;
-    menu.style.top = `${e.pageY}px`;
+    DOM.editMenu.innerHTML = insertMenuHTML(selectedElectrode);
+    DOM.editMenu.style.display = "grid";
+    DOM.editMenu.style.left = `${e.pageX}px`;
+    DOM.editMenu.style.top = `${e.pageY}px`;
 
     document.getElementById('seiz-type-edit').value = selectedElectrode[getSelectedSeizType()];
     document.getElementById('int-pop-edit').value = selectedElectrode.intPopulation;
@@ -477,7 +476,7 @@ const downloadJSON = (data, subject) => {
   const a = document.createElement("a");
   a.style.display = "none";
   a.href = url;
-  a.download = `sub-${subject}_ntoolsbrowser.json`;
+  a.download = `sub-${subject}_ntoolsbrowser`;
   document.body.append(a);
   a.click();
   window.URL.revokeObjectURL(url);
@@ -504,235 +503,231 @@ const loadElectrodes = async (
   subject,
   playSignalController
 ) => {
-  // (async () => {
-    // for 'NYU' or build mode
-    const protocol = window.location.protocol;
-    const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ieeg&file=sub-${subject}`;
+  // for 'NYU' or build mode
+  const protocol = window.location.protocol;
+  const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ieeg&file=sub-${subject}`;
 
-    // initial data load
-    const data =
+  // initial data load
+  const data =
+    mode === "demo"
+      ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
+      : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
+
+  // three canvas slices displaying 2D electrodes
+  const sliceX = new ElectrodeCanvas(data, volume, "sagittal", "sliceX");
+  const sliceY = new ElectrodeCanvas(data, volume, "coronal", "sliceY");
+  const sliceZ = new ElectrodeCanvas(data, volume, "axial", "sliceZ");
+
+  // put in array for easy function passing
+  const slices = [sliceX, sliceY, sliceZ]
+
+  // tags need the original bounding box. renderer.resetBoundingBox() might work too
+  const oldBoundingBox = renderer.u;
+
+  const defaultSeizType = data.SeizDisplay[0];
+
+  const loadingText = document.getElementById('loading-text');
+
+  DOM.subjectIDLabel.innerText = data.subjID;
+  DOM.numSeizTypeLabel.innerText = data.totalSeizType;
+
+  // arrays of objects
+  const electrodeSpheres = data.electrodes.map((el) =>
+    GFX.drawElectrodeFx(el, false, defaultSeizType, oldBoundingBox)
+  );
+  const selectionSpheres = data.electrodes.map((el) =>
+    GFX.drawElectrodeFx(el, true, defaultSeizType, oldBoundingBox)
+  );
+  const fmapConnections = GFX.drawFmapFx(
+    data.functionalMaps,
+    data.electrodes,
+    oldBoundingBox
+  );
+  const fmapHighlights = fmapConnections.map((fmap) =>
+    GFX.drawFmapHighlightFx(fmap)
+  );
+
+  // add XTK's graphical representation of data to renderer
+  electrodeSpheres.forEach((el) => renderer.add(el));
+  selectionSpheres.forEach((el) => renderer.add(el));
+  fmapConnections.forEach((connection) => renderer.add(connection));
+  fmapHighlights.forEach((highlight) => renderer.add(highlight));
+
+  // setup electrode signal display
+  let electrodeSignals = [];
+  let signalHeader;
+
+  // fsaverage in the demos is currently without a signal .bin
+  if (subject !== "fsaverage") {
+
+    signalHeader = 
+      mode === "demo" 
+      ? await (await fetch(`./data/${subject}/edf/${subject}_signal_header.json`)).json()
+      : await (await fetch(`${protocol}//${baseURL}_functionalmapping.json`)).json();
+
+    const sampleSize = signalHeader.length;
+
+    // binary file is Float32. change to 8 if Float64 is used
+    const numBytes = 4;
+    const signalPath = 
       mode === "demo"
-        ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
-        : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
+      ?  `./data/${subject}/edf/signals/${subject}.bin`
+      : `${protocol}//${baseURL}_functionalmapping.bin`;
 
-    // three canvas slices displaying 2D electrodes
-    const sliceX = new ElectrodeCanvas(data, volume, "sagittal", "sliceX");
-    const sliceY = new ElectrodeCanvas(data, volume, "coronal", "sliceY");
-    const sliceZ = new ElectrodeCanvas(data, volume, "axial", "sliceZ");
+    loadingText.innerText = `Loading Electrode Signals...`
 
-    // put in array for easy function passing
-    const slices = [sliceX, sliceY, sliceZ]
+    electrodeSignals = await fetch(signalPath)
+      .then((response) => response.blob())
+      .then((content) => content.arrayBuffer(content.size))
+      .then((data) => {
+        // dataview can decode the binary data inside the signal file
+        const dataView = new DataView(data);
+        const sizePerSample = dataView.byteLength / sampleSize;
+        const signals = [];
 
-    // tags need the original bounding box. renderer.resetBoundingBox() might work too
-    const oldBoundingBox = renderer.u;
-
-    const defaultSeizType = data.SeizDisplay[0];
-
-    const loadingText = document.getElementById('loading-text');
-
-    DOM.subjectIDLabel.innerText = data.subjID;
-    DOM.numSeizTypeLabel.innerText = data.totalSeizType;
-
-    // arrays of objects
-    const electrodeSpheres = data.electrodes.map((el) =>
-      GFX.drawElectrodeFx(el, false, defaultSeizType, oldBoundingBox)
-    );
-    const selectionSpheres = data.electrodes.map((el) =>
-      GFX.drawElectrodeFx(el, true, defaultSeizType, oldBoundingBox)
-    );
-    const fmapConnections = GFX.drawFmapFx(
-      data.functionalMaps,
-      data.electrodes,
-      oldBoundingBox
-    );
-    const fmapHighlights = fmapConnections.map((fmap) =>
-      GFX.drawFmapHighlightFx(fmap)
-    );
-
-    // add XTK's graphical representation of data to renderer
-    electrodeSpheres.forEach((el) => renderer.add(el));
-    selectionSpheres.forEach((el) => renderer.add(el));
-    fmapConnections.forEach((connection) => renderer.add(connection));
-    fmapHighlights.forEach((highlight) => renderer.add(highlight));
-
-    // setup electrode signal display
-    let electrodeSignals = [];
-    let signalHeader;
-
-    // fsaverage in the demos is currently without a signal .bin
-    if (subject !== "fsaverage") {
-
-      signalHeader = 
-        mode === "demo" 
-        ? await (await fetch(`./data/${subject}/edf/${subject}_signal_header.json`)).json()
-        : await (await fetch(`${protocol}//${baseURL}_functionalmapping.json`)).json();
-
-      const sampleSize = signalHeader.length;
-
-      // binary file is Float32. change to 8 if Float64 is used
-      const numBytes = 4;
-      const signalPath = 
-        mode === "demo"
-        ?  `./data/${subject}/edf/signals/${subject}.bin`
-        : `${protocol}//${baseURL}_functionalmapping.bin`;
-
-      loadingText.innerText = `Loading Electrode Signals...`
-
-      electrodeSignals = await fetch(signalPath)
-        .then((response) => response.blob())
-        .then((content) => content.arrayBuffer(content.size))
-        .then((data) => {
-          // dataview can decode the binary data inside the signal file
-          const dataView = new DataView(data);
-          const sizePerSample = dataView.byteLength / sampleSize;
-          const signals = [];
-
-          // chunk the array into equal parts. the binary data for each signal is listed in order
-          // the bin file has no metadata
-          for (let j = 0; j < sampleSize; j++) {
-            const view = [];
-            for (
-              let i = sizePerSample * j;
-              i < sizePerSample * (j + 1);
-              i += numBytes
-            ) {
-              view.push(dataView.getFloat32(i, true));
-            }
-            signals.push(view);
+        // chunk the array into equal parts. the binary data for each signal is listed in order
+        // the bin file has no metadata
+        for (let j = 0; j < sampleSize; j++) {
+          const view = [];
+          for (
+            let i = sizePerSample * j;
+            i < sizePerSample * (j + 1);
+            i += numBytes
+          ) {
+            view.push(dataView.getFloat32(i, true));
           }
-
-          return signals;
-        });
-
-      loadingText.innerText = "";
-    }
-    
-    let signalIndex = 0;
-    let playSignal = false;
-
-    playSignalController["start / stop"] = function () {
-      if (!electrodeSignals.length) {
-        alert("Electrode signal display is not yet implemented for this subject");
-        return;
-      }
-      let signalFrequency = 10;
-
-      playSignal = !playSignal;
-
-      function applySignal() {
-        if (!playSignal) return;
-
-        if(signalIndex == electrodeSignals[0].length)
-          signalIndex = 0;
-
-        let max = electrodeSignals[0][signalIndex];
-        let min = electrodeSignals[0][signalIndex];
-
-        for(let i = 0; i < electrodeSignals.length; i++){
-          
-          if(electrodeSignals[i][signalIndex] > max)
-            max = electrodeSignals[i][signalIndex];
-
-          if(electrodeSignals[i][signalIndex] < min)
-            min = electrodeSignals[i][signalIndex];          
+          signals.push(view);
         }
 
-        let colors = [];
-        for(let i = 0; i < electrodeSignals.length; i++){
-          let normalizedSignal = 0;
+        return signals;
+      });
 
-          normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
+    loadingText.innerText = "";
+  }
+  
+  let signalIndex = 0;
+  let playSignal = false;
 
-          colors[i] = [normalizedSignal, 0, 1 - normalizedSignal];
-        }
+  playSignalController["start / stop"] = function () {
+    if (!electrodeSignals.length) {
+      alert("Electrode signal display is not yet implemented for this subject");
+      return;
+    }
+    let signalFrequency = 10;
 
-        electrodeSpheres.forEach(
-          (sphere, i) =>{
-            sphere.color = colors[i];
-          }
-        );
+    playSignal = !playSignal;
 
-        signalIndex++;
-        setTimeout(applySignal, signalFrequency);
+    function applySignal() {
+      if (!playSignal) return;
+
+      if(signalIndex == electrodeSignals[0].length)
+        signalIndex = 0;
+
+      let max = electrodeSignals[0][signalIndex];
+      let min = electrodeSignals[0][signalIndex];
+
+      for(let i = 0; i < electrodeSignals.length; i++){
+        
+        if(electrodeSignals[i][signalIndex] > max)
+          max = electrodeSignals[i][signalIndex];
+
+        if(electrodeSignals[i][signalIndex] < min)
+          min = electrodeSignals[i][signalIndex];          
       }
 
-      if (playSignal) applySignal();
-    };
+      let colors = [];
+      for(let i = 0; i < electrodeSignals.length; i++){
+        let normalizedSignal = 0;
 
-    // //* adds the seizure types to the first drop down menu on the panel
-    initSeizureTypeMenu(data, electrodeSpheres, slices);
+        normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
 
-    // //* adds the IDs to the electrode ID menu and sets up event listeners
-    initializeElectrodeIDMenu(data, selectionSpheres, volume, slices);
+        colors[i] = [normalizedSignal, 0, 1 - normalizedSignal];
+      }
 
-    // //* this needs to be refactored
-    jumpSlicesOnClick(
-      data,
-      renderer,
-      electrodeSpheres,
-      selectionSpheres,
-      fmapConnections,
-      fmapHighlights,
-      volume,
-      slices
-    );
+      electrodeSpheres.forEach(
+        (sphere, i) =>{
+          sphere.color = colors[i];
+        }
+      );
 
-    // adds functionality for hovering over particular electrodes on the scene
-    addMouseHover(renderer);
-
-    // //* adds the event listners to the functional map menu
-    addEventsToFmapMenu(data, fmapConnections, fmapHighlights);
-
-    // adds event listener to the show-all-tags button on the menu
-    let showTags = false;
-    DOM.tagsBtn.addEventListener("click", () => {
-      showTags = !showTags;
-    });
-
-    createElectrodeTags(electrodeSpheres);
-    setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres, slices);
-
-    // TODO: change the fmap connections if needed
-    document
-      .getElementById("download-btn")
-      .addEventListener("click", () => downloadJSON(data, subject));
-
-    document
-      .getElementsByTagName("canvas")[0]
-      .addEventListener("mousedown", () => hideMenu());
-
-    renderer.onRender = () => {
-      showElectrodeTags(showTags, electrodeSpheres, renderer, oldBoundingBox);
-    };
-
-    document.getElementById('slice-brightness').oninput = (event) => {
-      slices.forEach(s => s.setBrightness(event.target.value));
-      slices.forEach(s => s.drawCanvas())
+      signalIndex++;
+      setTimeout(applySignal, signalFrequency);
     }
 
-    document.getElementById('sliceX-control').oninput = (event) => {
-      volume.indexX = (parseInt(event.target.value));
-      sliceX.setSliceIndex(parseInt(event.target.value));
-      sliceX.drawCanvas();
-    }
+    if (playSignal) applySignal();
+  };
 
-    document.getElementById('sliceY-control').oninput = (event) => {
-      volume.indexY = (parseInt(event.target.value));
-      sliceY.setSliceIndex(parseInt(event.target.value));
-      sliceY.drawCanvas();
-    }
+  // //* adds the seizure types to the first drop down menu on the panel
+  initSeizureTypeMenu(data, electrodeSpheres, slices);
 
-    document.getElementById('sliceZ-control').oninput = (event) => {
-      volume.indexZ = (parseInt(event.target.value));
-      sliceZ.setSliceIndex(parseInt(event.target.value));
-      sliceZ.drawCanvas();
-    }
+  // //* adds the IDs to the electrode ID menu and sets up event listeners
+  initializeElectrodeIDMenu(data, selectionSpheres, volume, slices);
 
-    document.getElementById('sync-btn').addEventListener('click', () => {
-      slices.forEach(s => s.resetPosition())
-      slices.forEach(s => s.drawCanvas());
-    });
-  // })();
+  // //* this needs to be refactored
+  jumpSlicesOnClick(
+    data,
+    renderer,
+    electrodeSpheres,
+    selectionSpheres,
+    fmapConnections,
+    fmapHighlights,
+    volume,
+    slices
+  );
+
+  // adds functionality for hovering over particular electrodes on the scene
+  addMouseHover(renderer);
+
+  // //* adds the event listners to the functional map menu
+  addEventsToFmapMenu(data, fmapConnections, fmapHighlights);
+
+  // adds event listener to the show-all-tags button on the menu
+  let showTags = false;
+  DOM.tagsBtn.addEventListener("click", () => {
+    showTags = !showTags;
+  });
+
+  createElectrodeTags(electrodeSpheres);
+  setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres, slices);
+
+  renderer.onRender = () => {
+    showElectrodeTags(showTags, electrodeSpheres, renderer, oldBoundingBox);
+  };
+
+  // TODO: change the fmap connections if needed
+ DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
+
+  document
+    .getElementsByTagName("canvas")[0]
+    .addEventListener("mousedown", () => hideMenu());
+
+  DOM.brightCtrl.oninput = (event) => {
+    slices.forEach(s => s.setBrightness(event.target.value));
+    slices.forEach(s => s.drawCanvas())
+  }
+
+  DOM.sliceXCtrl.oninput = (event) => {
+    volume.indexX = (parseInt(event.target.value));
+    sliceX.setSliceIndex(parseInt(event.target.value));
+    sliceX.drawCanvas();
+  }
+
+  DOM.sliceYCtrl.oninput = (event) => {
+    volume.indexY = (parseInt(event.target.value));
+    sliceY.setSliceIndex(parseInt(event.target.value));
+    sliceY.drawCanvas();
+  }
+
+  DOM.sliceZCtrl.oninput = (event) => {
+    volume.indexZ = (parseInt(event.target.value));
+    sliceZ.setSliceIndex(parseInt(event.target.value));
+    sliceZ.drawCanvas();
+  }
+
+  DOM.syncBtn.addEventListener('click', () => {
+    slices.forEach(s => s.resetPosition())
+    slices.forEach(s => s.drawCanvas());
+  });
 };
 
 export { loadElectrodes };
