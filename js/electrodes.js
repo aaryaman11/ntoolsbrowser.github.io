@@ -497,14 +497,14 @@ const getAttributeArray = (data, attr) => {
   return data.map((datum) => datum[attr]);
 };
 
-const loadElectrodes = (
+const loadElectrodes = async (
   renderer,
   volume,
   mode,
   subject,
   playSignalController
 ) => {
-  (async () => {
+  // (async () => {
     // for 'NYU' or build mode
     const protocol = window.location.protocol;
     const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ieeg&file=sub-${subject}`;
@@ -732,7 +732,7 @@ const loadElectrodes = (
       slices.forEach(s => s.resetPosition())
       slices.forEach(s => s.drawCanvas());
     });
-  })();
+  // })();
 };
 
 export { loadElectrodes };
