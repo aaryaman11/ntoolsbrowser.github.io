@@ -18,6 +18,7 @@ export class ElectrodeCanvas {
   // canvas where rendering will happen
   canvas;
   ctx;
+  showDetails;
 
   // maps slice# -> [electrodes at slice]
   sliceMap;
@@ -42,6 +43,7 @@ export class ElectrodeCanvas {
     this.brightness = 1;
     this.volume = volume;
     this.dims = volume.dimensions;
+    this.showDetails = false;
     this.currentSlice = Math.round(this.dims[1] / 2);
     this.oldInterval = [
       -Math.ceil(this.dims[1] / 2),
@@ -134,6 +136,13 @@ export class ElectrodeCanvas {
     }
 
     this.ctx.putImageData(canvasImageData, 0, 0);
+    if (this.showDetails) {
+      this.ctx.font = "10px Arial";
+      this.ctx.fillStyle = "red";
+      this.ctx.fillText(`Image ${this.currentSlice} of ${this.dims[1] - 1}`, 5, 10);
+
+    }
+
 
     /* this currently draws the electrodes at the current slice, as well as 
        the two adjacent slices if they have electrodes. draw 2D electrodes
@@ -146,8 +155,10 @@ export class ElectrodeCanvas {
 
       this.draw2DElectrodes(electrodesAtSlice);
 
-      if (previousElectrodes) this.draw2DElectrodes(previousElectrodes);
-      if (nextElectrodes) this.draw2DElectrodes(nextElectrodes);
+      if (!this.showDetails) {
+        if (previousElectrodes) this.draw2DElectrodes(previousElectrodes);
+        if (nextElectrodes) this.draw2DElectrodes(nextElectrodes);
+      }
 
       if (this.currentSlice === this.relativeSlice) {
         this.drawMark(this.relativeX, this.relativeY);
@@ -155,28 +166,49 @@ export class ElectrodeCanvas {
     }
   }
 
-  draw2DElectrodes(electrodes, size = 2) {
+  draw2DElectrodes(electrodes, size = 2, textOffset = 30) {
+
+    const electrodeTags = []
+
     for (const e of electrodes) {
-      this.ctx.beginPath();
       const { x, y, z } = e.coordinates;
       let mappedX, mappedY;
+
       if (this.orientation === "axial") {
         mappedX = Math.round(mapInterval(x, this.oldInterval, this.newInterval));
-        mappedY = Math.round(mapInterval(y, this.oldInterval, this.newInterval));
-        this.ctx.arc(mappedX, this.dims[1] - mappedY, size, 0, 2 * Math.PI);
+        mappedY = this.dims[1] - Math.round(mapInterval(y, this.oldInterval, this.newInterval));
       } else if (this.orientation === "coronal") {
         mappedX = Math.round(mapInterval(x, this.oldInterval, this.newInterval));
-        mappedY = Math.round(mapInterval(z, this.oldInterval, this.newInterval));
-        this.ctx.arc(mappedX, this.dims[1] - mappedY, size, 0, 2 * Math.PI);
+        mappedY = this.dims[1] - Math.round(mapInterval(z, this.oldInterval, this.newInterval));
       } else if (this.orientation === "sagittal") {
-        mappedX = Math.round(mapInterval(y, this.oldInterval, this.newInterval));
-        mappedY = Math.round(mapInterval(z, this.oldInterval, this.newInterval));
-        this.ctx.arc( this.dims[1] - mappedX, this.dims[1] - mappedY, size, 0, 2 * Math.PI);
+        mappedX = this.dims[1] - Math.round(mapInterval(y, this.oldInterval, this.newInterval));
+        mappedY = this.dims[1] - Math.round(mapInterval(z, this.oldInterval, this.newInterval));
       }
 
+      this.ctx.beginPath();
+      this.ctx.arc(mappedX, mappedY, size, 0, 2 * Math.PI);
       this.ctx.stroke();
       this.ctx.fillStyle = getColor(e[this.currentType]);
       this.ctx.fill();
+
+      electrodeTags.push({ centerX: mappedX, centerY: mappedY, ID: e.elecID, fromOrigin: Math.sqrt(mappedX ** 2 + (this.dims[1] - mappedY) ** 2)} );
+    }
+    if (this.showDetails) {
+
+      electrodeTags.sort((t1, t2) => t2.fromOrigin - t1.fromOrigin);
+      for (const tag of electrodeTags) {
+        this.ctx.font = `10px Arial`;
+        this.ctx.fillStyle = `red`;
+        this.ctx.fillText(`${tag.ID}`, 5, textOffset);
+
+        this.ctx.strokeStyle = "#efefef";
+        this.ctx.beginPath();
+        this.ctx.moveTo((tag.ID.length * 2) + 20, textOffset + 1)
+        this.ctx.lineTo(tag.centerX, tag.centerY)
+        this.ctx.stroke();
+        textOffset += 15;
+        
+      }
     }
   }
 
@@ -255,6 +287,10 @@ export class ElectrodeCanvas {
 
   setBrightness(value) {
     this.brightness = value;
+  }
+
+  toggleDetails() {
+    this.showDetails = !this.showDetails;
   }
 } // end Class ElectrodeCanvas
 

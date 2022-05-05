@@ -28,6 +28,10 @@ label {
     justify-content: space-between;
 }
 
+#slice-details:hover {
+    cursor: pointer;
+}
+
 /* .select */
 
 #renderer-container {

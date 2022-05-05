@@ -734,6 +734,11 @@ const loadElectrodes = async (
     slices.forEach(s => s.resetPosition())
     slices.forEach(s => s.drawCanvas());
   });
+
+  document.getElementById('slice-details').onclick = () => {
+    slices.forEach(s => s.toggleDetails());
+    slices.forEach(s => s.drawCanvas());
+  }
 };
 
 export { loadElectrodes };
