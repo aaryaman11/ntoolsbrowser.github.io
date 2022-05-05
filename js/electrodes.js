@@ -735,6 +735,15 @@ const loadElectrodes = async (
     slices.forEach(s => s.drawCanvas());
   });
 
+  document.getElementById("slice-window-low").oninput = (event) => {
+    slices.forEach(s => s.setWindowLow(parseInt(event.target.value)));
+    slices.forEach(s => s.drawCanvas());
+  }
+  document.getElementById("slice-window-high").oninput = (event) => {
+    slices.forEach(s => s.setWindowHigh(parseInt(event.target.value)));
+    slices.forEach(s => s.drawCanvas());
+  }
+
   document.getElementById('slice-details').onclick = () => {
     slices.forEach(s => s.toggleDetails());
     slices.forEach(s => s.drawCanvas());

@@ -14,6 +14,8 @@ export class ElectrodeCanvas {
   orientation;
   container;
   brightness;
+  windowLow;
+  windowHigh;
 
   // canvas where rendering will happen
   canvas;
@@ -39,7 +41,6 @@ export class ElectrodeCanvas {
     this.container = container || "sliceX";
     this.canvas = document.getElementById(`${this.container}`);
     this.ctx = this.canvas.getContext("2d");
-    // this.sliceMap = new Map();
     this.brightness = 1;
     this.volume = volume;
     this.dims = volume.dimensions;
@@ -50,6 +51,8 @@ export class ElectrodeCanvas {
       Math.floor(this.dims[1] / 2) - 1,
     ];
     this.newInterval = [0, this.dims[1] - 1];
+    this.windowLow = 0;
+    this.windowHigh = this.dims[1];
 
     this.initData();
   }
@@ -124,7 +127,9 @@ export class ElectrodeCanvas {
       const rowOffset = row * this.dims[1];
       for (let col = 0; col < this.dims[1]; col++) {
         const offset = typedData.length - this.calculateOffset(row, col);
-        const value = typedData[offset];
+        let value = typedData[offset];
+        if (value < this.windowLow) value = 0;
+        if (value > this.windowHigh) value = 0xff;
 
         canvasImageData.data[(rowOffset + col) * 4] =
           (value & 0xff) * this.brightness;
@@ -288,6 +293,14 @@ export class ElectrodeCanvas {
 
   setBrightness(value) {
     this.brightness = value;
+  }
+
+  setWindowLow(value) {
+    this.windowLow = value;
+  }
+
+  setWindowHigh(value) {
+    this.windowHigh = value;
   }
 
   toggleDetails() {

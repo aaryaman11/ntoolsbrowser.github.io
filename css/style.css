@@ -118,10 +118,10 @@ button:active {
     align-items: left;
     justify-content: flex-start;
     position: absolute;
-    height: 30%;
+    height: 35%;
     /* width: 16%; */
     background-color: #303030;
-    top: 70%;
+    top: 65%;
     z-index: 2;
     min-width: 10%;
     width: 15%;
