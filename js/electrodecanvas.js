@@ -39,7 +39,7 @@ export class ElectrodeCanvas {
     this.container = container || "sliceX";
     this.canvas = document.getElementById(`${this.container}`);
     this.ctx = this.canvas.getContext("2d");
-    this.sliceMap = new Map();
+    // this.sliceMap = new Map();
     this.brightness = 1;
     this.volume = volume;
     this.dims = volume.dimensions;
@@ -61,6 +61,7 @@ export class ElectrodeCanvas {
   }
 
   initSliceMap() {
+    this.sliceMap = new Map();
     for (const e of this.electrodeData) {
       const sliceIndex =
         this.orientation === "axial"
