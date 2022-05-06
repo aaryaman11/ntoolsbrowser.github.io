@@ -45,5 +45,5 @@ for line in content.split('\n'):
         
 final_json["electrodes"] = coor_dicts
 
-with open(f'{subject_name}.json', 'w') as output_file:
+with open(f'sub-{subject_name}_ntoolsbrowser.json', 'w') as output_file:
     json.dump(final_json, output_file, ensure_ascii=False, indent=4)
