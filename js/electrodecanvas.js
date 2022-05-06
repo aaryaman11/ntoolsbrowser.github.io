@@ -364,13 +364,13 @@ export class AxialCanvas extends ElectrodeCanvas {
 
       if (this.currentSlice < this.dims[2] && e.wheelDelta > 0) {
         this.currentSlice += 1;
-        this.volume.indexY += 1;
+        this.volume.indexZ += 1;
         this.drawCanvas();
         return;
       }
       if (this.currentSlice > -1 && e.wheelDelta < 0) {
         this.currentSlice -= 1;
-        this.volume.indexY -= 1;
+        this.volume.indexZ -= 1;
         this.drawCanvas();
         return;
       }
