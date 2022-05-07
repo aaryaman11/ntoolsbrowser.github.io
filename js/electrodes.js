@@ -6,7 +6,9 @@ import { mapInterval } from "./mapInterval.js";
 import { getSeizTypeColor } from "./color.js";
 import { DOMNodes as DOM } from "./DOMtree.js";
 import { GFX } from "./gfx.js";
-import { ElectrodeCanvas } from "./electrodecanvas.js"
+import { SagittalCanvas } from "./electrodecanvas.js";
+import { CoronalCanvas } from "./electrodecanvas.js";
+import { AxialCanvas } from "./electrodecanvas.js";
 
 // be mindful that NONE occupies index 0
 const getCurrentSelectedIndex = () => {
@@ -482,7 +484,7 @@ const downloadJSON = (data, subject) => {
   const a = document.createElement("a");
   a.style.display = "none";
   a.href = url;
-  a.download = `sub-${subject}_ntoolsbrowser`;
+  a.download = `${subject}_ntoolsbrowser`;
   document.body.append(a);
   a.click();
   window.URL.revokeObjectURL(url);
@@ -519,10 +521,9 @@ const loadElectrodes = async (
       ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
       : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
 
-  // three canvas slices displaying 2D electrodes
-  const sliceX = new ElectrodeCanvas(data, volume, "sagittal", "sliceX");
-  const sliceY = new ElectrodeCanvas(data, volume, "coronal", "sliceY");
-  const sliceZ = new ElectrodeCanvas(data, volume, "axial", "sliceZ");
+  const sliceX = new SagittalCanvas(data, volume, "sliceX");
+  const sliceY = new CoronalCanvas(data, volume, "sliceY");
+  const sliceZ = new AxialCanvas(data, volume, "sliceZ");
 
   // put in array for easy function passing
   const slices = [sliceX, sliceY, sliceZ]
@@ -734,6 +735,20 @@ const loadElectrodes = async (
     slices.forEach(s => s.resetPosition())
     slices.forEach(s => s.drawCanvas());
   });
+
+  document.getElementById("slice-window-low").oninput = (event) => {
+    slices.forEach(s => s.setWindowLow(parseInt(event.target.value)));
+    slices.forEach(s => s.drawCanvas());
+  }
+  document.getElementById("slice-window-high").oninput = (event) => {
+    slices.forEach(s => s.setWindowHigh(parseInt(event.target.value)));
+    slices.forEach(s => s.drawCanvas());
+  }
+
+  document.getElementById('slice-details').onclick = () => {
+    slices.forEach(s => s.toggleDetails());
+    slices.forEach(s => s.drawCanvas());
+  }
 };
 
 export { loadElectrodes };

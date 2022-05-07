@@ -24,14 +24,14 @@ print("Done")
 #    json.dump(header, fp)
 
 print("Generating JSON...")
-with open('signal_header.json', 'w') as fp:
+with open(f'sub-{subjectName}_functionalmapping.json', 'w') as fp:
     json.dump(signal_headers, fp)
 print("Done")
 
 step = 10
 
 print("Generating Signal File...")
-filename = f'{subjectName}.bin'
+filename = f'sub-{subjectName}_functionalmapping.bin'
 with open(filename, mode='wb') as f:
     for signal in signals:
         newFileByteArray = bytes(signal[::step])

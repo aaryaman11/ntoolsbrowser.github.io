@@ -67,6 +67,10 @@
           <label for="show-tags-btn">Display Electrode Tags</label>
           <input type="checkbox" id="show-tags-btn" name="show-tags-btn" />
         </div>
+        <div>
+          <label for="slice-details">Display Slice Data &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <input type="checkbox" id="slice-details" name="slice-details" />
+        </div>
         <br />
         <div>
           <button id="download-btn">Download Data</button>
@@ -142,6 +146,24 @@
         value="1"
         step="0.01"
       />
+      <label for="">Low Window</label>
+      <input
+        id="slice-window-low"
+        type="range"
+        min="0"
+        max="255"
+        value="0"
+        step="0.01"
+      />
+      <label for="">High Window:</label>
+      <input
+        id="slice-window-high"
+        type="range"
+        min="0"
+        max="255"
+        value="255"
+        step="0.01"
+      />
 
       <label for="">Sagittal Index:</label>
       <input
@@ -172,9 +194,8 @@
         value="128"
         step="1"
       />
-      <br />
-      <button id="sync-btn">Sync Slices</button>
-    </div>
+    <button id="sync-btn">Sync Slices</button>
+  </div>
     <!-- <div id="close-menu">X</div> -->
   </body>
 </html>
