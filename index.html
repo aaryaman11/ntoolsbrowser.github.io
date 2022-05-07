@@ -1,21 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/style.css" />
-    <title>N-Tools Browser</title>
-  </head>
 
-  <body>
-    <div id="ntools-search-container">
-      <div id="ntools-search">
-        <form id="ntools-form">
-          <span id="err" style="color: red"></span><br />
-          <label class="search-text" for="ntools-search">Subject ID:&nbsp&nbsp&nbsp;</label>
-          <input id="search-bar" type="text" />
-          <button type="button" id="submitbtn">Load Data</button>
+<head>
+  <script>
+    function onDragOver(e) {
+
+      // stop browser processing right away
+      e.stopPropagation();
+      e.preventDefault();
+
+    };
+
+    function onDrop(e) {
+
+      // stop browser processing right away
+      e.stopPropagation();
+      e.preventDefault();
+
+      var f = e.dataTransfer.files[0];
+
+
+    };
+
+    window.onload = function () {
+
+      document.body.addEventListener('dragover', onDragOver);
+      document.body.addEventListener('drop', onDrop);
+
+    };
+
+  </script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <title>N-Tools Browser</title>
+</head>
+
+<body>
+  <div id="ntools-search-container">
+    <div id="ntools-search">
+      <form id="ntools-form">
+        <span id="err" style="color: red"></span><br />
+        <label class="search-text" for="ntools-search">Subject ID:&nbsp&nbsp&nbsp;</label>
+        <input id="search-bar" type="text" />
+        <button type="button" id="submitbtn">Load Data</button>
+        <draggable type="draggable" id="dropbtn">Drop Data</button>
           <div id="sample-container">
             <br>
             <label for="list" style="color: white">Sample Data: </label>
@@ -25,10 +55,11 @@
               <option value="fsMNI">fsMNI</option>
             </select>
           </div>
-        </form>
-      </div>
+      </form>
     </div>
+  </div>
 
-    <script src="./js/search.js"></script>
-  </body>
+  <script src="./js/search.js"></script>
+</body>
+
 </html>
