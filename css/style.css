@@ -1,272 +1,294 @@
- html, body { 
-    font-family: sans-serif;
-    background-color:#000;
-    margin: 0;
-    padding: 0;
-    font-size: 0.9rem;
-    height: 100%;
-    overflow: hidden !important;  
-    box-sizing: border-box;
-    min-width: 640px;
-}
-canvas {
-    position: relative;
-}
+ html,
+ body {
+     font-family: sans-serif;
+     background-color: #000;
+     margin: 0;
+     padding: 0;
+     font-size: 0.9rem;
+     height: 100%;
+     overflow: hidden !important;
+     box-sizing: border-box;
+     min-width: 640px;
+ }
 
-ul {
-    list-style-type: none;
-}
+ canvas {
+     position: relative;
+ }
 
-label {
-    user-select: none;
-    pointer-events: none;
-}
+ ul {
+     list-style-type: none;
+ }
 
-.info-label {
-    display: flex;
-    /* justify-content: space-evenly; */
-    justify-content: space-between;
-}
+ label {
+     user-select: none;
+     pointer-events: none;
+ }
 
-#slice-details:hover {
-    cursor: pointer;
-}
+ #dropbtn {
+     border: 1px solid red;
+     color: white;
+ }
 
-/* .select */
+ .info-label {
+     display: flex;
+     /* justify-content: space-evenly; */
+     justify-content: space-between;
+ }
 
-#renderer-container {
-    color: black;
-    z-index: 2;
-}
-/* https://stackoverflow.com/questions/25653639/how-do-i-change-the-location-of-the-dat-gui-dropdown */
-#gui { 
-    z-index: 2;
-}
+ #slice-details:hover {
+     cursor: pointer;
+ }
 
-.dg.ac {
-    z-index: 2;
-}
+ /* .select */
 
-.ac {
-    z-index: 3;
-}
+ #renderer-container {
+     color: black;
+     z-index: 2;
+ }
 
-.dg {
-    z-index: 3;
+ /* https://stackoverflow.com/questions/25653639/how-do-i-change-the-location-of-the-dat-gui-dropdown */
+ #gui {
+     z-index: 2;
+ }
+
+ .dg.ac {
+     z-index: 2;
+ }
+
+ .ac {
+     z-index: 3;
+ }
+
+ .dg {
+     z-index: 3;
 
 
-}
+ }
 
-#menu {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
-    padding: 0;
-    margin: 0;
-}
+ #menu {
+     position: absolute;
+     bottom: 20px;
+     width: 100%;
+     text-align: center;
+     padding: 0;
+     margin: 0;
+ }
 
-button {
-    color: rgb(255,255,255);
-    background: transparent;
-    border: 0px;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: 1px solid white;
-}
-button:hover {
-    background-color: rgba(0,255,255,0.5);
-}
-button:active {
-    color: #000000;
-    background-color: rgba(0,255,255,1);
-}
+ button {
+     color: rgb(255, 255, 255);
+     background: transparent;
+     border: 0px;
+     padding: 5px 10px;
+     cursor: pointer;
+     border: 1px solid white;
+ }
 
-#cancel-btn:hover {
-    background-color: rgb(177, 5, 5)
-    
-}
+ button:hover {
+     background-color: rgba(0, 255, 255, 0.5);
+ }
 
-#electrode-controller {
-    position: absolute;
-    display: flex;
-    justify-content: right;
-    flex-direction: column;
-    align-items: top;
-    /* align-self: auto; */
-    height: 70%;
-    width: 15%;
-    color: white;
-    /* display: block; */
-    background-color: #303030;
-    padding: 5px;
-    z-index: 2;
-    min-width: 10%;
-    border-bottom: 1px solid white;
-}
+ button:active {
+     color: #000000;
+     background-color: rgba(0, 255, 255, 1);
+ }
 
-#main-labels {
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: right;
-}
+ #cancel-btn:hover {
+     background-color: rgb(177, 5, 5)
+ }
 
-#slice-controller {
-    display: flex;
-    flex-flow: column;
-    align-items: left;
-    justify-content: flex-start;
-    position: absolute;
-    height: 35%;
-    /* width: 16%; */
-    background-color: #303030;
-    top: 65%;
-    z-index: 2;
-    min-width: 10%;
-    width: 15%;
-    color: white;
-    padding: 5px;
-}
+ #electrode-controller {
+     position: absolute;
+     display: flex;
+     justify-content: right;
+     flex-direction: column;
+     align-items: top;
+     /* align-self: auto; */
+     height: 70%;
+     width: 15%;
+     color: white;
+     /* display: block; */
+     background-color: #303030;
+     padding: 5px;
+     z-index: 2;
+     min-width: 10%;
+     border-bottom: 1px solid white;
+ }
 
-/* #electrode-controller:hover {
+ #main-labels {
+     display: flex;
+     flex-direction: column;
+     justify-content: left;
+     align-items: right;
+ }
+
+ #slice-controller {
+     display: flex;
+     flex-flow: column;
+     align-items: left;
+     justify-content: flex-start;
+     position: absolute;
+     height: 35%;
+     /* width: 16%; */
+     background-color: #303030;
+     top: 65%;
+     z-index: 2;
+     min-width: 10%;
+     width: 15%;
+     color: white;
+     padding: 5px;
+ }
+
+ /* #electrode-controller:hover {
     z-index: 2;
 } */
 
-.check-box {
-    display: inline-block;
-}
-input:hover {
-    cursor: pointer;
-}
+ .check-box {
+     display: inline-block;
+ }
 
-#onset-label {
-    color: red;
-}
-#early-spread-label {
-    color: yellow
-}
-#late-spread-label {
-    color: green;
-}
+ input:hover {
+     cursor: pointer;
+ }
 
-#electrode-menu:hover {
-    cursor: pointer;
-}
-option:hover {
-    cursor: pointer;
-}
+ #onset-label {
+     color: red;
+ }
 
-#ntools-search-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: auto;
-    margin-left: auto;
-}
+ #early-spread-label {
+     color: yellow
+ }
 
-#ntools-search {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-}
+ #late-spread-label {
+     color: green;
+ }
 
-.search-text {
-    color: white;
-}
+ #electrode-menu:hover {
+     cursor: pointer;
+ }
 
-#radio-button-modes {
-    color: white;
-}
+ option:hover {
+     cursor: pointer;
+ }
 
-.slice-container {
-    width: calc(100% / 3);
-    height: 30%;
-    z-index: 500;
-}
+ #ntools-search-container {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin-right: auto;
+     margin-left: auto;
+ }
 
-#3d {
-    background-color: #000;
-    width: 100%;
-    height: 70%;
-    margin-bottom: 2px;
-    z-index: 0;
-}
-#sliceX:hover { border: 1px solid red; }
-#sliceY:hover { border: 1px solid green; }
-#sliceZ:hover { border: 1px solid blue; }
+ #ntools-search {
+     margin: 0;
+     position: absolute;
+     top: 50%;
+     -ms-transform: translateY(-50%);
+     transform: translateY(-50%);
+ }
 
-.container {
-    width: 100%;
-    display: flex;
-    justify-content: right;
-}
+ .search-text {
+     color: white;
+ }
+
+ #radio-button-modes {
+     color: white;
+ }
+
+ .slice-container {
+     width: calc(100% / 3);
+     height: 30%;
+     z-index: 500;
+ }
+
+ #3d {
+     background-color: #000;
+     width: 100%;
+     height: 70%;
+     margin-bottom: 2px;
+     z-index: 0;
+ }
+
+ #sliceX:hover {
+     border: 1px solid red;
+ }
+
+ #sliceY:hover {
+     border: 1px solid green;
+ }
+
+ #sliceZ:hover {
+     border: 1px solid blue;
+ }
+
+ .container {
+     width: 100%;
+     display: flex;
+     justify-content: right;
+ }
 
 
-#electrode-slice-container {
-    display: flex;
-    justify-content: center;
-    height: 30%;
-    width: 100%;
-}
+ #electrode-slice-container {
+     display: flex;
+     justify-content: center;
+     height: 30%;
+     width: 100%;
+ }
 
-#color-legend{
-    font-size: 1rem;
-    left: 16%;
-    /* padding: 0px; */
-    /* margin-top: 0px; */
-    /* bottom: 100%; */
-    position: relative;
-    z-index: 0;
-}
+ #color-legend {
+     font-size: 1rem;
+     left: 16%;
+     /* padding: 0px; */
+     /* margin-top: 0px; */
+     /* bottom: 100%; */
+     position: relative;
+     z-index: 0;
+ }
 
-#edit-menu {
-    background-color: #5e5e5e;
-    border: 1px solid black;
-    position: absolute;
-    z-index: 1;
-    color: white;
-    width: 25%;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(4, 1fr);
-}
+ #edit-menu {
+     background-color: #5e5e5e;
+     border: 1px solid black;
+     position: absolute;
+     z-index: 1;
+     color: white;
+     width: 25%;
+     grid-template-columns: 1fr 1fr;
+     grid-template-rows: repeat(4, 1fr);
+ }
 
-.elec-tag {
-    user-select: none;
-    position: relative;
-    z-index: 1;
-    /* font-weight: bold; */
-    font-weight: 550;
-    color: red;
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
-    pointer-events: none;
-}
+ .elec-tag {
+     user-select: none;
+     position: relative;
+     z-index: 1;
+     /* font-weight: bold; */
+     font-weight: 550;
+     color: red;
+     -moz-user-select: -moz-none;
+     -khtml-user-select: none;
+     -webkit-user-select: none;
+     -o-user-select: none;
+     pointer-events: none;
+ }
 
-#loading-text {
-    position: absolute;
-    color: white;
-    width: 100%;
-    bottom: 95%;
-    pointer-events: none;
-    text-align: center;
-}
+ #loading-text {
+     position: absolute;
+     color: white;
+     width: 100%;
+     bottom: 95%;
+     pointer-events: none;
+     text-align: center;
+ }
 
-#electrode-info {
-    /* display: flex;
+ #electrode-info {
+     /* display: flex;
     flex-direction: column;
     align-items: space-around; */
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(5, 1fr);
-    align-items: stretch;
-    /* border: 1px solid gray; */
-    /* padding: 1em; */
-    /* grid-gap: 50px; */
-    /* grid-column-gap: 2rem; */
-    
-}
+     display: grid;
+     grid-template-columns: 1fr;
+     grid-template-rows: repeat(5, 1fr);
+     align-items: stretch;
+     /* border: 1px solid gray; */
+     /* padding: 1em; */
+     /* grid-gap: 50px; */
+     /* grid-column-gap: 2rem; */
+
+ }
