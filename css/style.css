@@ -24,10 +24,10 @@
      pointer-events: none;
  }
 
- #dropbtn {
+ /*#dropbtn {
      border: 1px solid red;
      color: white;
- }
+ }*/
 
  .info-label {
      display: flex;
