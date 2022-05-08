@@ -107,7 +107,7 @@ const initSeizureTypeMenu = (data, spheres, slices) => {
     spheres.forEach((sphere, index) => {
       sphere.color = getSeizTypeColor(selectedSeizType[index]);
     });
-    
+
     slices.forEach(s => s.setSeizType(selectedType))
     slices.forEach(s => s.drawCanvas());
 
@@ -163,7 +163,7 @@ const printElectrodeInfo = (
 ) => {
   if (!selectedElectrode) {
     return;
-  } 
+  }
   updateLabels(selectedElectrode, index, data);
   GFX.highlightSelectedElectrode(selectionSpheres, index);
 };
@@ -266,7 +266,7 @@ const jumpSlicesOnClick = (
     const clickedObject = renderer.pick(e.clientX, e.clientY);
     // check if it actually has an ID
     if (clickedObject === 0) return;
-    
+
     const selectedObject = renderer.get(clickedObject);
 
     // ".g" is an object property that corresponds to the selected X.object's name (minified)
@@ -280,7 +280,7 @@ const jumpSlicesOnClick = (
 
         // highlight and show the needed captions on the menu
         GFX.highlightSelectedElectrode(selections, sphereIndex);
-        
+
         // sync with electrode menu options
         const electrodeIDMenuOptions = electrodeMenu.options;
         electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
@@ -301,7 +301,7 @@ const jumpSlicesOnClick = (
         GFX.highlightSelectedFmap(fmapHighlights, cylinderIndex);
       }
     }
-    
+
   }); // end of event listener
 };
 
@@ -311,8 +311,8 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
     e.preventDefault();
     const clickedObject = renderer.pick(e.clientX, e.clientY);
 
-    if (clickedObject === 0) return; 
-    
+    if (clickedObject === 0) return;
+
     const selectedObject = renderer.get(clickedObject);
     const objectIndex = spheres.indexOf(selectedObject);
     const selectedElectrode = data.electrodes[objectIndex];
@@ -347,7 +347,7 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
     document
       .getElementById("cancel-btn")
       .addEventListener("click", () => hideMenu());
-    
+
   });
 };
 
@@ -408,7 +408,7 @@ const editElectrode = (data, index, type) => {
 };
 
 const createElectrodeTags = (spheres) => {
-    for (const sphere of spheres) {
+  for (const sphere of spheres) {
     const captionDiv = document.createElement("div");
     captionDiv.className = 'elec-tag';
     captionDiv.id = `${sphere.caption}-tag`;
@@ -417,61 +417,61 @@ const createElectrodeTags = (spheres) => {
 }
 
 const showElectrodeTags = (showTags, spheres, renderer, bbox) => {
-   if (showTags) {
-      const canvas = document.getElementsByTagName("canvas")[0];
-      const vWidth = canvas.clientWidth;
-      const vHeight = canvas.clientHeight;
-      const view = renderer.camera.view;
-      const fov = 45;
-      const near = 1;
-      const far = 10000;
+  if (showTags) {
+    const canvas = document.getElementsByTagName("canvas")[0];
+    const vWidth = canvas.clientWidth;
+    const vHeight = canvas.clientHeight;
+    const view = renderer.camera.view;
+    const fov = 45;
+    const near = 1;
+    const far = 10000;
 
-      const perspective = X.matrix.makePerspective(
-        X.matrix.identity(),
-        fov,
-        vWidth / vHeight,
-        near,
-        far,
-      );
+    const perspective = X.matrix.makePerspective(
+      X.matrix.identity(),
+      fov,
+      vWidth / vHeight,
+      near,
+      far,
+    );
 
-      for (const sphere of spheres) {
+    for (const sphere of spheres) {
 
-        const composed = new Float32Array(16);
-        const [G1x, G1y, G1z] = sphere.u;
-        const [bx, by, bz] = bbox;
+      const composed = new Float32Array(16);
+      const [G1x, G1y, G1z] = sphere.u;
+      const [bx, by, bz] = bbox;
 
-        X.matrix.multiply(perspective, view, composed);
+      X.matrix.multiply(perspective, view, composed);
 
-        const input = [G1x - bx, G1y - by, G1z - bz, 1.0];
-        const output = new Float32Array(4);
- 
-        X.matrix.multiplyByVec4(composed, input, output);
-        output[0] /= output[3];
-        output[1] /= output[3];
+      const input = [G1x - bx, G1y - by, G1z - bz, 1.0];
+      const output = new Float32Array(4);
 
-        const xs = (vWidth / 2) * output[0] + vWidth / 2;
-        const ys = (-vHeight / 2) * output[1] + vHeight / 2;
+      X.matrix.multiplyByVec4(composed, input, output);
+      output[0] /= output[3];
+      output[1] /= output[3];
 
-        const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
-        electrodeDiv.innerHTML = sphere.caption;
-        electrodeDiv.style.left = `${xs}px`;
-        electrodeDiv.style.top = `${ys}px`;
-        electrodeDiv.style.position = "absolute";
-        electrodeDiv.style.width = `0px`;
-        electrodeDiv.style.height = `0px`;
+      const xs = (vWidth / 2) * output[0] + vWidth / 2;
+      const ys = (-vHeight / 2) * output[1] + vHeight / 2;
 
-        if (xs > vWidth - 8 || ys > vHeight - 8) {
-          electrodeDiv.style.display = 'none';
-        } else {
-          electrodeDiv.style.display = 'block'
-        }
-      }
-    } else {
-      for (const sphere of spheres) {
-        const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
+      const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
+      electrodeDiv.innerHTML = sphere.caption;
+      electrodeDiv.style.left = `${xs}px`;
+      electrodeDiv.style.top = `${ys}px`;
+      electrodeDiv.style.position = "absolute";
+      electrodeDiv.style.width = `0px`;
+      electrodeDiv.style.height = `0px`;
+
+      if (xs > vWidth - 8 || ys > vHeight - 8) {
         electrodeDiv.style.display = 'none';
+      } else {
+        electrodeDiv.style.display = 'block'
       }
     }
+  } else {
+    for (const sphere of spheres) {
+      const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
+      electrodeDiv.style.display = 'none';
+    }
+  }
 };
 
 // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
@@ -516,10 +516,24 @@ const loadElectrodes = async (
   const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ieeg&file=sub-${subject}`;
 
   // initial data load
-  const data =
-    mode === "demo"
-      ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
-      : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
+  const draggedData = localStorage.getItem("draggedJSON");
+  let data = null;
+  if (draggedData) {
+    data = JSON.parse(draggedData);
+  } else if (mode === "demo") {
+    data = await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json();
+  } else {
+    data = await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
+  }
+  // if (draggedData) {
+  //   console.log("User dragged data!");
+  // }
+  // console.log(JSON.parse(draggedData));
+  // console.log(localStorage);
+  // const data =
+  //   mode === "demo"
+  //     ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
+  //     : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
 
   const sliceX = new SagittalCanvas(data, volume, "sliceX");
   const sliceY = new CoronalCanvas(data, volume, "sliceY");
@@ -567,19 +581,19 @@ const loadElectrodes = async (
   // fsaverage in the demos is currently without a signal .bin
   if (subject !== "fsaverage") {
 
-    signalHeader = 
-      mode === "demo" 
-      ? await (await fetch(`./data/${subject}/edf/${subject}_signal_header.json`)).json()
-      : await (await fetch(`${protocol}//${baseURL}_functionalmapping.json`)).json();
+    signalHeader =
+      mode === "demo"
+        ? await (await fetch(`./data/${subject}/edf/${subject}_signal_header.json`)).json()
+        : await (await fetch(`${protocol}//${baseURL}_functionalmapping.json`)).json();
 
     const sampleSize = signalHeader.length;
 
     // binary file is Float32. change to 8 if Float64 is used
     const numBytes = 4;
-    const signalPath = 
+    const signalPath =
       mode === "demo"
-      ?  `./data/${subject}/edf/signals/${subject}.bin`
-      : `${protocol}//${baseURL}_functionalmapping.bin`;
+        ? `./data/${subject}/edf/signals/${subject}.bin`
+        : `${protocol}//${baseURL}_functionalmapping.bin`;
 
     loadingText.innerText = `Loading Electrode Signals...`
 
@@ -611,7 +625,7 @@ const loadElectrodes = async (
 
     loadingText.innerText = "";
   }
-  
+
   let signalIndex = 0;
   let playSignal = false;
 
@@ -627,23 +641,23 @@ const loadElectrodes = async (
     function applySignal() {
       if (!playSignal) return;
 
-      if(signalIndex == electrodeSignals[0].length)
+      if (signalIndex == electrodeSignals[0].length)
         signalIndex = 0;
 
       let max = electrodeSignals[0][signalIndex];
       let min = electrodeSignals[0][signalIndex];
 
-      for(let i = 0; i < electrodeSignals.length; i++){
-        
-        if(electrodeSignals[i][signalIndex] > max)
+      for (let i = 0; i < electrodeSignals.length; i++) {
+
+        if (electrodeSignals[i][signalIndex] > max)
           max = electrodeSignals[i][signalIndex];
 
-        if(electrodeSignals[i][signalIndex] < min)
-          min = electrodeSignals[i][signalIndex];          
+        if (electrodeSignals[i][signalIndex] < min)
+          min = electrodeSignals[i][signalIndex];
       }
 
       let colors = [];
-      for(let i = 0; i < electrodeSignals.length; i++){
+      for (let i = 0; i < electrodeSignals.length; i++) {
         let normalizedSignal = 0;
 
         normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
@@ -652,7 +666,7 @@ const loadElectrodes = async (
       }
 
       electrodeSpheres.forEach(
-        (sphere, i) =>{
+        (sphere, i) => {
           sphere.color = colors[i];
         }
       );
@@ -702,7 +716,7 @@ const loadElectrodes = async (
   };
 
   // TODO: change the fmap connections if needed
- DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
+  DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
 
   document
     .getElementsByTagName("canvas")[0]

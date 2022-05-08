@@ -17,9 +17,16 @@
       e.stopPropagation();
       e.preventDefault();
 
-      var f = e.dataTransfer.files[0];
+      const f = e.dataTransfer.files[0];
+      const reader = new FileReader();
 
+      reader.onloadend = (event) => {
+        const result = JSON.parse(event.target.result);
+        localStorage.setItem("draggedJSON", JSON.stringify(result));
+        window.location.href = `./view.html?mode=demo&subjects=fsaverage`;
+      }
 
+      reader.readAsText(f);
     };
 
     window.onload = function () {
