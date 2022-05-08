@@ -517,23 +517,15 @@ const loadElectrodes = async (
 
   // initial data load
   const draggedData = localStorage.getItem("draggedJSON");
-  let data = null;
-  if (draggedData) {
-    data = JSON.parse(draggedData);
-  } else if (mode === "demo") {
-    data = await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json();
-  } else {
-    data = await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
-  }
-  // if (draggedData) {
-  //   console.log("User dragged data!");
-  // }
-  // console.log(JSON.parse(draggedData));
-  // console.log(localStorage);
-  // const data =
-  //   mode === "demo"
-  //     ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
-  //     : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
+  const data =
+    draggedData 
+    ? JSON.parse(draggedData)
+    : mode === "demo"
+      ? await (await fetch(`./data/${subject}/JSON/${subject}.json`)).json()
+      : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
+
+  // otherwise the JSON data will remain between loads
+  localStorage.clear();
 
   const sliceX = new SagittalCanvas(data, volume, "sliceX");
   const sliceY = new CoronalCanvas(data, volume, "sliceY");
