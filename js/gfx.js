@@ -45,9 +45,7 @@ const GFX = {
       return drawFmapConnection(startNode, endNode, bbox);
     });
   },
-  drawFmapHighlightFx: (fmap) => {
-    // start and end vector of original connection
-    const { start, end } = fmap;
+  drawFmapHighlightFx: ({ start, end }) => {
     const highlight = new X.cylinder();
     highlight.radius = 0.4;
     highlight.start = start;

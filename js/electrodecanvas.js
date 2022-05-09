@@ -380,7 +380,7 @@ export class AxialCanvas extends ElectrodeCanvas {
   resetPosition() {
     if (this.relativeSlice == null) return;
     this.currentSlice = this.relativeSlice;
-    this.volume.indexY = this.relativeSlice;
+    this.volume.indexZ = this.relativeSlice;
   }
 
   calculateOffset(row, col) {

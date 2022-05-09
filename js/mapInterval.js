@@ -14,9 +14,7 @@
  * to keep as is.
  */
 
-const mapInterval = (input, inputRange, outputRange) => {
-  const [inputStart, inputEnd] = inputRange;
-  const [outputStart, outputEnd] = outputRange;
+const mapInterval = (input, [inputStart, inputEnd], [outputStart, outputEnd]) => {
   return outputStart + ((outputEnd - outputStart) / (inputEnd - inputStart))
     * (input - inputStart);
 }

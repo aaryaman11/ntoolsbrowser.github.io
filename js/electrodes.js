@@ -171,16 +171,12 @@ const printElectrodeInfo = (
 // changes the mosue to a crosshair for responsive selection
 const addMouseHover = (renderer) => {
   renderer.interactor.onMouseMove = (e) => {
-    let hoverObject = renderer.pick(e.clientX, e.clientY);
+    const hoverObject = renderer.pick(e.clientX, e.clientY);
     if (hoverObject !== 0) {
-      let selectedSphere = renderer.get(hoverObject);
+      const selectedSphere = renderer.get(hoverObject);
       if (selectedSphere.g === "sphere" || selectedSphere.g === "cylinder") {
         document.body.style.cursor = "crosshair";
-      } else {
-        selectedSphere.visible = true;
-        selectedSphere = null;
-        hoverObject = 0;
-      }
+      } 
     } else {
       document.body.style.cursor = "auto";
     }
@@ -197,15 +193,12 @@ const addMouseHover = (renderer) => {
  * made arrays from the JSON is very useful
  */
 
-const updateLabels = (electrode, index, data) => {
-  // return if "None" is selected
-  if (getCurrentSelectedIndex() - 1 === 0 || electrode == null) {
-    return;
+const updateLabels = ({ elecID, elecType, intPopulation, coordinates }, index, data) => {
+  if (elecID == null) { 
+    return; 
   }
 
-  const { elecID, elecType, intPopulation, coordinates } = electrode;
   const { x, y, z } = coordinates;
-
   const selectedSeizType = DOM.seizTypeMenu.selectedOptions[0].value;
   const seizureTypeValues = getAttributeArray(
     data.electrodes,
@@ -223,8 +216,9 @@ const updateLabels = (electrode, index, data) => {
   } else {
     const currentElecSeizType = seizureTypeValues[index];
     const editOption = document.getElementById('seiz-type-edit');
-    if (editOption)
+    if (editOption) {
       editOption.value = currentElecSeizType;
+    }
     DOM.seizTypeLabel.innerText = currentElecSeizType;
     DOM.intPopulationLabel.innerText = "";
   }
@@ -257,10 +251,8 @@ const jumpSlicesOnClick = (
   volumeRendered,
   slices
 ) => {
-  // get the main canvas
-  const { canvases, electrodeMenu, fmapCaption } = DOM;
-
-  canvases[0].addEventListener("click", (e) => {
+  // the main canvas
+  DOM.canvases[0].addEventListener("click", (e) => {
 
     // gets the 'uniqueID' from XTK, which is just an integer
     const clickedObject = renderer.pick(e.clientX, e.clientY);
@@ -282,7 +274,7 @@ const jumpSlicesOnClick = (
         GFX.highlightSelectedElectrode(selections, sphereIndex);
 
         // sync with electrode menu options
-        const electrodeIDMenuOptions = electrodeMenu.options;
+        const electrodeIDMenuOptions = DOM.electrodeMenu.options;
         electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
         updateLabels(target, sphereIndex, data);
 
@@ -295,7 +287,7 @@ const jumpSlicesOnClick = (
       if (cylinderIndex >= 0) {
         const threshold = getAttributeArray(data.functionalMaps, 'fmapThreshold')
         const discharge = getAttributeArray(data.functionalMaps, 'fmapAfterDischarge');
-        fmapCaption.innerText = selectedObject.caption;
+        DOM.fmapCaption.innerText = selectedObject.caption;
         DOM.fmapThreshold.innerText = `Threshold: ${threshold[cylinderIndex]}`;
         DOM.fmapDischarge.innerText = `Discharge: ${discharge[cylinderIndex]}`;
         GFX.highlightSelectedFmap(fmapHighlights, cylinderIndex);
@@ -310,7 +302,6 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
   canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
     const clickedObject = renderer.pick(e.clientX, e.clientY);
-
     if (clickedObject === 0) return;
 
     const selectedObject = renderer.get(clickedObject);
@@ -401,7 +392,9 @@ const editElectrode = (data, index, type) => {
     intPopulation: Number(newIntPop),
   };
 
-  if (type !== "intPopulation") newElectrode[type] = newSeizType;
+  if (type !== "intPopulation") {
+    newElectrode[type] = newSeizType;
+  }
 
   data.electrodes[index] = newElectrode;
   updateLabels(newElectrode, index, data);
@@ -417,61 +410,62 @@ const createElectrodeTags = (spheres) => {
 }
 
 const showElectrodeTags = (showTags, spheres, renderer, bbox) => {
-  if (showTags) {
-    const canvas = document.getElementsByTagName("canvas")[0];
-    const vWidth = canvas.clientWidth;
-    const vHeight = canvas.clientHeight;
-    const view = renderer.camera.view;
-    const fov = 45;
-    const near = 1;
-    const far = 10000;
-
-    const perspective = X.matrix.makePerspective(
-      X.matrix.identity(),
-      fov,
-      vWidth / vHeight,
-      near,
-      far,
-    );
-
-    for (const sphere of spheres) {
-
-      const composed = new Float32Array(16);
-      const [G1x, G1y, G1z] = sphere.u;
-      const [bx, by, bz] = bbox;
-
-      X.matrix.multiply(perspective, view, composed);
-
-      const input = [G1x - bx, G1y - by, G1z - bz, 1.0];
-      const output = new Float32Array(4);
-
-      X.matrix.multiplyByVec4(composed, input, output);
-      output[0] /= output[3];
-      output[1] /= output[3];
-
-      const xs = (vWidth / 2) * output[0] + vWidth / 2;
-      const ys = (-vHeight / 2) * output[1] + vHeight / 2;
-
-      const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
-      electrodeDiv.innerHTML = sphere.caption;
-      electrodeDiv.style.left = `${xs}px`;
-      electrodeDiv.style.top = `${ys}px`;
-      electrodeDiv.style.position = "absolute";
-      electrodeDiv.style.width = `0px`;
-      electrodeDiv.style.height = `0px`;
-
-      if (xs > vWidth - 8 || ys > vHeight - 8) {
-        electrodeDiv.style.display = 'none';
-      } else {
-        electrodeDiv.style.display = 'block'
-      }
-    }
-  } else {
+  if (!showTags) {
     for (const sphere of spheres) {
       const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
       electrodeDiv.style.display = 'none';
     }
+    return;
+  } 
+
+  const canvas = document.getElementsByTagName("canvas")[0];
+  const vWidth = canvas.clientWidth;
+  const vHeight = canvas.clientHeight;
+  const view = renderer.camera.view;
+  const fov = 45;
+  const near = 1;
+  const far = 10000;
+
+  const perspective = X.matrix.makePerspective(
+    X.matrix.identity(),
+    fov,
+    vWidth / vHeight,
+    near,
+    far,
+  );
+
+  for (const sphere of spheres) {
+    const composed = new Float32Array(16);
+    const [G1x, G1y, G1z] = sphere.u;
+    const [bx, by, bz] = bbox;
+    const input = [G1x - bx, G1y - by, G1z - bz, 1.0];
+    const output = new Float32Array(4);
+
+    X.matrix.multiplyByVec4(
+      X.matrix.multiply(perspective, view, composed), input, output
+    );
+
+    output[0] /= output[3];
+    output[1] /= output[3];
+
+    const xs = (vWidth / 2) * output[0] + vWidth / 2;
+    const ys = (-vHeight / 2) * output[1] + vHeight / 2;
+
+    const electrodeDiv = document.getElementById(`${sphere.caption}-tag`);
+    electrodeDiv.innerHTML = sphere.caption;
+    electrodeDiv.style.left = `${xs}px`;
+    electrodeDiv.style.top = `${ys}px`;
+    electrodeDiv.style.position = "absolute";
+    electrodeDiv.style.width = `0px`;
+    electrodeDiv.style.height = `0px`;
+
+    if (xs > vWidth - 8 || ys > vHeight - 8) {
+      electrodeDiv.style.display = 'none';
+    } else {
+      electrodeDiv.style.display = 'block'
+    }
   }
+  
 };
 
 // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
@@ -496,8 +490,7 @@ const hideMenu = () => {
 };
 
 const getSelectedSeizType = () => {
-  const { seizTypeMenu } = DOM;
-  return seizTypeMenu.selectedOptions[0].value;
+  return DOM.seizTypeMenu.selectedOptions[0].value;
 };
 
 const getAttributeArray = (data, attr) => {
@@ -532,7 +525,7 @@ const loadElectrodes = async (
   const sliceZ = new AxialCanvas(data, volume, "sliceZ");
 
   // put in array for easy function passing
-  const slices = [sliceX, sliceY, sliceZ]
+  const slices = [sliceX, sliceY, sliceZ];
 
   // tags need the original bounding box. renderer.resetBoundingBox() might work too
   const oldBoundingBox = renderer.u;
@@ -544,7 +537,7 @@ const loadElectrodes = async (
   DOM.subjectIDLabel.innerText = data.subjID;
   DOM.numSeizTypeLabel.innerText = data.totalSeizType;
 
-  // arrays of objects
+  // (MODEL) arrays of objects
   const electrodeSpheres = data.electrodes.map((el) =>
     GFX.drawElectrodeFx(el, false, defaultSeizType, oldBoundingBox)
   );
@@ -560,7 +553,7 @@ const loadElectrodes = async (
     GFX.drawFmapHighlightFx(fmap)
   );
 
-  // add XTK's graphical representation of data to renderer
+  // (VIEW) add XTK's graphical representation of data to renderer
   electrodeSpheres.forEach((el) => renderer.add(el));
   selectionSpheres.forEach((el) => renderer.add(el));
   fmapConnections.forEach((connection) => renderer.add(connection));
@@ -611,7 +604,6 @@ const loadElectrodes = async (
           }
           signals.push(view);
         }
-
         return signals;
       });
 
@@ -670,6 +662,7 @@ const loadElectrodes = async (
     if (playSignal) applySignal();
   };
 
+  // CONTROLLER
   // //* adds the seizure types to the first drop down menu on the panel
   initSeizureTypeMenu(data, electrodeSpheres, slices);
 
@@ -710,9 +703,7 @@ const loadElectrodes = async (
   // TODO: change the fmap connections if needed
   DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
 
-  document
-    .getElementsByTagName("canvas")[0]
-    .addEventListener("mousedown", () => hideMenu());
+  DOM.canvases[0].addEventListener("mousedown", () => hideMenu());
 
   DOM.brightCtrl.oninput = (event) => {
     slices.forEach(s => s.setBrightness(event.target.value));
@@ -742,16 +733,16 @@ const loadElectrodes = async (
     slices.forEach(s => s.drawCanvas());
   });
 
-  document.getElementById("slice-window-low").oninput = (event) => {
+  DOM.windowLow.oninput = (event) => {
     slices.forEach(s => s.setWindowLow(parseInt(event.target.value)));
     slices.forEach(s => s.drawCanvas());
   }
-  document.getElementById("slice-window-high").oninput = (event) => {
+  DOM.windowHigh.oninput = (event) => {
     slices.forEach(s => s.setWindowHigh(parseInt(event.target.value)));
     slices.forEach(s => s.drawCanvas());
   }
 
-  document.getElementById('slice-details').onclick = () => {
+  DOM.sliceDetails.onclick = () => {
     slices.forEach(s => s.toggleDetails());
     slices.forEach(s => s.drawCanvas());
   }

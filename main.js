@@ -39,7 +39,6 @@ import { loadElectrodes } from "./js/electrodes.js";
     const volumeURL = `${protocol}//${baseURL}_preoperation_T1w.nii`;
     const lhURL = `${protocol}//${baseURL}_freesurferleft.pial`;
     const rhURL = `${protocol}//${baseURL}_freesurferright.pial`;
-    console.log(volumeURL);
     if (!checkUrls(volumeURL, lhURL, rhURL)){
       return;
     }
@@ -50,16 +49,16 @@ import { loadElectrodes } from "./js/electrodes.js";
   }
 
   // set up 3D renderer
-  const threeDRenderer = new X.renderer3D();
-  threeDRenderer.container = "3d";
-  threeDRenderer.init();
-  threeDRenderer.add(leftHemisphereMesh);
-  threeDRenderer.add(rightHemisphereMesh);
-  threeDRenderer.add(volume);
-  threeDRenderer.render(); // triggers the onShowtime 
+  const renderer = new X.renderer3D();
+  renderer.container = "3d";
+  renderer.init();
+  renderer.add(leftHemisphereMesh);
+  renderer.add(rightHemisphereMesh);
+  renderer.add(volume);
+  renderer.render(); // triggers the onShowtime 
 
   // onShowtime gets called before first rendering happens
-  threeDRenderer.onShowtime = () => {
+  renderer.onShowtime = () => {
 
     const gui = new dat.GUI();
     gui.domElement.id = "gui";
@@ -94,10 +93,10 @@ import { loadElectrodes } from "./js/electrodes.js";
     signalGUI.open();
 
     // fix original camera position
-    threeDRenderer.camera.position = [-200, 0, 0];
+    renderer.camera.position = [-200, 0, 0];
 
     loadElectrodes(
-      threeDRenderer,
+      renderer,
       volume,
       mode,
       subject,

@@ -30,6 +30,10 @@ const DOMNodes = {
   sliceXCtrl: document.getElementById("sliceX-control"),
   sliceYCtrl: document.getElementById("sliceY-control"),
   sliceZCtrl: document.getElementById("sliceZ-control"),
+  windowLow: document.getElementById("slice-window-low"),
+  windowHigh: document.getElementById("slice-window-high"),
+  sliceDetails: document.getElementById("slice-details"),
+  
 };
 
 export { DOMNodes };
