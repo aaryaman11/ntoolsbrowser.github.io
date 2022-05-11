@@ -132,15 +132,12 @@ const parseURL = () => {
   );
 };
 
-const checkUrls = (...urls) => {
-  for (const url of urls) {
-    const request = new XMLHttpRequest();
-    request.open("HEAD", url, false);
-    request.send();
-    if (request.status === 404) {
-      alert(`Could not load file from ${url}`)
-      return false;
-    }
-  }
-  return true;
+const checkUrls = async (...urls) => {
+  Promise.all(urls.map(url => {
+    fetch(url).then(async (res) => {
+      if (!res.ok) {
+        alert(`Could not find ${url}`);
+      }
+    })
+  }));
 };

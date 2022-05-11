@@ -561,55 +561,55 @@ const loadElectrodes = async (
   fmapHighlights.forEach((highlight) => renderer.add(highlight));
 
   // setup electrode signal display
-  let electrodeSignals = [];
-  let signalHeader;
+  const signalHeaderURL =
+    mode === "demo"
+      ? `./data/${subject}/edf/${subject}_signal_header.json`
+      : `${protocol}//${baseURL}_functionalmapping.json`;
 
-  // fsaverage in the demos is currently without a signal .bin
-  if (subject !== "fsaverage") {
+  const signalHeader = await fetch(signalHeaderURL)
+    .then(response => response.json())
+    .catch(error => console.log(error));
 
-    signalHeader =
-      mode === "demo"
-        ? await (await fetch(`./data/${subject}/edf/${subject}_signal_header.json`)).json()
-        : await (await fetch(`${protocol}//${baseURL}_functionalmapping.json`)).json();
+  const sampleSize = signalHeader ? signalHeader.length : null;
 
-    const sampleSize = signalHeader.length;
+  // binary file is Float32. change to 8 if Float64 is used
+  const numBytes = 4;
+  const signalPath =
+    mode === "demo"
+      ? `./data/${subject}/edf/signals/${subject}.bin`
+      : `${protocol}//${baseURL}_functionalmapping.bin`;
 
-    // binary file is Float32. change to 8 if Float64 is used
-    const numBytes = 4;
-    const signalPath =
-      mode === "demo"
-        ? `./data/${subject}/edf/signals/${subject}.bin`
-        : `${protocol}//${baseURL}_functionalmapping.bin`;
+  loadingText.innerText = `Loading Electrode Signals...`
 
-    loadingText.innerText = `Loading Electrode Signals...`
+  const electrodeSignals = await fetch(signalPath)
+    .then((response) => response.blob())
+    .then((content) => content.arrayBuffer(content.size))
+    .then((data) => {
+      // dataview can decode the binary data inside the signal file
+      const dataView = new DataView(data);
+      const sizePerSample = dataView.byteLength / sampleSize;
+      const signals = [];
 
-    electrodeSignals = await fetch(signalPath)
-      .then((response) => response.blob())
-      .then((content) => content.arrayBuffer(content.size))
-      .then((data) => {
-        // dataview can decode the binary data inside the signal file
-        const dataView = new DataView(data);
-        const sizePerSample = dataView.byteLength / sampleSize;
-        const signals = [];
-
-        // chunk the array into equal parts. the binary data for each signal is listed in order
-        // the bin file has no metadata
-        for (let j = 0; j < sampleSize; j++) {
-          const view = [];
-          for (
-            let i = sizePerSample * j;
-            i < sizePerSample * (j + 1);
-            i += numBytes
-          ) {
-            view.push(dataView.getFloat32(i, true));
-          }
-          signals.push(view);
+      // chunk the array into equal parts. the binary data for each signal is listed in order
+      // the bin file has no metadata
+      for (let j = 0; j < sampleSize; j++) {
+        const view = [];
+        for (
+          let i = sizePerSample * j;
+          i < sizePerSample * (j + 1);
+          i += numBytes
+        ) {
+          view.push(dataView.getFloat32(i, true));
         }
-        return signals;
-      });
+        signals.push(view);
+      }
+      return signals;
+    })
+    .catch(error => console.log(error)) ;
 
-    loadingText.innerText = "";
-  }
+
+  loadingText.innerText = "";
+  
 
   let signalIndex = 0;
   let playSignal = false;
