@@ -83,14 +83,16 @@ import { loadElectrodes } from "./js/electrodes.js";
     const signalGUI = gui.addFolder("Electrode Signal");
     const playSignalController = {
       "start / stop": function () {},
+      "sin wave": function() {}
     };
 
     signalGUI.add(playSignalController, "start / stop");
+    signalGUI.add(playSignalController, "sin wave");
 
     // leftHemisphereGUI.open();
     // rightHemisphereGUI.open();
     // slicesGUI.open();
-    signalGUI.open();
+    // signalGUI.open();
 
     // fix original camera position
     renderer.camera.position = [-200, 0, 0];

@@ -4,7 +4,8 @@
 
 import { mapInterval } from "./mapInterval.js";
 import { getSeizTypeColor } from "./color.js";
-import { DOMNodes as DOM } from "./DOMtree.js";
+import { DOM } from "./DOMtree.js";
+import { CreateElectrodeSignalWindow } from "./DOMtree.js";
 import { GFX } from "./gfx.js";
 import { SagittalCanvas } from "./electrodecanvas.js";
 import { CoronalCanvas } from "./electrodecanvas.js";
@@ -613,9 +614,34 @@ const loadElectrodes = async (
   let signalIndex = 0;
   let playSignal = false;
 
+  function changeElectrodeColors(){
+    if(signalIndex == electrodeSignals[0].length)
+      signalIndex = 0;
+
+    let max = electrodeSignals[0][signalIndex];
+    let min = electrodeSignals[0][signalIndex];
+
+    for(let i = 0; i < electrodeSignals.length; i++){
+      
+      if(electrodeSignals[i][signalIndex] > max)
+        max = electrodeSignals[i][signalIndex];
+
+      if(electrodeSignals[i][signalIndex] < min)
+        min = electrodeSignals[i][signalIndex];          
+    }
+
+    for(let i = 0; i < electrodeSignals.length; i++){
+      let normalizedSignal = 0;
+
+      normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
+
+      electrodeSpheres[i].color = [normalizedSignal, 0, 1 - normalizedSignal];
+    }
+  };
+
   playSignalController["start / stop"] = function () {
     if (!electrodeSignals.length) {
-      alert("Electrode signal display is not yet implemented for this subject");
+      console.error("Electrode signal display is not yet implemented for this subject");
       return;
     }
     let signalFrequency = 10;
@@ -624,42 +650,20 @@ const loadElectrodes = async (
 
     function applySignal() {
       if (!playSignal) return;
-
-      if (signalIndex == electrodeSignals[0].length)
-        signalIndex = 0;
-
-      let max = electrodeSignals[0][signalIndex];
-      let min = electrodeSignals[0][signalIndex];
-
-      for (let i = 0; i < electrodeSignals.length; i++) {
-
-        if (electrodeSignals[i][signalIndex] > max)
-          max = electrodeSignals[i][signalIndex];
-
-        if (electrodeSignals[i][signalIndex] < min)
-          min = electrodeSignals[i][signalIndex];
-      }
-
-      let colors = [];
-      for (let i = 0; i < electrodeSignals.length; i++) {
-        let normalizedSignal = 0;
-
-        normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
-
-        colors[i] = [normalizedSignal, 0, 1 - normalizedSignal];
-      }
-
-      electrodeSpheres.forEach(
-        (sphere, i) => {
-          sphere.color = colors[i];
-        }
-      );
-
+      
+      changeElectrodeColors();
       signalIndex++;
       setTimeout(applySignal, signalFrequency);
     }
 
     if (playSignal) applySignal();
+  };
+
+  playSignalController["sin wave"] = function (){
+    CreateElectrodeSignalWindow(electrodeSignals, function(i){
+      signalIndex = i;
+      changeElectrodeColors();
+    });
   };
 
   // CONTROLLER
