@@ -32,4 +32,31 @@
       window.location.href = `./view.html?mode=demo&subject=${subjectList.value}`;
     }
   });
+
+  document.body.addEventListener('drop', (e) => {
+    // stop browser processing right away
+    e.stopPropagation();
+    e.preventDefault();
+
+    const file = e.dataTransfer.files[0];
+    const fileTokens = [...file.name.matchAll("[a-zA-Z0-9]+")];
+    const subject = fileTokens[0][0] === 'sub' 
+      ? fileTokens[1][0] 
+      : fileTokens[0][0];
+    const reader = new FileReader();
+
+    reader.onloadend = (event) => {
+      const result = JSON.parse(event.target.result);
+      sessionStorage.setItem("draggedJSON", JSON.stringify(result));
+      window.location.href =
+        `./view.html?mode=demo&subject=${subject}`;
+    }
+
+    reader.readAsText(file);
+  });
+
+  document.body.addEventListener('dragover', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  })
 });

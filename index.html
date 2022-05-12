@@ -3,38 +3,7 @@
 
 <head>
   <script>
-    function onDragOver(e) {
-
-      // stop browser processing right away
-      e.stopPropagation();
-      e.preventDefault();
-
-    };
-
-    function onDrop(e) {
-
-      // stop browser processing right away
-      e.stopPropagation();
-      e.preventDefault();
-
-      const f = e.dataTransfer.files[0];
-      const reader = new FileReader();
-
-      reader.onloadend = (event) => {
-        const result = JSON.parse(event.target.result);
-        localStorage.setItem("draggedJSON", JSON.stringify(result));
-        window.location.href = `./view.html?mode=demo&subjects=fsaverage`;
-      }
-
-      reader.readAsText(f);
-    };
-
-    window.onload = function () {
-
-      document.body.addEventListener('dragover', onDragOver);
-      document.body.addEventListener('drop', onDrop);
-
-    };
+   
 
   </script>
   <meta charset="UTF-8" />

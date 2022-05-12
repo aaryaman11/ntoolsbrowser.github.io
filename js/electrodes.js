@@ -507,7 +507,7 @@ const loadElectrodes = async (
   const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ieeg&file=sub-${subject}`;
 
   // initial data load
-  const draggedData = localStorage.getItem("draggedJSON");
+  const draggedData = sessionStorage.getItem("draggedJSON");
   const data =
     draggedData 
     ? JSON.parse(draggedData)
@@ -516,7 +516,7 @@ const loadElectrodes = async (
       : await (await fetch(`${protocol}//${baseURL}_ntoolsbrowser.json`)).json();
 
   // otherwise the JSON data will remain between loads
-  localStorage.clear();
+  sessionStorage.clear();
 
   const sliceX = new SagittalCanvas(data, volume, "sliceX");
   const sliceY = new CoronalCanvas(data, volume, "sliceY");
