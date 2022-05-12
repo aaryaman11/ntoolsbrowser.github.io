@@ -4,7 +4,7 @@
     main()
     : window.addEventListener('load', main)
 })(() => {
-  document.getElementById('submitbtn').addEventListener('click', 
+  document.getElementById('submitbtn').addEventListener('click',
     async (e) => {
       e.preventDefault();
       const subject = document.getElementById('search-bar').value;
@@ -24,7 +24,7 @@
             errorText.innerText = '';
           }, 3000);
         });
-});
+    });
 
   const subjectList = document.getElementById('list')
   subjectList.addEventListener('change', () => {

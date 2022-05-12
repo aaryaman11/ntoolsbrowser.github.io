@@ -101,7 +101,6 @@ const initSeizureTypeMenu = (data, spheres, slices) => {
     event.preventDefault();
     event.stopPropagation();
     const selectedType = event.target.value;
-
     const selectedSeizType = getAttributeArray(data.electrodes, selectedType);
 
     // update colors on 3D and 2D
@@ -275,8 +274,7 @@ const jumpSlicesOnClick = (
         GFX.highlightSelectedElectrode(selections, sphereIndex);
 
         // sync with electrode menu options
-        const electrodeIDMenuOptions = DOM.electrodeMenu.options;
-        electrodeIDMenuOptions.selectedIndex = sphereIndex + 1;
+        DOM.electrodeMenu.options.selectedIndex = sphereIndex + 1;
         updateLabels(target, sphereIndex, data);
 
         // move slices to corresponding location
@@ -299,8 +297,7 @@ const jumpSlicesOnClick = (
 };
 
 const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
-  const { canvases, electrodeMenu } = DOM;
-  canvases[0].addEventListener("contextmenu", (e) => {
+  DOM.canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
     const clickedObject = renderer.pick(e.clientX, e.clientY);
     if (clickedObject === 0) return;
@@ -319,7 +316,7 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
 
     GFX.highlightSelectedElectrode(selectionSpheres, objectIndex);
     updateLabels(selectedElectrode, objectIndex, data);
-    electrodeMenu.options.selectedIndex = objectIndex + 1;
+    DOM.electrodeMenu.options.selectedIndex = objectIndex + 1;
 
     document.getElementById("edit-btn").addEventListener("click", () => {
       const type = getSelectedSeizType();
@@ -688,7 +685,7 @@ const loadElectrodes = async (
   // adds functionality for hovering over particular electrodes on the scene
   addMouseHover(renderer);
 
-  // //* adds the event listners to the functional map menu
+  // //* adds the event listeners to the functional map menu
   addEventsToFmapMenu(data, fmapConnections, fmapHighlights);
 
   // adds event listener to the show-all-tags button on the menu
@@ -706,37 +703,30 @@ const loadElectrodes = async (
 
   // TODO: change the fmap connections if needed
   DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
-
   DOM.canvases[0].addEventListener("mousedown", () => hideMenu());
-
   DOM.brightCtrl.oninput = (event) => {
     slices.forEach(s => s.setBrightness(event.target.value));
     slices.forEach(s => s.drawCanvas())
   }
-
   DOM.sliceXCtrl.oninput = (event) => {
     volume.indexX = (parseInt(event.target.value));
     sliceX.setSliceIndex(parseInt(event.target.value));
     sliceX.drawCanvas();
   }
-
   DOM.sliceYCtrl.oninput = (event) => {
     volume.indexY = (parseInt(event.target.value));
     sliceY.setSliceIndex(parseInt(event.target.value));
     sliceY.drawCanvas();
   }
-
   DOM.sliceZCtrl.oninput = (event) => {
     volume.indexZ = (parseInt(event.target.value));
     sliceZ.setSliceIndex(parseInt(event.target.value));
     sliceZ.drawCanvas();
   }
-
   DOM.syncBtn.addEventListener('click', () => {
     slices.forEach(s => s.resetPosition())
     slices.forEach(s => s.drawCanvas());
   });
-
   DOM.windowLow.oninput = (event) => {
     slices.forEach(s => s.setWindowLow(parseInt(event.target.value)));
     slices.forEach(s => s.drawCanvas());
@@ -745,7 +735,6 @@ const loadElectrodes = async (
     slices.forEach(s => s.setWindowHigh(parseInt(event.target.value)));
     slices.forEach(s => s.drawCanvas());
   }
-
   DOM.sliceDetails.onclick = () => {
     slices.forEach(s => s.toggleDetails());
     slices.forEach(s => s.drawCanvas());
