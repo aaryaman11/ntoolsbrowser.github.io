@@ -48,8 +48,7 @@
     reader.onloadend = (event) => {
       const result = JSON.parse(event.target.result);
       sessionStorage.setItem("draggedJSON", JSON.stringify(result));
-      window.location.href =
-        `./view.html?mode=demo&subject=${subject}`;
+      window.location.href = `./view.html?mode=demo&subject=${subject}`;
     }
 
     reader.readAsText(file);

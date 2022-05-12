@@ -4,8 +4,8 @@
 
 import { mapInterval } from "./mapInterval.js";
 import { getSeizTypeColor } from "./color.js";
-import { DOM } from "./DOMtree.js";
-import { CreateElectrodeSignalWindow } from "./DOMtree.js";
+import { DOM } from "./DOM.js";
+import { CreateElectrodeSignalWindow } from "./DOM.js";
 import { GFX } from "./gfx.js";
 import { SagittalCanvas } from "./electrodecanvas.js";
 import { CoronalCanvas } from "./electrodecanvas.js";
@@ -168,7 +168,7 @@ const printElectrodeInfo = (
   GFX.highlightSelectedElectrode(selectionSpheres, index);
 };
 
-// changes the mosue to a crosshair for responsive selection
+// changes the mouse to a crosshair for responsive selection
 const addMouseHover = (renderer) => {
   renderer.interactor.onMouseMove = (e) => {
     const hoverObject = renderer.pick(e.clientX, e.clientY);
@@ -416,9 +416,8 @@ const showElectrodeTags = (showTags, spheres, renderer, bbox) => {
     return;
   } 
 
-  const canvas = document.getElementsByTagName("canvas")[0];
-  const vWidth = canvas.clientWidth;
-  const vHeight = canvas.clientHeight;
+  const vWidth = DOM.canvases[0].clientWidth;
+  const vHeight = DOM.canvases[0].clientHeight;
   const view = renderer.camera.view;
   const fov = 45;
   const near = 1;
@@ -463,7 +462,6 @@ const showElectrodeTags = (showTags, spheres, renderer, bbox) => {
       electrodeDiv.style.display = 'block'
     }
   }
-  
 };
 
 // https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
