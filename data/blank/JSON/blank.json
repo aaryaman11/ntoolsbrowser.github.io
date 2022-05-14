@@ -1,0 +1,715 @@
+{
+    "subjID": "blank",
+    "totalSeizType": 1,
+    "SeizDisplay": [
+        "Seizure Type 1",
+        "intPopulation"
+    ],
+    "electrodes": [
+        {
+            "elecID": "G01",
+            "coordinates": {
+                "x": -37.5,
+                "y": -41.5,
+                "z": 47.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G02",
+            "coordinates": {
+                "x": -47.5,
+                "y": -41.0,
+                "z": 38.0
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G03",
+            "coordinates": {
+                "x": -55.83333,
+                "y": -39.16667,
+                "z": 26.83333
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G04",
+            "coordinates": {
+                "x": -59.3,
+                "y": -38.9,
+                "z": 16.3
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G05",
+            "coordinates": {
+                "x": -62.5,
+                "y": -37.16667,
+                "z": 2.83333
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G06",
+            "coordinates": {
+                "x": -65.3,
+                "y": -35.3,
+                "z": -8.1
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G07",
+            "coordinates": {
+                "x": -65.5,
+                "y": -34.5,
+                "z": -19.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G08",
+            "coordinates": {
+                "x": -65.0,
+                "y": -33.0,
+                "z": -33.0
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G09",
+            "coordinates": {
+                "x": -40.5,
+                "y": -31.5,
+                "z": 49.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G10",
+            "coordinates": {
+                "x": -53.5,
+                "y": -29.83333,
+                "z": 38.83333
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G11",
+            "coordinates": {
+                "x": -59.3,
+                "y": -27.7,
+                "z": 27.9
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G12",
+            "coordinates": {
+                "x": -63.83333,
+                "y": -27.5,
+                "z": 16.83333
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G13",
+            "coordinates": {
+                "x": -66.5,
+                "y": -25.83333,
+                "z": 4.83333
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G14",
+            "coordinates": {
+                "x": -68.0,
+                "y": -24.0,
+                "z": -7.0
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G15",
+            "coordinates": {
+                "x": -69.83333,
+                "y": -23.83333,
+                "z": -18.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G16",
+            "coordinates": {
+                "x": -69.7,
+                "y": -23.3,
+                "z": -30.1
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G17",
+            "coordinates": {
+                "x": -41.0,
+                "y": -22.0,
+                "z": 49.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G18",
+            "coordinates": {
+                "x": -53.16667,
+                "y": -19.16667,
+                "z": 41.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G19",
+            "coordinates": {
+                "x": -60.5,
+                "y": -17.5,
+                "z": 30.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G20",
+            "coordinates": {
+                "x": -65.16667,
+                "y": -15.83333,
+                "z": 18.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G21",
+            "coordinates": {
+                "x": -67.16667,
+                "y": -15.16667,
+                "z": 5.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G22",
+            "coordinates": {
+                "x": -69.5,
+                "y": -13.16667,
+                "z": -7.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G23",
+            "coordinates": {
+                "x": -69.7,
+                "y": -11.7,
+                "z": -17.7
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G24",
+            "coordinates": {
+                "x": -70.5,
+                "y": -11.5,
+                "z": -29.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G25",
+            "coordinates": {
+                "x": -43.7,
+                "y": -10.1,
+                "z": 50.3
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G26",
+            "coordinates": {
+                "x": -52.5,
+                "y": -7.5,
+                "z": 41.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G27",
+            "coordinates": {
+                "x": -60.5,
+                "y": -5.83333,
+                "z": 30.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G28",
+            "coordinates": {
+                "x": -63.5,
+                "y": -3.5,
+                "z": 17.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G29",
+            "coordinates": {
+                "x": -64.5,
+                "y": -3.5,
+                "z": 5.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G30",
+            "coordinates": {
+                "x": -68.5,
+                "y": -3.5,
+                "z": -6.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G31",
+            "coordinates": {
+                "x": -70.5,
+                "y": 0.16667,
+                "z": -17.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G32",
+            "coordinates": {
+                "x": -69.5,
+                "y": -0.5,
+                "z": -27.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G33",
+            "coordinates": {
+                "x": -42.5,
+                "y": 2.5,
+                "z": 51.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G34",
+            "coordinates": {
+                "x": -52.1,
+                "y": 2.3,
+                "z": 40.7
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G35",
+            "coordinates": {
+                "x": -58.5,
+                "y": 5.5,
+                "z": 28.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G36",
+            "coordinates": {
+                "x": -63.16667,
+                "y": 6.16667,
+                "z": 18.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G37",
+            "coordinates": {
+                "x": -64.5,
+                "y": 6.83333,
+                "z": 6.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G38",
+            "coordinates": {
+                "x": -67.3,
+                "y": 6.3,
+                "z": -6.1
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G39",
+            "coordinates": {
+                "x": -67.5,
+                "y": 11.0,
+                "z": -17.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G40",
+            "coordinates": {
+                "x": -67.16667,
+                "y": 11.5,
+                "z": -27.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G41",
+            "coordinates": {
+                "x": -36.5,
+                "y": 12.5,
+                "z": 48.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G42",
+            "coordinates": {
+                "x": -47.3,
+                "y": 14.7,
+                "z": 39.9
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G43",
+            "coordinates": {
+                "x": -56.5,
+                "y": 16.16667,
+                "z": 30.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G44",
+            "coordinates": {
+                "x": -61.16667,
+                "y": 16.16667,
+                "z": 19.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G45",
+            "coordinates": {
+                "x": -66.5,
+                "y": 17.5,
+                "z": 8.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G46",
+            "coordinates": {
+                "x": -66.5,
+                "y": 19.5,
+                "z": -3.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G47",
+            "coordinates": {
+                "x": -68.0,
+                "y": 21.0,
+                "z": -13.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G48",
+            "coordinates": {
+                "x": -67.3,
+                "y": 22.3,
+                "z": -25.3
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G49",
+            "coordinates": {
+                "x": -32.5,
+                "y": 24.16667,
+                "z": 50.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G50",
+            "coordinates": {
+                "x": -39.83333,
+                "y": 24.83333,
+                "z": 42.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G51",
+            "coordinates": {
+                "x": -52.5,
+                "y": 26.83333,
+                "z": 30.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G52",
+            "coordinates": {
+                "x": -58.5,
+                "y": 28.5,
+                "z": 20.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G53",
+            "coordinates": {
+                "x": -63.35714,
+                "y": 28.35714,
+                "z": 10.35714
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G54",
+            "coordinates": {
+                "x": -64.5,
+                "y": 29.5,
+                "z": -1.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G55",
+            "coordinates": {
+                "x": -64.5,
+                "y": 30.5,
+                "z": -13.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G56",
+            "coordinates": {
+                "x": -64.5,
+                "y": 33.5,
+                "z": -22.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G57",
+            "coordinates": {
+                "x": -25.7,
+                "y": 33.9,
+                "z": 48.3
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G58",
+            "coordinates": {
+                "x": -37.7,
+                "y": 36.3,
+                "z": 40.3
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G59",
+            "coordinates": {
+                "x": -46.5,
+                "y": 37.5,
+                "z": 30.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G60",
+            "coordinates": {
+                "x": -53.83333,
+                "y": 39.5,
+                "z": 18.83333
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G61",
+            "coordinates": {
+                "x": -60.5,
+                "y": 39.0,
+                "z": 10.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G62",
+            "coordinates": {
+                "x": -63.5,
+                "y": 40.83333,
+                "z": -1.16667
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G63",
+            "coordinates": {
+                "x": -62.5,
+                "y": 40.83333,
+                "z": -11.83333
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        },
+        {
+            "elecID": "G64",
+            "coordinates": {
+                "x": -59.5,
+                "y": 41.5,
+                "z": -22.5
+            },
+            "elecType": "G",
+            "Seizure Type 1": "",
+            "intPopulation": ""
+        }
+    ],
+    "functionalMaps": []
+}
