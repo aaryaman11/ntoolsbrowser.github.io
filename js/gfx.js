@@ -52,6 +52,7 @@ const GFX = {
     highlight.end = end;
     highlight.opacity = 0.5;
     highlight.color = COLOR.blue;
+    highlight.pickable = false;
     highlight.visible = false;
 
     return highlight;

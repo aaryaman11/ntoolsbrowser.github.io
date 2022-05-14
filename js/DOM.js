@@ -357,6 +357,7 @@ const CreateElectrodeSignalWindow  = (data, onScrollCallback) => {
   let electrodeWindow = document.createElement("div");
   electrodeWindow.id = 'electrode-signal-window';
   electrodeWindow.style.cssText = `top: ${document.body.clientHeight - 510}px; left: 0px`;
+  // electrodeWindow.style.width = `50%`;
 
   let title = document.createElement("div");
   title.id = 'electrode-signal-window-title';
@@ -380,6 +381,7 @@ const CreateElectrodeSignalWindow  = (data, onScrollCallback) => {
   signalCanvas.style.cssText = 'display: block';
   signalCanvas.style.width = document.body.clientWidth + 'px';
   signalCanvas.style.height = '500px';
+  // signalCanvas.style.width = "100%";
 
   signalCanvas.width = document.body.clientWidth;
   signalCanvas.height = 500;

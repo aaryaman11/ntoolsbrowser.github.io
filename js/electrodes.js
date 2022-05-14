@@ -253,7 +253,7 @@ const jumpSlicesOnClick = (
 ) => {
   // the main canvas
   DOM.canvases[0].addEventListener("click", (e) => {
-
+    if (e.ctrlKey) return;
     // gets the 'uniqueID' from XTK, which is just an integer
     const clickedObject = renderer.pick(e.clientX, e.clientY);
     // check if it actually has an ID
@@ -296,7 +296,13 @@ const jumpSlicesOnClick = (
   }); // end of event listener
 };
 
-const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
+const setupEditMenu = (
+  renderer, 
+  data, 
+  spheres, 
+  selectionSpheres, 
+  slices, 
+) => {
   DOM.canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
     const clickedObject = renderer.pick(e.clientX, e.clientY);
@@ -305,8 +311,9 @@ const setupEditMenu = (renderer, data, spheres, selectionSpheres, slices) => {
     const selectedObject = renderer.get(clickedObject);
     const objectIndex = spheres.indexOf(selectedObject);
     const selectedElectrode = data.electrodes[objectIndex];
+    const electrodeIDs = getAttributeArray(data.electrodes, 'elecID');
 
-    DOM.editMenu.innerHTML = insertMenuHTML(selectedElectrode);
+    DOM.editMenu.innerHTML = insertMenuHTML(selectedElectrode, electrodeIDs);
     DOM.editMenu.style.display = "grid";
     DOM.editMenu.style.left = `${e.pageX}px`;
     DOM.editMenu.style.top = `${e.pageY}px`;
@@ -345,9 +352,10 @@ const insertMenuHTML = (electrode) => {
   const type = getSelectedSeizType();
   const seizType = type === "intPopulation" ? "" : electrode[type];
   const markUp = `
+    <label>${electrode.elecID}</label>
+    <label></label>
     <label>Electrode Type: </label>
     <input id="elec-type-edit" type="text" value="${elecType}">
-
     <label>Interical Population: </label>
     <select id="int-pop-edit" value="${intPopulation}">
       <option value="0">0</option>
@@ -360,7 +368,6 @@ const insertMenuHTML = (electrode) => {
       <option value="7">7</option>
       <option value="8">8</option>
     </select>
-
     <label>Seizure Type: </label>
     <select id="seiz-type-edit" value="${seizType}">
       <option value="">None</option>
@@ -371,13 +378,12 @@ const insertMenuHTML = (electrode) => {
       <option value="Rapid Spread">Rapid Spread</option>
       <option value="Early Onset">Early Onset</option>
     </select>
-
     <button id="edit-btn">Update</button>
-    <button id="cancel-btn">Cancel</button> 
-    `;
-  return markUp;
+    <button id="cancel-btn">Cancel</button>`
+    return markUp;
 };
-
+  
+  // IDs.forEach(id => markUp += (`<option value=${id}>${id}</option>`));
 const editElectrode = (data, index, type) => {
   const newElecType = document.getElementById("elec-type-edit").value;
   const newIntPop = document.getElementById("int-pop-edit").value;
@@ -693,13 +699,12 @@ const loadElectrodes = async (
   });
 
   createElectrodeTags(electrodeSpheres);
-  setupEditMenu(renderer, data, electrodeSpheres, selectionSpheres, slices);
+  setupEditMenu( renderer, data, electrodeSpheres, selectionSpheres, slices);
 
   renderer.onRender = () => {
     showElectrodeTags(showTags, electrodeSpheres, renderer, oldBoundingBox);
   };
 
-  // TODO: change the fmap connections if needed
   DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
   DOM.canvases[0].addEventListener("mousedown", () => hideMenu());
   DOM.brightCtrl.oninput = (event) => {
@@ -737,6 +742,60 @@ const loadElectrodes = async (
     slices.forEach(s => s.toggleDetails());
     slices.forEach(s => s.drawCanvas());
   }
+
+  // prototyping new connection functionality
+  DOM.canvases[0].addEventListener('click', (e) => {
+    if (!e.ctrlKey) return;
+
+    if (DOM.fmapMenu.selectedIndex === 0) {
+      alert("Select Functional Map Type Other Than 'None'");
+      return;
+    }
+    const connectionStart = data.electrodes[getCurrentSelectedIndex() - 1]
+    const connectionEndID = renderer.get(renderer.pick(e.clientX, e.clientY));
+    const connectionEndIndex = electrodeSpheres.indexOf(connectionEndID);
+    const connectionEnd = data.electrodes[connectionEndIndex];
+
+    if (!connectionEnd) return;
+
+    const { x: x1, y: y1, z: z1 } = connectionStart.coordinates;
+    const { x: x2, y: y2, z: z2 } = connectionEnd.coordinates;
+    const [ xOffset, yOffset, zOffset ] = oldBoundingBox;
+    const newConnection = new X.cylinder();
+    
+    const caption = prompt(
+      `Connecting ${connectionStart.elecID} to ${connectionEnd.elecID}\nEnter Caption for Connection`
+    );
+
+    if (!caption) return;
+
+    newConnection.start = [x1 + xOffset, y1 + yOffset, z1 + zOffset];
+    newConnection.end = [x2 + xOffset, y2 + yOffset, z2 + zOffset];
+    newConnection.radius = 0.3;
+    newConnection.caption = caption;
+    const threshold = parseFloat(prompt(`Enter Functional Map Threshold`));
+
+    const newFmapData = {
+      fmapG1: {
+        index: getCurrentSelectedIndex() - 1,
+        elecID: connectionStart.elecID,
+      }, 
+      fmapG2: {
+        index: connectionEndIndex,
+        elecID: connectionEnd.elecID,
+      },
+      [`${DOM.fmapMenu.value}`]: caption,
+      fmapThreshold: threshold || 0,
+      fmapAfterDischarge: "Yes",
+    }
+    data.functionalMaps.push(newFmapData);
+
+    const newHighlight = GFX.drawFmapHighlightFx(newConnection);
+    fmapHighlights.push(newHighlight);
+    fmapConnections.push(newConnection);
+    renderer.add(newConnection);
+    renderer.add(newHighlight);
+  })
 };
 
 export { loadElectrodes };

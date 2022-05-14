@@ -31,8 +31,11 @@
 
  .info-label {
      display: flex;
-     /* justify-content: space-evenly; */
      justify-content: space-between;
+ }
+
+ button {
+     margin: 2px;
  }
 
  #slice-details:hover {
@@ -253,6 +256,7 @@
      width: 25%;
      grid-template-columns: 1fr 1fr;
      grid-template-rows: repeat(4, 1fr);
+     padding: 5px;
  }
 
  .elec-tag {
