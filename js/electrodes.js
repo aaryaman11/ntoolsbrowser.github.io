@@ -269,7 +269,7 @@ const jumpSlicesOnClick = (
 
       if (sphereIndex >= 0) {
         hideMenu()
-        
+
         const target = data.electrodes[sphereIndex];
         // highlight and show the needed captions on the menu
         GFX.highlightSelectedElectrode(selections, sphereIndex);
@@ -428,15 +428,11 @@ const addFmap = (
   fmapHighlights,
   bbox
 ) => {
-  if (DOM.fmapMenu.selectedIndex === 0) {
-    alert("Select Functional Map Type Other Than 'None'");
-    return;
-  }
 
   const connectionStart = data.electrodes[getCurrentSelectedIndex() - 1]
   const connectionEndID = document.getElementById("connection-edit-id").value;
   const connectionCaptionText = document.getElementById("annotation-text").value;
-  const thresholdValue = document.getElementById("threshold-edit-id").value;
+  const thresholdValue = parseFloat(document.getElementById("threshold-edit-id").value);
   const hasDischarge = document.getElementById("discharge-edit").checked;
   const connectionEnd = data.electrodes.find(
     elec => elec.elecID === connectionEndID
@@ -447,6 +443,11 @@ const addFmap = (
 
   if (!connectionEnd) {
     alert(`Could not find electrode with ID of ${connectionEndID}`)
+    return;
+  }
+
+  if (DOM.fmapMenu.selectedIndex === 0) {
+    alert("Select Functional Map Type Other Than 'None'");
     return;
   }
 
