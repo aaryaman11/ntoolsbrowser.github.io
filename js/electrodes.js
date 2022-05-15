@@ -343,7 +343,6 @@ const setupEditMenu = (
     document
       .getElementById("cancel-btn")
       .addEventListener("click", () => hideMenu());
-
   });
 };
 
@@ -353,7 +352,7 @@ const insertMenuHTML = (electrode) => {
   const seizType = type === "intPopulation" ? "" : electrode[type];
   const markUp = `
     <label>${electrode.elecID}</label>
-    <label></label>
+    <br />
     <label>Electrode Type: </label>
     <input id="elec-type-edit" type="text" value="${elecType}">
     <label>Interical Population: </label>
@@ -378,9 +377,19 @@ const insertMenuHTML = (electrode) => {
       <option value="Rapid Spread">Rapid Spread</option>
       <option value="Early Onset">Early Onset</option>
     </select>
+    <hr>
+    <hr>
+    <label>Add Functional Map</label>
+    <br>
+    <label>Create Map With: </label>
+    <input id="connection-edit-id"/>
+    <label>Threshold: </label>
+    <input id="threshold-edit-id"/>
+    <label>After Discharge?</label>
+    <input type="checkbox" id="discharge-edit">
     <button id="edit-btn">Update</button>
     <button id="cancel-btn">Cancel</button>`
-    return markUp;
+  return markUp;
 };
   
   // IDs.forEach(id => markUp += (`<option value=${id}>${id}</option>`));
