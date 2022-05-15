@@ -302,6 +302,9 @@ const setupEditMenu = (
   spheres, 
   selectionSpheres, 
   slices, 
+  fmapConnections,
+  fmapHighlights,
+  bbox,
 ) => {
   DOM.canvases[0].addEventListener("contextmenu", (e) => {
     e.preventDefault();
@@ -328,6 +331,7 @@ const setupEditMenu = (
     document.getElementById("edit-btn").addEventListener("click", () => {
       const type = getSelectedSeizType();
       editElectrode(data, objectIndex, type);
+      addFmap(data, renderer, fmapConnections, fmapHighlights, bbox);
 
       spheres.forEach((sphere, index) => {
         sphere.color = getSeizTypeColor(data.electrodes[index][type]);
@@ -383,6 +387,9 @@ const insertMenuHTML = (electrode) => {
     <br>
     <label>Create Map With: </label>
     <input id="connection-edit-id"/>
+    <label>Annotation: </label>
+    <textarea id="annotation-text" style="resize: none;" cols="40" rows="4"></textarea>
+
     <label>Threshold: </label>
     <input id="threshold-edit-id"/>
     <label>After Discharge?</label>
@@ -411,7 +418,72 @@ const editElectrode = (data, index, type) => {
 
   data.electrodes[index] = newElectrode;
   updateLabels(newElectrode, index, data);
-};
+}; 
+
+const addFmap = (
+  data, 
+  renderer, 
+  fmapConnections, 
+  fmapHighlights,
+  bbox
+) => {
+  if (DOM.fmapMenu.selectedIndex === 0) {
+    alert("Select Functional Map Type Other Than 'None'");
+    return;
+  }
+
+  const connectionStart = data.electrodes[getCurrentSelectedIndex() - 1]
+  const connectionEndID = document.getElementById("connection-edit-id").value;
+  const connectionCaptionText = document.getElementById("annotation-text").value;
+  const thresholdValue = document.getElementById("threshold-edit-id").value;
+  const hasDischarge = document.getElementById("discharge-edit").checked;
+  const connectionEnd = data.electrodes.find(
+    elec => elec.elecID === connectionEndID
+  );
+
+  const connectionEndIndex = data.electrodes.indexOf(connectionEnd);
+  if (!connectionCaptionText) return;
+
+  if (!connectionEnd) {
+    alert(`Could not find electrode with ID of ${connectionEndID}`)
+    return;
+  }
+
+  const threshold = thresholdValue;
+
+  const { x: x1, y: y1, z: z1 } = connectionStart.coordinates;
+  const { x: x2, y: y2, z: z2 } = connectionEnd.coordinates;
+  const [ xOffset, yOffset, zOffset ] = bbox;
+  const newConnection = new X.cylinder();
+  newConnection.caption = connectionCaptionText;
+  // if (!caption) return;
+
+
+  newConnection.start = [x1 + xOffset, y1 + yOffset, z1 + zOffset];
+  newConnection.end = [x2 + xOffset, y2 + yOffset, z2 + zOffset];
+  newConnection.radius = 0.3;
+
+  const newFmapData = {
+    fmapG1: {
+      index: getCurrentSelectedIndex() - 1,
+      elecID: connectionStart.elecID,
+    }, 
+    fmapG2: {
+      index: connectionEndIndex,
+      elecID: connectionEndID
+    },
+    [`${DOM.fmapMenu.value}`]: connectionCaptionText,
+    fmapThreshold: threshold || 0,
+    fmapAfterDischarge: hasDischarge ? "Yes" : "No",
+  }
+  data.functionalMaps.push(newFmapData);
+
+  const newHighlight = GFX.drawFmapHighlightFx(newConnection);
+  fmapHighlights.push(newHighlight);
+  fmapConnections.push(newConnection);
+  renderer.add(newConnection);
+  renderer.add(newHighlight);
+}
 
 const createElectrodeTags = (spheres) => {
   for (const sphere of spheres) {
@@ -540,9 +612,7 @@ const loadElectrodes = async (
 
   // tags need the original bounding box. renderer.resetBoundingBox() might work too
   const oldBoundingBox = renderer.u;
-
   const defaultSeizType = data.SeizDisplay[0];
-
   const loadingText = document.getElementById('loading-text');
 
   DOM.subjectIDLabel.innerText = data.subjID;
@@ -708,7 +778,16 @@ const loadElectrodes = async (
   });
 
   createElectrodeTags(electrodeSpheres);
-  setupEditMenu( renderer, data, electrodeSpheres, selectionSpheres, slices);
+  setupEditMenu(
+    renderer, 
+    data, 
+    electrodeSpheres, 
+    selectionSpheres, 
+    slices, 
+    fmapConnections, 
+    fmapHighlights,
+    oldBoundingBox
+  );
 
   renderer.onRender = () => {
     showElectrodeTags(showTags, electrodeSpheres, renderer, oldBoundingBox);
@@ -751,60 +830,6 @@ const loadElectrodes = async (
     slices.forEach(s => s.toggleDetails());
     slices.forEach(s => s.drawCanvas());
   }
-
-  // prototyping new connection functionality
-  DOM.canvases[0].addEventListener('click', (e) => {
-    if (!e.ctrlKey) return;
-
-    if (DOM.fmapMenu.selectedIndex === 0) {
-      alert("Select Functional Map Type Other Than 'None'");
-      return;
-    }
-    const connectionStart = data.electrodes[getCurrentSelectedIndex() - 1]
-    const connectionEndID = renderer.get(renderer.pick(e.clientX, e.clientY));
-    const connectionEndIndex = electrodeSpheres.indexOf(connectionEndID);
-    const connectionEnd = data.electrodes[connectionEndIndex];
-
-    if (!connectionEnd) return;
-
-    const { x: x1, y: y1, z: z1 } = connectionStart.coordinates;
-    const { x: x2, y: y2, z: z2 } = connectionEnd.coordinates;
-    const [ xOffset, yOffset, zOffset ] = oldBoundingBox;
-    const newConnection = new X.cylinder();
-    
-    const caption = prompt(
-      `Connecting ${connectionStart.elecID} to ${connectionEnd.elecID}\nEnter Caption for Connection`
-    );
-
-    if (!caption) return;
-
-    newConnection.start = [x1 + xOffset, y1 + yOffset, z1 + zOffset];
-    newConnection.end = [x2 + xOffset, y2 + yOffset, z2 + zOffset];
-    newConnection.radius = 0.3;
-    newConnection.caption = caption;
-    const threshold = parseFloat(prompt(`Enter Functional Map Threshold`));
-
-    const newFmapData = {
-      fmapG1: {
-        index: getCurrentSelectedIndex() - 1,
-        elecID: connectionStart.elecID,
-      }, 
-      fmapG2: {
-        index: connectionEndIndex,
-        elecID: connectionEnd.elecID,
-      },
-      [`${DOM.fmapMenu.value}`]: caption,
-      fmapThreshold: threshold || 0,
-      fmapAfterDischarge: "Yes",
-    }
-    data.functionalMaps.push(newFmapData);
-
-    const newHighlight = GFX.drawFmapHighlightFx(newConnection);
-    fmapHighlights.push(newHighlight);
-    fmapConnections.push(newConnection);
-    renderer.add(newConnection);
-    renderer.add(newHighlight);
-  })
 };
 
 export { loadElectrodes };
