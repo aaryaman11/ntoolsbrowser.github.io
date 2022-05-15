@@ -253,7 +253,7 @@ const jumpSlicesOnClick = (
 ) => {
   // the main canvas
   DOM.canvases[0].addEventListener("click", (e) => {
-    if (e.ctrlKey) return;
+
     // gets the 'uniqueID' from XTK, which is just an integer
     const clickedObject = renderer.pick(e.clientX, e.clientY);
     // check if it actually has an ID
@@ -268,8 +268,9 @@ const jumpSlicesOnClick = (
       const sphereIndex = spheres.indexOf(selectedObject);
 
       if (sphereIndex >= 0) {
+        hideMenu()
+        
         const target = data.electrodes[sphereIndex];
-
         // highlight and show the needed captions on the menu
         GFX.highlightSelectedElectrode(selections, sphereIndex);
 
@@ -456,9 +457,6 @@ const addFmap = (
   const [ xOffset, yOffset, zOffset ] = bbox;
   const newConnection = new X.cylinder();
   newConnection.caption = connectionCaptionText;
-  // if (!caption) return;
-
-
   newConnection.start = [x1 + xOffset, y1 + yOffset, z1 + zOffset];
   newConnection.end = [x2 + xOffset, y2 + yOffset, z2 + zOffset];
   newConnection.radius = 0.3;
@@ -794,7 +792,6 @@ const loadElectrodes = async (
   };
 
   DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
-  DOM.canvases[0].addEventListener("mousedown", () => hideMenu());
   DOM.brightCtrl.oninput = (event) => {
     slices.forEach(s => s.setBrightness(event.target.value));
     slices.forEach(s => s.drawCanvas())

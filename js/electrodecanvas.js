@@ -487,13 +487,13 @@ const getColor = (type) => {
 /*
   The following code for panning and zooming takes inspiration from
   https://betterprogramming.pub/implementation-of-zoom-and-pan-in-69-lines-of-javascript-8b0cb5f221c1
-  //https://github.com/kwdowik/zoom-pan
+  https://github.com/kwdowik/zoom-pan
 */
 
 window.onload = function () {
   (() => {
     document.querySelectorAll(".container").forEach((c) => {
-      const instance = renderer({
+      const instanceForSlice = renderer({
         minScale: 0.1,
         maxScale: 30,
         element: c.children[0],
@@ -506,7 +506,7 @@ window.onload = function () {
         }
         event.preventDefault();
 
-        instance.zoom({
+        instanceForSlice.zoom({
           deltaScale: Math.sign(event.deltaY) > 0 ? -15 : 15,
           x: event.pageX,
           y: event.pageY,
@@ -514,7 +514,7 @@ window.onload = function () {
       });
 
       c.addEventListener("dblclick", () => {
-        instance.panTo({
+        instanceForSlice.panTo({
           originX: 0,
           originY: 0,
           scale: 1,
@@ -526,11 +526,31 @@ window.onload = function () {
           return;
         }
         event.preventDefault();
-        instance.panBy({
+        instanceForSlice.panBy({
           originX: event.movementX,
           originY: event.movementY,
         });
       });
     });
+
+    const editMenu = document.getElementById("edit-menu")
+    const instanceForEdit = renderer({
+        minScale: 0.1,
+        maxScale: 30,
+        element: editMenu,
+        scaleSensitivity: 500,
+    });
+
+
+    editMenu.addEventListener("mousemove", (event) => {
+      if (!event.buttons) {
+        return;
+      }
+      event.preventDefault();
+      instanceForEdit.panBy({
+        originX: event.movementX,
+        originY: event.movementY,
+      });
+    })
   })();
 };
