@@ -11,31 +11,17 @@ An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XT
 ![Stage 2 Design](Docs/roadmapstage2.png)
 
 ## User Walkthrough:
--  Go to the Github and search for github pages or click the [link](https://ntoolsbrowser.github.io/).
+-  Go to the Github and search for github pages or click on the [link](https://ntoolsbrowser.github.io/).
 -  On the loading page page you would select the patient data using the drop down menu shown below
 
 ![Figure 1](Docs/loading-page.png)
 
-- [x] Convert ntools_elec outputs to XTK compatible format.
-- [x] Create web service for accessing ntools_elec outputs.
-## Stage 2: Edit and save attributes of electrodes in browser
-- [x] Create GUI for subject selection and 3D redering options.
-- [ ] Assign and save different atrributes to the electrodes (e.g. functional mapping, seizure mapping, resection mapping, etc.).
-## Stage 3: Add user control
-- [ ] Link to MCIT database of Kerbros ID/Password.
-- [ ] Create white list of Kerbros ID for legit users.
-## Suggested features
-- [x] Render brain volume instead of cortical surface.
-- [x] Opacity control of brain surface
-- [x] Color-code fmap bars
-- [x] Display legend for color-code
-- [x] Color-code elecs on 2D slices
-- [x] Additional draw-down menu items for different types of fmap findings
-- [ ] Adopt BIDS format in json file
-- [x] 3D tags
-- [ ] Show multiple fmap bars for same elec-pairs
-- [ ] Interpolate surface color with electrode attributes (e.g. Garma band strength).
+-  After the loading page you can interact with the patient's data represented on a 3D brain mesh.
+
+![Figure 2](Docs/selecting-fmap.png)
+
+- 
+
 
 ## Walkthrough for developers
 
-![Demo](Docs/demo2.jpg)
