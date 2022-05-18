@@ -134,6 +134,7 @@ const initSeizureTypeMenu = (data, spheres, slices) => {
  */
 const addEventsToFmapMenu = (data, connections, fmapHighlights) => {
   DOM.fmapMenu.addEventListener("change", (event) => {
+    // build an array with functional map type e.g. "motor"
     const selected = getAttributeArray(data.functionalMaps, event.target.value);
     if (selected !== "None") {
       GFX.redrawFmaps(connections, selected);
@@ -233,7 +234,7 @@ const updateLabels = ({ elecID, elecType, intPopulation, coordinates }, index, d
  * @param {array} selections        - Opaque blue spheres that highlight an electrode
  * @param {array} fmaps             - Array of X.cylinders
  * @param {array} fmapHighlights    - Opaque blue cylinders that surround fmaps
- * @param {X.volume} volumeRendered - The volume displayed on slices
+ * @param {X.volume} volume - The volume displayed on slices
  *
  * This function is responsible for way too much. Would be good to find a way to break
  * it down into more reasonable components. It adds an event listener to the canvas,
@@ -248,7 +249,7 @@ const jumpSlicesOnClick = (
   selections,
   fmapConnections,
   fmapHighlights,
-  volumeRendered,
+  volume,
   slices
 ) => {
   // the main canvas
@@ -256,7 +257,7 @@ const jumpSlicesOnClick = (
 
     // gets the 'uniqueID' from XTK, which is just an integer
     const clickedObject = renderer.pick(e.clientX, e.clientY);
-    // check if it actually has an ID
+    // check if it actually has an ID (0 is XTK's way of saying 'no ID')
     if (clickedObject === 0) return;
 
     const selectedObject = renderer.get(clickedObject);
@@ -266,22 +267,11 @@ const jumpSlicesOnClick = (
 
       // find the actual electrode in the array of XTK spheres
       const sphereIndex = spheres.indexOf(selectedObject);
-
       if (sphereIndex >= 0) {
         hideMenu()
-
-        const target = data.electrodes[sphereIndex];
-        // highlight and show the needed captions on the menu
-        GFX.highlightSelectedElectrode(selections, sphereIndex);
-
-        // sync with electrode menu options
-        DOM.electrodeMenu.options.selectedIndex = sphereIndex + 1;
-        updateLabels(target, sphereIndex, data);
-
-        // move slices to corresponding location
-        updateSliceLocation(volumeRendered, target, slices);
+        updateView(sphereIndex, selections, data, volume, slices);
       }
-      // same ideas as above, just with fmaps
+    // same ideas as above, just with fmaps
     } else if (selectedObject.g === "cylinder") {
       const cylinderIndex = fmapConnections.indexOf(selectedObject);
       if (cylinderIndex >= 0) {
@@ -315,19 +305,18 @@ const setupEditMenu = (
     const selectedObject = renderer.get(clickedObject);
     const objectIndex = spheres.indexOf(selectedObject);
     const selectedElectrode = data.electrodes[objectIndex];
-    const electrodeIDs = getAttributeArray(data.electrodes, 'elecID');
 
-    DOM.editMenu.innerHTML = insertMenuHTML(selectedElectrode, electrodeIDs);
+    // draw menu over users mouse position
+    DOM.editMenu.innerHTML = insertMenuHTML(selectedElectrode);
     DOM.editMenu.style.display = "grid";
     DOM.editMenu.style.left = `${e.pageX}px`;
     DOM.editMenu.style.top = `${e.pageY}px`;
 
+    // unfortunately, the DOM.js file wont help us here. these values only exist if the menu is visible
     document.getElementById('seiz-type-edit').value = selectedElectrode[getSelectedSeizType()];
     document.getElementById('int-pop-edit').value = selectedElectrode.intPopulation;
 
-    GFX.highlightSelectedElectrode(selectionSpheres, objectIndex);
-    updateLabels(selectedElectrode, objectIndex, data);
-    DOM.electrodeMenu.options.selectedIndex = objectIndex + 1;
+    updateView(objectIndex, selectionSpheres, data);
 
     document.getElementById("edit-btn").addEventListener("click", () => {
       const type = getSelectedSeizType();
@@ -579,6 +568,17 @@ const getAttributeArray = (data, attr) => {
   return data.map((datum) => datum[attr]);
 };
 
+const updateView = (selectedIndex, selections, data, volume, slices) => {
+  const target = data.electrodes[selectedIndex];
+  GFX.highlightSelectedElectrode(selections, selectedIndex);
+  DOM.electrodeMenu.options.selectedIndex = selectedIndex + 1;
+  updateLabels(target, selectedIndex, data);
+  if (volume) {
+    updateSliceLocation(volume, target, slices);
+  }
+}
+
+// Main Entry Point. Function that calls all other functions
 const loadElectrodes = async (
   renderer,
   volume,
@@ -678,6 +678,7 @@ const loadElectrodes = async (
           i < sizePerSample * (j + 1);
           i += numBytes
         ) {
+          // true means data is little-endian
           view.push(dataView.getFloat32(i, true));
         }
         signals.push(view);
@@ -686,10 +687,8 @@ const loadElectrodes = async (
     })
     .catch(error => console.log(error)) ;
 
-
   loadingText.innerText = "";
   
-
   let signalIndex = 0;
   let playSignal = false;
 
@@ -777,6 +776,7 @@ const loadElectrodes = async (
   });
 
   createElectrodeTags(electrodeSpheres);
+  
   setupEditMenu(
     renderer, 
     data, 
@@ -792,6 +792,7 @@ const loadElectrodes = async (
     showElectrodeTags(showTags, electrodeSpheres, renderer, oldBoundingBox);
   };
 
+  // each slider and button for the slices must call the slices draw method
   DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
   DOM.brightCtrl.oninput = (event) => {
     slices.forEach(s => s.setBrightness(event.target.value));
