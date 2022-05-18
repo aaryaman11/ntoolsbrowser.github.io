@@ -1,5 +1,5 @@
 # ntools_browser
-
+please add a more high-level documentation to your github if appropriate, this should tell ppl how to use the software or access it and describe it a little bit
 **Web-based Electrode Visualization**
 
 An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XTK](https://github.com/xtk/X).
@@ -10,10 +10,12 @@ An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XT
 
 ![Stage 2 Design](Docs/roadmapstage2.png)
 
+![Figure 1](Docs/loading-page.png)
 
-## Stage 1: Visualize brain surfaces and electrodes in browser from existing ntools_elec outputs
-- [x] Find toolbox for web-based visualization of Freesurfer files.
-- [x] Create database of existing MRI scans and electrode coordinates for web visualization.
+
+## User Walkthrough:
+- [x] Go to the Github and search for the link .
+- [x] On the loading page page you would select the patient data using the drop down menu shown in figure 1 
 - [x] Convert ntools_elec outputs to XTK compatible format.
 - [x] Create web service for accessing ntools_elec outputs.
 ## Stage 2: Edit and save attributes of electrodes in browser
@@ -33,3 +35,7 @@ An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XT
 - [x] 3D tags
 - [ ] Show multiple fmap bars for same elec-pairs
 - [ ] Interpolate surface color with electrode attributes (e.g. Garma band strength).
+
+## Walkthrough for developers
+
+![Demo](Docs/demo2.jpg)
