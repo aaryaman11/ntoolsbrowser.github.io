@@ -11,7 +11,7 @@ An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XT
 ![Stage 2 Design](Docs/roadmapstage2.png)
 
 ## User Walkthrough:
--  Go to the Github and search for github pages or click the [link] (https://ntoolsbrowser.github.io/).
+-  Go to the Github and search for github pages or click the ![link] (https://ntoolsbrowser.github.io/).
 -  On the loading page page you would select the patient data using the drop down menu shown below
 
 ![Figure 1](Docs/loading-page.png)
