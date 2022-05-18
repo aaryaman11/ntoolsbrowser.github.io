@@ -15,7 +15,8 @@ An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XT
 
 ## User Walkthrough:
 - [x] Go to the Github and search for the link .
-- [x] On the loading page page you would select the patient data using the drop down menu shown in figure 1 
+- [x] On the loading page page you would select the patient data using the drop down menu shown below
+![Figure 1](Docs/loading-page.png)
 - [x] Convert ntools_elec outputs to XTK compatible format.
 - [x] Create web service for accessing ntools_elec outputs.
 ## Stage 2: Edit and save attributes of electrodes in browser
