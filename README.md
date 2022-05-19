@@ -33,6 +33,7 @@ The 2D slice renderers at the bottom of the screen can be controlled as follows:
 - **Ctrl+Scroll Wheel** to change image size
 - **Double Click** to reset them back to their original position and size
 
+
 <!-- ### Electrode editing attribute:
 - To edit the attribute or to mark the electrodes according to the elipsey level. Do right click of the mouse to get the table for updation of seziure type or electrode type -->
 
@@ -44,7 +45,7 @@ The 2D slice renderers at the bottom of the screen can be controlled as follows:
 ## Electrode and Functional Map Editing
 
 
-![Figure 5](Docs/the-edit-menu.png)
+![Figure 4](Docs/the-edit-menu.png)
 
 The edit menu is activated by right clicking an electrode. The menu can be moved by clicking and dragging. At this time, the user must ensure that a functional mapping category is selected from the menu on the left panel. Left clicking on a new electrode will close the edit menu.
 
@@ -52,24 +53,17 @@ The edit menu is activated by right clicking an electrode. The menu can be moved
 
 The user can start the play back of all electrode signals by pushing the 'play/stop' button under the 'Electrode Signal' folder in the UI.
 
-![Figure 6](Docs/signal-menu.png)
-=======
-![Figure 7](Docs/signal-menu.png)
-
+![Figure 5](Docs/signal-menu.png)
 
 The playback of the electrode signal is viewed as electrode color change. 
 For any given time stamp in the playback the color red indicates the highest value at that time stamp while the color blue indicates the lowest value for the electrode signal at that time stamp.
 All other colors fall in between.
 
-![Figure 8](Docs/HeatMap.png)
+![Figure 6](Docs/HeatMap.png)
 
 The user also has the ability to see the electrode signal as a wave form by clicking on the 'sin wave' button
-![Figure 9](Docs/SinWave.png)
-=======
-![Figure 10](Docs/HeatMap.png)
 
-The user also has the ability to see the electrode signal as a wave form by clicking on the 'sin wave' button
-![Figure 11](Docs/SinWave.png)
+![Figure 7](Docs/SinWave.png)
 
 The user can scroll by moving the mouse to the bottom of the window and the horizontal scroll bar will appear. Or if there is a mouse pad drag 2 fingers on the mouse pad to scroll left or right the viewing window on the electrode signal.
 
