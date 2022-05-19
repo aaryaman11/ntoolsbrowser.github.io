@@ -17,7 +17,8 @@ For demoing, we have three samples to choose from using the drop down menu shown
 
 After the loading page you can interact with the patient's data represented on a 3D brain mesh.
 
-![Figure 2](Docs/selecting-fmap.png)
+<!--![Figure 2](Docs/selecting-fmap.png =100x100)-->
+<img src="Docs/selecting-fmap.png" width="500">
 
 
 Electrodes can be selected by either clicking with the mouse, or using the 'Select Electrode' menu. Different functional mappings and seizure types can be selected with the 'Seizure Type' and 'Functional Map' menus.
@@ -59,18 +60,21 @@ The edit menu is activated by right clicking an electrode. The menu can be moved
 
 The user can start the play back of all electrode signals by pushing the 'play/stop' button under the 'Electrode Signal' folder in the UI.
 
-![Figure 6](Docs/signal-menu.png)
+<img src="Docs/signal-menu.png" width="350">
+<!--![Figure 6](Docs/signal-menu.png)-->
 
 
 The playback of the electrode signal is viewed as electrode color change. 
 For any given time stamp in the playback the color red indicates the highest value at that time stamp while the color blue indicates the lowest value for the electrode signal at that time stamp.
 All other colors fall in between.
 
-![Figure 7](Docs/HeatMap.png)
+<img src="Docs/HeatMap.png" width="350">
+<!--![Figure 7](Docs/HeatMap.png)-->
 
 The user also has the ability to see the electrode signal as a wave form by clicking on the 'sin wave' button
 
-![Figure 8](Docs/SinWave.png)
+<img src="Docs/SinWave.png" width="700">
+<!--![Figure 8](Docs/SinWave.png)-->
 
 
 The user can scroll by moving the mouse to the bottom of the window and the horizontal scroll bar will appear. Or if there is a mouse pad drag 2 fingers on the mouse pad to scroll left or right the viewing window on the electrode signal.
