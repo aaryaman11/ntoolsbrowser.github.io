@@ -34,12 +34,11 @@ All other colors fall in between.
 
 The user also has the ability to see the eletrode signal as a wave form by clicking on the 'sin wave' button
 ![Figure 5](Docs/SinWave.png)
-The user can scroll by moving the mouse bottom to the bottom of the window and the scroll bar will appear. Or if there is a mouse pad use drag 2 fingers on the mouse pad to scroll left or right the viewing window on the electrode signal.
+The user can scroll by moving the mouse to the bottom of the window and the horizontal scroll bar will appear. Or if there is a mouse pad drag 2 fingers on the mouse pad to scroll left or right the viewing window on the electrode signal.
 
 As the scrolling of the sin wave happens the 3D view will update the electrode colors to the current scrolled to time stamp.
 
 For the user to see the next electrode signal as a 'sin wave', he/she must press the arrow down on the keyboard to move to the next signal wave. Pressing arrow up displays the previous signal wave.
-
 
 ## Walkthrough for developers
 
