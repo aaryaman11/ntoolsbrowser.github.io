@@ -18,6 +18,7 @@ For demoing, we have three samples to choose from using the drop down menu shown
 After the loading page you can interact with the patient's data represented on a 3D brain mesh.
 
 ![Figure 2](Docs/selecting-fmap.png)
+<img src="selecting-fmap.png" alt="Figure 2" width="200"/>
 
 
 Electrodes can be selected by either clicking with the mouse, or using the 'Select Electrode' menu. Different functional mappings and seizure types can be selected with the 'Seizure Type' and 'Functional Map' menus.
