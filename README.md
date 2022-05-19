@@ -1,18 +1,19 @@
-# ntools_browser
-please add a more high-level documentation to your github if appropriate, this should tell ppl how to use the software or access it and describe it a little bit
+# N-Tools Browser
+<!-- please add a more high-level documentation to your github if appropriate, this should tell ppl how to use the software or access it and describe it a little bit -->
 **Web-based Electrode Visualization**
 
-An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XTK](https://github.com/xtk/X).
+<!-- An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XTK](https://github.com/xtk/X). -->
 
-![Demo](Docs/demo2.png)
+An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_browser), based on [XTK](https://github.com/xtk/X).
+<!-- ![Demo](Docs/demo2.png) -->
 
-![General Design](Docs/design2.png)
+<!-- ![General Design](Docs/design2.png) -->
 
-![Stage 2 Design](Docs/roadmapstage2.png)
+<!-- ![Stage 2 Design](Docs/roadmapstage2.png) -->
 
 ## User Walkthrough:
--  Go to the Github and search for github pages or click on the [link](https://ntoolsbrowser.github.io/).
--  On the loading page page you would select the patient data using the drop down menu shown below
+-  Go to the Github and search for github pages or click on this [link](https://ntoolsbrowser.github.io/).
+-  For demoing, we have three samples to choose from using the drop down menu shown below
 
 ![Figure 1](Docs/loading-page.png)
 
@@ -20,11 +21,10 @@ An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XT
 
 ![Figure 2](Docs/selecting-fmap.png)
 
-- 
-
-![Electrode signal view]
+## Electrode signal view:
 
 The user can start the play back of all eletrode signals by pushing the 'play/stop' button under the 'Eletrode Signal' folder in the UI
+
 ![Figure 3](Docs/signal-menu.png)
 
 The playback of the electrode signal is viewed as electrode color change. 
@@ -40,5 +40,49 @@ As the scrolling of the sin wave happens the 3D view will update the electrode c
 
 For the user to see the next electrode signal as a 'sin wave', he/she must press the arrow down on the keyboard to move to the next signal wave. Pressing arrow up displays the previous signal wave.
 
-## Walkthrough for developers
+## Walkthrough for New Users
+
+Those who wish to adapt N-Tools Browser for their own use will first need to download the repository. This can be done either by downloading the repository as a zip file or using:
+
+    $ git clone https://github.com/ntoolsbrowser/ntoolsbrowser.github.io.git
+
+You will need the following files:
+
+1. A NIfTI (.nii) file, for the patient brain scan.
+2. Two .pial meshes, for the left and right hemispheres.
+3. A JSON file containing the coordinates and electrode IDs for the patient. An example of a JSON can be found [here](`data/blank/JSON/blank.json`).
+4. A `.edf` containing electrode signal data
+
+To convert the `.edf` into a signal header json and `.bin` file, you can run the following script found in the [preprocessing folder](`preprocessing/edfToJson.py`).
+
+    $ python3 edfToJson.py myFile.edf
+
+Once these files have been gathered, one can either place them in the file directory locally as so:
+
+```
+data
+|
+└───subject
+    |
+    └───edf
+    |   |
+    |   | subject_signal_header.json
+    |   └───signals
+    |       | subject.bin
+    |
+    └───JSON
+    |   | subject.json
+    |
+    └───meshes
+    |   | subject_lh.pial
+    |   | subject_rh.pial
+    |
+    └───volume
+        | subject_T1.nii
+```
+
+Replace 'subject' with the actual subject ID.
+### 
+
+
 
