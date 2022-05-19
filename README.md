@@ -22,6 +22,24 @@ An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XT
 
 - 
 
+![Electrode signal view]
+
+The user can start the play back of all eletrode signals by pushing the 'play/stop' button under the 'Eletrode Signal' folder in the UI
+![Figure 3](Docs/signal-menu.png)
+
+The playback of the electrode signal is viewed as electrode color change. 
+For any given time stamp in the playback the color red indicates the highest value at that time stamp while the color blue indicates the lowest value for the eletrode signal at that time stamp.
+All other colors fall in between.
+![Figure 4](Docs/HeatMap.png)
+
+The user also has the ability to see the eletrode signal as a wave form by clicking on the 'sin wave' button
+![Figure 5](Docs/SinWave.png)
+The user can scroll by moving the mouse bottom to the bottom of the window and the scroll bar will appear. Or if there is a mouse pad use drag 2 fingers on the mouse pad to scroll left or right the viewing window on the electrode signal.
+
+As the scrolling of the sin wave happens the 3D view will update the electrode colors to the current scrolled to time stamp.
+
+For the user to see the next electrode signal as a 'sin wave', he/she must press the arrow down on the keyboard to move to the next signal wave. Pressing arrow up displays the previous signal wave.
+
 
 ## Walkthrough for developers
 
