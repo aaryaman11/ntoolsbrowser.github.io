@@ -1,18 +1,16 @@
 <!-- omit in toc -->
 # N-Tools Browser
-<!-- please add a more high-level documentation to your github if appropriate, this should tell ppl how to use the software or access it and describe it a little bit -->
 **Web-based Electrode Visualization**
 
-<!-- An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XTK](https://github.com/xtk/X). -->
-
 An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_browser), based on [XTK](https://github.com/xtk/X).
-
-The purpose of this project is to provide neurology researchers with an intuitive interface for analyzing electrode data. 
 
 <!-- omit in toc -->
 ## **Contents**
 - [User Walkthrough](#user-walkthrough)
+  - [Loading a Subject for Demo](#loading-a-subject-for-demo)
+  - [Main Screen](#main-screen)
   - [2D Slice Renderers](#2d-slice-renderers)
+    - [Controls](#controls)
   - [2D Slice Settings](#2d-slice-settings)
   - [Electrode and Functional Map Editing](#electrode-and-functional-map-editing)
   - [Electrode Signal View](#electrode-signal-view)
@@ -20,19 +18,22 @@ The purpose of this project is to provide neurology researchers with an intuitiv
   - [Files Needed](#files-needed)
   - [Option 1. Place your files into the local project directory as so.](#option-1-place-your-files-into-the-local-project-directory-as-so)
   - [Option 2. Update the URLs](#option-2-update-the-urls)
+- [Publications](#publications)
+- [Affiliations](#affiliations)
+- [Acknowledgements](#acknowledgements)
 
 ## User Walkthrough
 
 Go to the Github and search for github pages or click on this [link](https://ntoolsbrowser.github.io/).  
 
-For demoing, we have three samples to choose from using the drop down menu shown below
+To demo the software, no installation is required. We have three samples to choose from using the drop down menu shown below
 
-
+### Loading a Subject for Demo
 ![Figure 1](Docs/loading-page.png)
 
 After the loading page you can interact with the patient's data represented on a 3D brain mesh.
 
-<!--![Figure 2](Docs/selecting-fmap.png =100x100)-->
+### Main Screen
 <img src="Docs/selecting-fmap.png" width="500">
 
 
@@ -42,8 +43,9 @@ Electrodes can be selected by either clicking with the mouse, or using the 'Sele
 
 ![Figure 3](Docs/axial-slice.png)
 
-The 2D slice renderers at the bottom of the screen can be controlled as follows:
+A 2D renderer for each axis will be drawn at the bottom of the screen.
 
+#### Controls
 - **Click+Drag** to move the slices to a different location
 - **Scroll Wheel** to cycle between images
 - **Ctrl+Scroll Wheel** to change image size
@@ -57,9 +59,7 @@ The sync slices button will jump all images back to the image containing the cur
 
 ![Figure 4](Docs/bright-and-contrast.png)
 
-
 ### Electrode and Functional Map Editing
-
 
 ![Figure 5](Docs/the-edit-menu.png)
 
@@ -71,7 +71,6 @@ The user can start the play back of all electrode signals by pushing the 'play/s
 
 <img src="Docs/signal-menu.png" width="350">
 
-
 The playback of the electrode signal is viewed as electrode color change. 
 For any given time stamp in the playback the color red indicates the highest value at that time stamp while the color blue indicates the lowest value for the electrode signal at that time stamp.
 All other colors fall in between.
@@ -82,7 +81,6 @@ The user also has the ability to see the electrode signal as a wave form by clic
 
 <img src="Docs/SinWave.png" width="700">
 
-
 The user can scroll by moving the mouse to the bottom of the window and the horizontal scroll bar will appear. Or if there is a mouse pad drag 2 fingers on the mouse pad to scroll left or right the viewing window on the electrode signal.
 
 As the scrolling of the sin wave happens the 3D view will update the electrode colors to the current scrolled to time stamp.
@@ -91,7 +89,7 @@ For the user to see the next electrode signal as a 'sin wave', he/she must press
 
 ## Instructions For Using N-Tools With Your Own Data
 
-Those who wish to adapt N-Tools Browser for their own use will first need to download the repository. This can be done either by downloading the repository as a zip file or using:
+Advanced users who wish to adapt N-Tools Browser for their own use will first need to download the repository. This can be done either by downloading the repository as a zip file or using:
 
     $ git clone https://github.com/ntoolsbrowser/ntoolsbrowser.github.io.git
 
@@ -158,3 +156,20 @@ For file naming conventions, we have worked to comply to the [BIDS specification
 - `?bids=ieeg&file=sub-subject_ntoolsbrowser.json`
 - `?bids=ieeg&file=sub-subject_functionalmapping.json`
 - `?bids=ieeg&file=sub-subject_functionalmapping.bin`
+
+## Publications
+
+**N-Tools-Browser: Web-Based Visualization of Electrocorticography Data for Epilepsy Surgery**. Frontiers in Bioinformatics, April 2022. [Link](https://www.frontiersin.org/articles/10.3389/fbinf.2022.857577/full).
+
+## Affiliations
+
+[UMass Boston](https://www.umb.edu/)
+
+[NYU Langone Comprehensive Epilepsy Center](https://nyulangone.org/locations/comprehensive-epilepsy-center)
+
+
+## Acknowledgements
+
+Special thank you to [Jingyun Chen](https://med.nyu.edu/faculty/jingyun-chen), [Daniel Friedman](https://nyulangone.org/doctors/1407900152/daniel-friedman), and [Daniel Haehn](https://danielhaehn.com/)! This project could would not have been successful without your support. 
+
+
