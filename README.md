@@ -50,38 +50,47 @@ You will need the following files:
 
 1. A NIfTI (.nii) file, for the patient brain scan.
 2. Two .pial meshes, for the left and right hemispheres.
-3. A JSON file containing the coordinates and electrode IDs for the patient. An example of a JSON can be found [here](`data/blank/JSON/blank.json`).
-4. A `.edf` containing electrode signal data
+3. A JSON file containing the coordinates and electrode IDs for the patient. An example of a JSON can be found [here](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/data/blank/JSON/blank.json`).
+4. A `.edf` containing electrode signal data.
 
-To convert the `.edf` into a signal header json and `.bin` file, you can run the following script found in the [preprocessing folder](`preprocessing/edfToJson.py`).
+To convert the `.edf` into a signal header json and `.bin` file, you can run the following script found in the [preprocessing folder](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/tree/main/preprocessing`../../preprocessing/edfToJson.py`).
 
     $ python3 edfToJson.py myFile.edf
 
-Once these files have been gathered, one can either place them in the file directory locally as so:
+### Option 1. Place your files into the local project directory as so.
+
+
+Replace 'subject' with the actual subject ID.
 
 ```
 data
 |
 └───subject
-    |
     └───edf
-    |   |
     |   | subject_signal_header.json
     |   └───signals
     |       | subject.bin
-    |
     └───JSON
     |   | subject.json
-    |
     └───meshes
     |   | subject_lh.pial
     |   | subject_rh.pial
-    |
     └───volume
         | subject_T1.nii
 ```
+### Option 2. Update the URLs in [`main.js`](`./../main.js) and [`electrodes.js`](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/js/electrodes.js`)
 
-Replace 'subject' with the actual subject ID.
+Currently, the URLs in these files are pointing to files in NYU's server. If you have your own URL where you store files, this can be easily changed.
+
+For file naming conventions this way, we have worked to comply to the [BIDS specification](https://bids-specification.readthedocs.io/en/stable/01-introduction.html). The naming conventions we have used are as follows:
+
+- `?bids=ana&file=sub-subject_freesurferleft.pial`
+- `?bids=ana&file=sub-subject_freesurferright.pial`
+- `?bids=ana&file=sub-subject_preoperation_T1w.nii`
+- `?bids=ieeg&file=sub-subject_ntoolsbrowser.json`
+- `?bids=ieeg&file=sub-subject_functionalmapping.json`
+- `?bids=ieeg&file=sub-subject_functionalmapping.bin`
+
 ### 
 
 
