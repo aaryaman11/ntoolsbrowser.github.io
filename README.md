@@ -32,13 +32,13 @@ The 2D slice renderers at the bottom of the screen can be controlled as follows:
 - **Scroll Wheel** to cycle between images
 - **Ctrl+Scroll Wheel** to change image size
 - **Double Click** to reset them back to their original position and size
-=======
-### Electrode editing attribute:
-- To edit the attribute or to mark the electrodes according to the elipsey level. Do right click of the mouse to get the table for updation of seziure type or electrode type
 
-![Figure 4](Docs/adding-a-functional-map.png)
+<!-- ### Electrode editing attribute:
+- To edit the attribute or to mark the electrodes according to the elipsey level. Do right click of the mouse to get the table for updation of seziure type or electrode type -->
 
-### Electrode signal view:
+<!-- ![Figure 4](Docs/adding-a-functional-map.png) -->
+
+<!-- ### Electrode signal view: -->
 
 
 ## Electrode and Functional Map Editing
