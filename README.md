@@ -60,7 +60,8 @@ The edit menu is activated by right clicking an electrode. The menu can be moved
 
 The user can start the play back of all electrode signals by pushing the 'play/stop' button under the 'Electrode Signal' folder in the UI.
 
-![Figure 6](Docs/signal-menu.png)
+<img src="Docs/signal-menu.png" width="500">
+<!--![Figure 6](Docs/signal-menu.png)-->
 
 
 The playback of the electrode signal is viewed as electrode color change. 
