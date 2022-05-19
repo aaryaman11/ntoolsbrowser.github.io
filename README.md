@@ -61,9 +61,6 @@ The user can start the play back of all electrode signals by pushing the 'play/s
 
 ![Figure 6](Docs/signal-menu.png)
 
-=======
-=======
-
 
 The playback of the electrode signal is viewed as electrode color change. 
 For any given time stamp in the playback the color red indicates the highest value at that time stamp while the color blue indicates the lowest value for the electrode signal at that time stamp.
@@ -72,10 +69,6 @@ All other colors fall in between.
 ![Figure 7](Docs/HeatMap.png)
 
 The user also has the ability to see the electrode signal as a wave form by clicking on the 'sin wave' button
-
-![Figure 9](Docs/SinWave.png)
-=======
-=======
 
 ![Figure 8](Docs/SinWave.png)
 
