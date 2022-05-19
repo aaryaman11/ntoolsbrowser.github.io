@@ -5,42 +5,59 @@
 <!-- An add-on to [ntools_elec](https://github.com/HughWXY/ntools_elec), based on [XTK](https://github.com/xtk/X). -->
 
 An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_browser), based on [XTK](https://github.com/xtk/X).
-<!-- ![Demo](Docs/demo2.png) -->
 
-<!-- ![General Design](Docs/design2.png) -->
+## User Walkthrough
 
-<!-- ![Stage 2 Design](Docs/roadmapstage2.png) -->
+Go to the Github and search for github pages or click on this [link](https://ntoolsbrowser.github.io/).  
 
-## User Walkthrough:
--  Go to the Github and search for github pages or click on this [link](https://ntoolsbrowser.github.io/).
--  For demoing, we have three samples to choose from using the drop down menu shown below
+For demoing, we have three samples to choose from using the drop down menu shown below
+
 
 ![Figure 1](Docs/loading-page.png)
 
--  After the loading page you can interact with the patient's data represented on a 3D brain mesh.
+After the loading page you can interact with the patient's data represented on a 3D brain mesh.
 
 ![Figure 2](Docs/selecting-fmap.png)
 
-## Electrode signal view:
+Electrodes can be selected by either clicking with the mouse, or using the 'Select Electrode' menu. Different functional mappings and seizure types can be selected with the 'Seizure Type' and 'Functional Map' menus.
 
-The user can start the play back of all eletrode signals by pushing the 'play/stop' button under the 'Eletrode Signal' folder in the UI
+## 2D Slice Renderers
 
-![Figure 3](Docs/signal-menu.png)
+![Figure 3](Docs/axial-slice.png)
+
+The 2D slice renderers at the bottom of the screen can be controlled as follows:
+
+- **Click+Drag** to move the slices to a different location
+- **Scroll Wheel** to cycle between images
+- **Ctrl+Scroll Wheel** to change image size
+- **Double Click** to reset them back to their original position and size
+
+## Electrode and Functional Map Editing
+
+![Figure 4](Docs/the-edit-menu.png)
+
+The edit menu is activated by right clicking an electrode. The menu can be moved by clicking and dragging. At this time, the user must ensure that a functional mapping category is selected from the menu on the left panel. Left clicking on a new electrode will close the edit menu.
+
+## Electrode Signal View
+
+The user can start the play back of all electrode signals by pushing the 'play/stop' button under the 'Electrode Signal' folder in the UI.
+
+![Figure 5](Docs/signal-menu.png)
 
 The playback of the electrode signal is viewed as electrode color change. 
-For any given time stamp in the playback the color red indicates the highest value at that time stamp while the color blue indicates the lowest value for the eletrode signal at that time stamp.
+For any given time stamp in the playback the color red indicates the highest value at that time stamp while the color blue indicates the lowest value for the electrode signal at that time stamp.
 All other colors fall in between.
-![Figure 4](Docs/HeatMap.png)
+![Figure 6](Docs/HeatMap.png)
 
-The user also has the ability to see the eletrode signal as a wave form by clicking on the 'sin wave' button
-![Figure 5](Docs/SinWave.png)
+The user also has the ability to see the electrode signal as a wave form by clicking on the 'sin wave' button
+![Figure 7](Docs/SinWave.png)
 The user can scroll by moving the mouse to the bottom of the window and the horizontal scroll bar will appear. Or if there is a mouse pad drag 2 fingers on the mouse pad to scroll left or right the viewing window on the electrode signal.
 
 As the scrolling of the sin wave happens the 3D view will update the electrode colors to the current scrolled to time stamp.
 
 For the user to see the next electrode signal as a 'sin wave', he/she must press the arrow down on the keyboard to move to the next signal wave. Pressing arrow up displays the previous signal wave.
 
-## Walkthrough for New Users
+## Instructions For Using N-Tools With Your Own Data
 
 Those who wish to adapt N-Tools Browser for their own use will first need to download the repository. This can be done either by downloading the repository as a zip file or using:
 
@@ -53,9 +70,24 @@ You will need the following files:
 3. A JSON file containing the coordinates and electrode IDs for the patient. An example of a JSON can be found [here](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/data/blank/JSON/blank.json`).
 4. A `.edf` containing electrode signal data.
 
-To convert the `.edf` into a signal header json and `.bin` file, you can run the following script found in the [preprocessing folder](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/tree/main/preprocessing`../../preprocessing/edfToJson.py`).
+To convert the `.edf` into a signal header json and `.bin` file, you can run the following script found in the [preprocessing folder](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/tree/main/preprocessing/edfToJson.py`).
 
-    $ python3 edfToJson.py myFile.edf
+    $ python edfToJson.py myFile.edf
+
+A JSON for the electrode IDs and coordinates can be generated by hand or from existing data. The [preprocessing folder](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/tree/main/preprocessing/edfToJson.py`) contains many examples for transforming data from `.txt` and `.xlsx` files. For example, if one has a `.txt` file containing entries such as 
+```
+id1 xCoor1 yCoor1 zCoor1
+id2 xCoor2 yCoor2 zCoor2
+
+...
+
+idN xCoorN yCoorN zCoorN
+```
+the script [`genblank.py`](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/tree/main/preprocessing/edfToJson.py`) can create a JSON file for the coordinates.
+
+    $ python genblank.py myFile.txt
+
+Similar simple scripts can be created for other file formats, such as `.csv`
 
 ### Option 1. Place your files into the local project directory as so.
 
@@ -64,7 +96,6 @@ Replace 'subject' with the actual subject ID.
 
 ```
 data
-|
 └───subject
     └───edf
     |   | subject_signal_header.json
@@ -78,7 +109,7 @@ data
     └───volume
         | subject_T1.nii
 ```
-### Option 2. Update the URLs in [`main.js`](`./../main.js) and [`electrodes.js`](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/js/electrodes.js`)
+### Option 2. Update the URLs in [`main.js`](`./../main.js`) and [`electrodes.js`](`https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/js/electrodes.js`)
 
 Currently, the URLs in these files are pointing to files in NYU's server. If you have your own URL where you store files, this can be easily changed.
 
