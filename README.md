@@ -73,7 +73,7 @@ All other colors fall in between.
 
 The user also has the ability to see the electrode signal as a wave form by clicking on the 'sin wave' button
 
-<img src="Docs/SinWave.png" width="500">
+<img src="Docs/SinWave.png" width="700">
 <!--![Figure 8](Docs/SinWave.png)-->
 
 
