@@ -68,7 +68,7 @@ The user also has the ability to see the electrode signal as a wave form by clic
 =======
 ![Figure 10](Docs/HeatMap.png)
 
-The user also has the ability to see the eletrode signal as a wave form by clicking on the 'sin wave' button
+The user also has the ability to see the electrode signal as a wave form by clicking on the 'sin wave' button
 ![Figure 11](Docs/SinWave.png)
 
 The user can scroll by moving the mouse to the bottom of the window and the horizontal scroll bar will appear. Or if there is a mouse pad drag 2 fingers on the mouse pad to scroll left or right the viewing window on the electrode signal.
