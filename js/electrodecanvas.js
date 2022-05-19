@@ -198,8 +198,8 @@ export class SagittalCanvas extends ElectrodeCanvas {
        this.draw2DElectrodes(electrodesAtSlice);
   
        if (!this.showDetails) {
-         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes);
-         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes);
+         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
+         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
        }
   
        if (this.currentSlice === this.relativeSlice) {
@@ -312,8 +312,8 @@ export class CoronalCanvas extends ElectrodeCanvas {
        this.draw2DElectrodes(electrodesAtSlice);
   
        if (!this.showDetails) {
-         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes);
-         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes);
+         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
+         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
        }
   
        if (this.currentSlice === this.relativeSlice) {
@@ -426,8 +426,8 @@ export class AxialCanvas extends ElectrodeCanvas {
        this.draw2DElectrodes(electrodesAtSlice);
   
        if (!this.showDetails) {
-         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes);
-         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes);
+         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
+         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
        }
   
        if (this.currentSlice === this.relativeSlice) {
