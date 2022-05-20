@@ -468,6 +468,7 @@ const getColor = (type) => {
     "late spread": "#00ff30",
     "rapid spread": "#0000ff",
     "early onset": "#00ffff",
+    "variable": "#ff69b4",
 
     // int pop
     0: "#ffffff",
