@@ -29,6 +29,11 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
 </details>
 
 <details>
+<summary>For Future Developers</summary>
+- [3. For Future Developers](#3-for-future-developers)
+</details>
+
+<details>
 <summary>Miscellanous</summary>
 
 - [Publications](#publications)
@@ -170,19 +175,21 @@ For file naming conventions, we have worked to comply to the [BIDS specification
 - `?bids=ieeg&file=sub-subject_ntoolsbrowser.json`
 - `?bids=ieeg&file=sub-subject_functionalmapping.json`
 - `?bids=ieeg&file=sub-subject_functionalmapping.bin`
+## 3. For Future Developers
 
-## 3. Publications
+You can find information about some of the weirder parts of the code that were too big to fit in comments [here](https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/Docs/futuredevs.md)
+## 4. Publications
 
 **N-Tools-Browser: Web-Based Visualization of Electrocorticography Data for Epilepsy Surgery**. Frontiers in Bioinformatics, April 2022. [Link](https://www.frontiersin.org/articles/10.3389/fbinf.2022.857577/full).
 
-## 4. Affiliations
+## 5. Affiliations
 
 [UMass Boston](https://www.umb.edu/)
 
 [NYU Langone Comprehensive Epilepsy Center](https://nyulangone.org/locations/comprehensive-epilepsy-center)
 
 
-## 5. Acknowledgements
+## 6. Acknowledgements
 
 Special thank you to [Jingyun Chen](https://med.nyu.edu/faculty/jingyun-chen), [Daniel Friedman](https://nyulangone.org/doctors/1407900152/daniel-friedman), and [Daniel Haehn](https://danielhaehn.com/)! This project could would not have been successful without your support. 
 
