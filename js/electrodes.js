@@ -470,6 +470,17 @@ const addFmap = (
   renderer.add(newHighlight);
 }
 
+// add a new blank seizure type to the subject
+const addNewSeizType = (data) => {
+  const numTypes = DOM.seizTypeMenu.options.length;
+  const newSeizType = data.electrodes.map(datum => ({ ...datum, [`Seizure Type ${numTypes}`]: ""}));
+  const newOption = document.createElement('option');
+  newOption.value = `Seizure Type ${numTypes}`;
+  newOption.innerText = `Seizure Type ${numTypes}`; 
+  DOM.seizTypeMenu.appendChild(newOption);
+  data.electrodes = newSeizType;
+}
+
 const createElectrodeTags = (spheres) => {
   for (const sphere of spheres) {
     const captionDiv = document.createElement("div");
@@ -709,7 +720,7 @@ const loadElectrodes = async (
 
       let signalsPerEntry = electrodeSignals[0].length;
       let percentage = parseFloat((signalIndex / signalsPerEntry) * 100).toFixed(2);
-      document.getElementById('signal-bar').style.width = `${percentage}%`
+      document.getElementById('signal-bar').style.width = `${percentage}%`;
 
       normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
       electrodeSpheres[i].color = [normalizedSignal, 0, 1 - normalizedSignal];
@@ -796,6 +807,7 @@ const loadElectrodes = async (
 
   // each slider and button for the slices must call the slices draw method
   DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
+  document.getElementById('new-seiz-type-add').addEventListener("click", () => addNewSeizType(data));
   DOM.brightCtrl.oninput = (event) => {
     slices.forEach(s => s.setBrightness(event.target.value));
     slices.forEach(s => s.drawCanvas())
