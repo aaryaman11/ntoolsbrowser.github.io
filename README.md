@@ -26,19 +26,21 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
   - [2.1. Files Needed](#21-files-needed)
   - [2.2. Option 1. Place your files into the local project directory as so.](#22-option-1-place-your-files-into-the-local-project-directory-as-so)
   - [2.3. Option 2. Update the URLs](#23-option-2-update-the-urls)
+
 </details>
 
 <details>
 <summary>For Future Developers</summary>
+
 - [3. For Future Developers](#3-for-future-developers)
 </details>
 
 <details>
-<summary>Miscellanous</summary>
+<summary>Miscellaneous</summary>
 
-- [Publications](#publications)
-- [Affiliations](#affiliations)
-- [Acknowledgements](#acknowledgements)
+- [4. Publications](#4-publications)
+- [5. Affiliations](#5-affiliations)
+- [6. Acknowledgements](#6-acknowledgements)
 </details>
 
 ## 1. User Walkthrough
