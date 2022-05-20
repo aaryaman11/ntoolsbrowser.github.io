@@ -16,32 +16,37 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
 
   function swapSignal(d){
     currentSignal += d;
-    const electrodeIDs = Array.apply(null, DOM.electrodeMenu.options)
-                              .map(option => option.value);
-
-    console.log(electrodeIDs[currentSignal + 1]);
     if(currentSignal<0)
       currentSignal = 0;
 
     if(currentSignal == data.length)
       currentSignal = data.length - 1;
 
-    // max = data[currentSignal][0];
-    // min = data[currentSignal][0];
+    max = data[currentSignal][0];
+    min = data[currentSignal][0];
 
-    // for(let i=0; i<end; i++){
-    //   if(data[currentSignal][i] > max)
-    //     max = data[currentSignal][i];
+    for(let i=0; i<end; i++){
+      if(data[currentSignal][i] > max)
+        max = data[currentSignal][i];
   
-    //   if(data[currentSignal][i] < min)
-    //     min = data[currentSignal][i];
-    // }
-    max = Math.max(...data[currentSignal].slice(0, end));
-    min = Math.min(...data[currentSignal].slice(0, end));
-
+      if(data[currentSignal][i] < min)
+        min = data[currentSignal][i];
+    }
     
     signalUIControl.HEIGHT = Math.abs(max) + Math.abs(min);
     signalUIControl.draw();
+
+    const electrodeIDs = Array.apply(null, DOM.electrodeMenu.options)
+                              .map(option => option.value);
+    
+    const title = document.getElementById('electrode-signal-window-text')
+    
+    if (title) {
+      if (currentSignal > electrodeIDs.length || currentSignal < 0) {
+        return;
+      }
+      title.innerText = `Electrode Signal for ${electrodeIDs[currentSignal + 1]}`
+    }
   };
   
   // the total area of our drawings, can be very large now
@@ -66,10 +71,6 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
       ctx.moveTo(visibleLeft, (max + Math.abs(min)) - (data[currentSignal][i] - min));
       for( ++i; i<visibleWidth; i++){
         ctx.lineTo(i, (max + Math.abs(min)) - (data[currentSignal][i] - min));
-        // console.log(`i = ${i}`);
-        // console.log(`Max + Min: ${max + Math.abs(min)}`);
-        // console.log(`(data[currentSignal][i] - min: ${data[currentSignal][i] - min}`);
-        // console.log(`To: ${(max + Math.abs(min)) - (data[currentSignal][i] - min)}`);
       }
       ctx.stroke();
       // console.log(i);
@@ -323,6 +324,8 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
 const CreateElectrodeSignalWindow  = (data, onScrollCallback) => {
   let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   let signalUIControl = null;
+  const electrodeIDs = Array.apply(null, DOM.electrodeMenu.options)
+                            .map(option => option.value);
 
   function close(){
     title.removeEventListener('mousedown', dragMouseDown);
@@ -340,7 +343,8 @@ const CreateElectrodeSignalWindow  = (data, onScrollCallback) => {
   title.style.cssText = 'overflow: auto';
 
   let titleText = document.createElement("div");
-  titleText.innerHTML = 'Electrode Signal';
+  titleText.id = 'electrode-signal-window-text'
+  titleText.innerHTML = `Electrode Signal for ${electrodeIDs[1]}`
   titleText.style.cssText = 'float: left;';
 
   let closeBtn = document.createElement("button");
