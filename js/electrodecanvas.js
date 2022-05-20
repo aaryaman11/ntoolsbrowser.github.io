@@ -54,6 +54,7 @@ class ElectrodeCanvas {
     this.windowHigh = this.dims[1];
   }
 
+  // draw a crosshair over the users selected target
   drawMark(x, y) {
     this.ctx.strokeStyle = "#98ff98";
     this.ctx.lineWidth = 0.5;
@@ -69,6 +70,7 @@ class ElectrodeCanvas {
     this.ctx.stroke();
   }
 
+  // methods for having the slice 'know' where the crosshair should be
   setRelativeCoordinates(x, y) {
     this.relativeX = x;
     this.relativeY = y;
@@ -82,10 +84,12 @@ class ElectrodeCanvas {
     this.relativeSlice = index;
   }
 
+  // will tell the slice whether to draw intPopulation or SeizureType color map
   setSeizType(type) {
     this.currentType = type;
   }
 
+  // update the slice data for initializing map
   setData(newData) {
     this.electrodeData = newData;
   }
@@ -107,6 +111,7 @@ class ElectrodeCanvas {
   }
 } // end Class ElectrodeCanvas
 
+// will add comments to this one since the others are the same, just with different x,y
 export class SagittalCanvas extends ElectrodeCanvas {
   constructor(data, volume, container) {
     super(data, volume, container);
@@ -115,6 +120,8 @@ export class SagittalCanvas extends ElectrodeCanvas {
     this.drawCanvas();
   }
 
+  // contains key value pairs of the slice index and the electrodes at that slice
+  // the different canvases will use different coordinates
   initSliceMap() {
     this.sliceMap = new Map();
     for (const e of this.electrodeData) {
@@ -130,10 +137,12 @@ export class SagittalCanvas extends ElectrodeCanvas {
     }
   }
 
+  // add the scroll wheel
   initEvents() {
     this.canvas.onwheel = (e) => {
       if (e.ctrlKey) return;
 
+      // prevent going out of bounds
       if (this.currentSlice < this.dims[0] && e.wheelDelta > 0) {
         this.currentSlice += 1;
         this.volume.indexX += 1;
@@ -149,12 +158,14 @@ export class SagittalCanvas extends ElectrodeCanvas {
     }
   }
 
+  // reset to the last place a user clicked
   resetPosition() {
     if (this.relativeSlice == null) return;
     this.currentSlice = this.relativeSlice;
     this.volume.indexX = this.relativeSlice;
   }
 
+  // gets the offset of the data from the raw NIfTI data
   calculateOffset(row, col) {
     return (this.dims[0] ** 2) * row + this.dims[0] * col + (this.dims[0] - this.currentSlice);
   }
@@ -197,18 +208,22 @@ export class SagittalCanvas extends ElectrodeCanvas {
   
        this.draw2DElectrodes(electrodesAtSlice);
   
+       // also draw on the two adjacent slices
        if (!this.showDetails) {
          if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
          if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
        }
   
+       // if the current scroll wheel selected slice passes the user selected slice, draw
+       // the crosshair
        if (this.currentSlice === this.relativeSlice) {
          this.drawMark(this.relativeX, this.relativeY);
        }
      }
   }
 
-  draw2DElectrodes(electrodes, size = 2, textOffset = 30) {
+  // draw the 2D electrodes over the current image in the current slice
+  draw2DElectrodes(electrodes, size = 2){
     for (const e of electrodes) {
       const mappedX = this.dims[0] - Math.round(mapInterval(e.coordinates.y, this.oldInterval, this.newInterval));
       const mappedY = this.dims[0] - Math.round(mapInterval(e.coordinates.z, this.oldInterval, this.newInterval));
