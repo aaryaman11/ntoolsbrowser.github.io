@@ -6,7 +6,9 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
 
 <!-- omit in toc -->
 ## **Contents**
+<details open>
 - [User Walkthrough](#user-walkthrough)
+<br>
   - [Loading a Subject for Demo](#loading-a-subject-for-demo)
   - [Main Screen](#main-screen)
   - [2D Slice Renderers](#2d-slice-renderers)
@@ -14,6 +16,7 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
   - [2D Slice Settings](#2d-slice-settings)
   - [Electrode and Functional Map Editing](#electrode-and-functional-map-editing)
   - [Electrode Signal View](#electrode-signal-view)
+  </details>
 - [Instructions For Using N-Tools With Your Own Data](#instructions-for-using-n-tools-with-your-own-data)
   - [Files Needed](#files-needed)
   - [Option 1. Place your files into the local project directory as so.](#option-1-place-your-files-into-the-local-project-directory-as-so)
