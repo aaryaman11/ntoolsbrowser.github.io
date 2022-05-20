@@ -643,7 +643,7 @@ const loadElectrodes = async (
 
   const signalHeader = await fetch(signalHeaderURL)
     .then(response => response.json())
-    .catch(error => console.log(error));
+    .catch(error => console.log("This current subject does not have a signal or bin file."));
 
   const sampleSize = signalHeader ? signalHeader.length : null;
 
@@ -707,8 +707,11 @@ const loadElectrodes = async (
     for(let i = 0; i < electrodeSignals.length; i++){
       let normalizedSignal = 0;
 
-      normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
+      let signalsPerEntry = electrodeSignals[0].length;
+      let percentage = parseFloat((signalIndex / signalsPerEntry) * 100).toFixed(2);
+      document.getElementById('signal-bar').style.width = `${percentage}%`
 
+      normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
       electrodeSpheres[i].color = [normalizedSignal, 0, 1 - normalizedSignal];
     }
   };
@@ -721,6 +724,9 @@ const loadElectrodes = async (
     let signalFrequency = 10;
 
     playSignal = !playSignal;
+
+    if (playSignal) 
+      document.getElementById('signal-progress').style.visibility = "visible";
 
     function applySignal() {
       if (!playSignal) return;
