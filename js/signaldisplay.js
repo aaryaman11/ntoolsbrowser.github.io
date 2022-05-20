@@ -3,7 +3,7 @@
 import { DOM } from './DOM.js';
 
 'use strict';
-function CreateUI_SignalControl(canvas, d, onScrollCallback){
+function CreateUI_SignalControl(canvas, d, onScrollCallback) {
   var ctx = canvas.getContext('2d');
 
   var signalUIControl = {};
@@ -11,19 +11,19 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
   let currentSignal = 0;
   let max = 0;
   let min = 0;
-    
+
   let end = data[currentSignal].length;
 
-  function swapSignal(d){
+  function swapSignal(d) {
     currentSignal += d;
     const electrodeIDs = Array.apply(null, DOM.electrodeMenu.options)
-                              .map(option => option.value);
+      .map(option => option.value);
 
     console.log(electrodeIDs[currentSignal + 1]);
-    if(currentSignal<0)
+    if (currentSignal < 0)
       currentSignal = 0;
 
-    if(currentSignal == data.length)
+    if (currentSignal == data.length)
       currentSignal = data.length - 1;
 
     // max = data[currentSignal][0];
@@ -32,39 +32,41 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
     // for(let i=0; i<end; i++){
     //   if(data[currentSignal][i] > max)
     //     max = data[currentSignal][i];
-  
+
     //   if(data[currentSignal][i] < min)
     //     min = data[currentSignal][i];
     // }
     max = Math.max(...data[currentSignal].slice(0, end));
     min = Math.min(...data[currentSignal].slice(0, end));
 
-    
+
     signalUIControl.HEIGHT = Math.abs(max) + Math.abs(min);
     signalUIControl.draw();
   };
-  
+
   // the total area of our drawings, can be very large now
   signalUIControl.WIDTH = data[currentSignal].length;
-  
-  signalUIControl.draw = function() {
 
-    requestAnimationFrame(function(){
+  signalUIControl.draw = function () {
+
+    requestAnimationFrame(function () {
       canvas.width = canvas.width;
-  
+
       // move our context by the inverse of our scrollbars' left and top property
       ctx.setTransform(1, 0, 0, 1, -signalUIControl.scrollbars.left, -signalUIControl.scrollbars.top);
 
       // draw only the visible area
+
       var visibleLeft = signalUIControl.scrollbars.left;
       var visibleWidth = visibleLeft + canvas.width;
       // var visibleTop = signalUIControl.scrollbars.top
       // var visibleHeight = visibleTop + canvas.height;
-  
+
+
       ctx.beginPath();
       let i = Math.floor(visibleLeft);
       ctx.moveTo(visibleLeft, (max + Math.abs(min)) - (data[currentSignal][i] - min));
-      for( ++i; i<visibleWidth; i++){
+      for (++i; i < visibleWidth; i++) {
         ctx.lineTo(i, (max + Math.abs(min)) - (data[currentSignal][i] - min));
         // console.log(`i = ${i}`);
         // console.log(`Max + Min: ${max + Math.abs(min)}`);
@@ -80,32 +82,32 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
       signalUIControl.scrollbars.draw();
     });
   }
-  
-  signalUIControl.scrollbars = function() {
+
+  signalUIControl.scrollbars = function () {
     var scrollbars = {};
     // initial position
     scrollbars.left = 0;
     scrollbars.top = 0;
     // a single constructor for both horizontal and vertical	
-    var ScrollBar = function(vertical) {
+    var ScrollBar = function (vertical) {
       var that = {
         vertical: vertical
       };
-  
+
       that.left = vertical ? canvas.width - 10 : 0;
       that.top = vertical ? 0 : canvas.height - 10;
       that.height = vertical ? canvas.height - 10 : 5;
       that.width = vertical ? 5 : canvas.width - 10;
       that.fill = '#dedede';
-  
+
       that.cursor = {
         radius: 5,
         fill: '#bababa'
       };
       that.cursor.top = vertical ? that.cursor.radius : that.top + that.cursor.radius / 2;
       that.cursor.left = vertical ? that.left + that.cursor.radius / 2 : that.cursor.radius;
-  
-      that.draw = function() {
+
+      that.draw = function () {
         if (!that.visible) {
           return;
         }
@@ -120,7 +122,7 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
         ctx.fill();
       };
       // check if we're hovered
-      that.isHover = function(x, y) {
+      that.isHover = function (x, y) {
         if (x >= that.left - that.cursor.radius && x <= that.left + that.width + that.cursor.radius &&
           y >= that.top - that.cursor.radius && y <= that.top + that.height + that.cursor.radius) {
           // we are so record the position of the mouse and set ourself as the one hovered
@@ -136,31 +138,31 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
           return true;
         }
       }
-  
+
       return that;
     };
-  
+
     scrollbars.horizontal = ScrollBar(0);
     scrollbars.vertical = ScrollBar(1);
-  
+
     scrollbars.hovered = null;
     scrollbars.dragged = null;
     scrollbars.mousePos = null;
     // check both of our scrollbars
-    scrollbars.isHover = function(x, y) {
+    scrollbars.isHover = function (x, y) {
       return this.horizontal.isHover(x, y) || this.vertical.isHover(x, y);
     };
     // draw both of our scrollbars
-    scrollbars.draw = function() {
+    scrollbars.draw = function () {
       this.horizontal.draw();
       this.vertical.draw();
     };
     // check if one of our scrollbars is visible
-    scrollbars.visible = function() {
+    scrollbars.visible = function () {
       return this.horizontal.visible || this.vertical.visible;
     };
     // hide it...
-    scrollbars.hide = function() {
+    scrollbars.hide = function () {
       // only if we're not using the mousewheel or dragging the cursor
       if (this.willHide || this.dragged) {
         return;
@@ -168,48 +170,48 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
       this.horizontal.visible = false;
       this.vertical.visible = false;
     };
-  
+
     // get the area's coord relative to our scrollbar
-    var toAreaCoord = function(pos, scrollBar) {
+    var toAreaCoord = function (pos, scrollBar) {
       var sbBase = scrollBar.vertical ? scrollBar.top : scrollBar.left;
       var sbMax = scrollBar.vertical ? scrollBar.height : scrollBar.width;
       var areaMax = scrollBar.vertical ? signalUIControl.HEIGHT - canvas.height : signalUIControl.WIDTH - canvas.width;
-  
+
       var ratio = (pos - sbBase) / (sbMax - sbBase);
-  
+
       return areaMax * ratio;
     };
-  
+
     // get the scrollbar's coord relative to our total area
-    var toScrollCoords = function(pos, scrollBar) {
+    var toScrollCoords = function (pos, scrollBar) {
       var sbBase = scrollBar.vertical ? scrollBar.top : scrollBar.left;
       var sbMax = scrollBar.vertical ? scrollBar.height : scrollBar.width;
       var areaMax = scrollBar.vertical ? signalUIControl.HEIGHT - canvas.height : signalUIControl.WIDTH - canvas.width;
-  
+
       var ratio = pos / areaMax;
-  
+
       return ((sbMax - sbBase) * ratio) + sbBase;
     }
-  
-    scrollbars.scroll = function() {
-        // check which one of the scrollbars is active
-        var vertical = this.hovered.vertical;
-        // until where our cursor can go
-        var maxCursorPos = this.hovered[vertical ? 'height' : 'width'];
-        var pos = vertical ? 'top' : 'left';
-        // check that we're not out of the bounds
-        this.hovered.cursor[pos] = this.mousePos < 0 ? 0 :
-          this.mousePos > maxCursorPos ? maxCursorPos : this.mousePos;
-  
-        // seems ok so tell the signalUIControl we scrolled
-        this[pos] = toAreaCoord(this.hovered.cursor[pos], this.hovered);
-        // redraw everything
-        signalUIControl.draw();
-      }
-      // because we will hide it after a small time
+
+    scrollbars.scroll = function () {
+      // check which one of the scrollbars is active
+      var vertical = this.hovered.vertical;
+      // until where our cursor can go
+      var maxCursorPos = this.hovered[vertical ? 'height' : 'width'];
+      var pos = vertical ? 'top' : 'left';
+      // check that we're not out of the bounds
+      this.hovered.cursor[pos] = this.mousePos < 0 ? 0 :
+        this.mousePos > maxCursorPos ? maxCursorPos : this.mousePos;
+
+      // seems ok so tell the signalUIControl we scrolled
+      this[pos] = toAreaCoord(this.hovered.cursor[pos], this.hovered);
+      // redraw everything
+      signalUIControl.draw();
+    }
+    // because we will hide it after a small time
     scrollbars.willHide;
     // called by the wheel event
-    scrollbars.scrollBy = function(deltaX, deltaY) {
+    scrollbars.scrollBy = function (deltaX, deltaY) {
       // it's not coming from our scrollbars
       this.hovered = null;
       // we're moving horizontally
@@ -230,7 +232,7 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
       }
       // if we were called less than the required timeout
       clearTimeout(this.willHide);
-      this.willHide = setTimeout(function() {
+      this.willHide = setTimeout(function () {
         scrollbars.willHide = null;
         scrollbars.hide();
         signalUIControl.draw();
@@ -238,11 +240,11 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
       // redraw everything
       signalUIControl.draw();
     };
-  
+
     return scrollbars;
   }();
-  
-  var mousedown = function(e) {
+
+  var mousedown = function (e) {
     // tell the browser we handle this
     e.preventDefault();
     // we're over one the scrollbars
@@ -252,8 +254,8 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
       signalUIControl.scrollbars.scroll();
     }
   };
-  
-  var mousemove = function(e) {
+
+  var mousemove = function (e) {
     // check the coordinates of our canvas in the document
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
@@ -269,12 +271,12 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
     }
     e.preventDefault();
   };
-  var mouseup = function() {
+  var mouseup = function () {
     // we dropped it
     signalUIControl.scrollbars.dragged = null;
   };
-  
-  var mouseout = function() {
+
+  var mouseout = function () {
     // we're out
     if (signalUIControl.scrollbars.visible()) {
       signalUIControl.scrollbars.hide();
@@ -282,21 +284,21 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
       signalUIControl.draw();
     }
   };
-  
-  var mouseWheel = function(e) {
+
+  var mouseWheel = function (e) {
     e.preventDefault();
     signalUIControl.scrollbars.scrollBy(e.deltaX, e.deltaY);
   };
 
-  function keyDown(e){
+  function keyDown(e) {
     e.preventDefault();
-    if(e.code == 'ArrowDown')
+    if (e.code == 'ArrowDown')
       swapSignal(1);
 
-    if(e.code == 'ArrowUp')
+    if (e.code == 'ArrowUp')
       swapSignal(-1);
   };
-  
+
   canvas.addEventListener('mousemove', mousemove);
   canvas.addEventListener('mousedown', mousedown);
   canvas.addEventListener('mouseup', mouseup);
@@ -304,7 +306,7 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
   canvas.addEventListener('wheel', mouseWheel);
   document.addEventListener('keydown', keyDown);
 
-  signalUIControl.cleanUp = function(){
+  signalUIControl.cleanUp = function () {
     canvas.removeEventListener('mousemove', mousemove);
     canvas.removeEventListener('mousedown', mousedown);
     canvas.removeEventListener('mouseup', mouseup);
@@ -320,11 +322,11 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback){
 }
 //Draggable div element as from example:
 //https://www.w3schools.com/howto/howto_js_draggable.asp
-const CreateElectrodeSignalWindow  = (data, onScrollCallback) => {
+const CreateElectrodeSignalWindow = (data, onScrollCallback) => {
   let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   let signalUIControl = null;
 
-  function close(){
+  function close() {
     title.removeEventListener('mousedown', dragMouseDown);
     signalUIControl.cleanUp();
     document.getElementById("electrode-signal-window").remove();
