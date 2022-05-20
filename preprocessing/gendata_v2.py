@@ -1,6 +1,4 @@
-import numpy as np
 import pandas as pd
-import pprint
 import json
 
 def get_connection(index):
@@ -47,7 +45,6 @@ for index, row in attributes_df.iterrows():
   if pd.isnull(row['Interictal Population']):
     electrode_objects[index]['intPopulation'] = [0]
   else:
-    # print("why")
     int_population = str(int(row['Interictal Population']))
     electrode_objects[index]['intPopulation'] = list(map(lambda x: int(x), int_population.split(',')))
 
