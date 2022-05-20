@@ -475,9 +475,12 @@ const addNewSeizType = (data) => {
   const numTypes = DOM.seizTypeMenu.options.length;
   const newSeizType = data.electrodes.map(datum => ({ ...datum, [`Seizure Type ${numTypes}`]: ""}));
   const newOption = document.createElement('option');
+  data.totalSeizType = numTypes;
+  DOM.numSeizTypeLabel.innerText = numTypes;
   newOption.value = `Seizure Type ${numTypes}`;
   newOption.innerText = `Seizure Type ${numTypes}`; 
   DOM.seizTypeMenu.appendChild(newOption);
+  DOM.seizTypeMenu.selectedIndex = numTypes;
   data.electrodes = newSeizType;
 }
 
@@ -807,7 +810,7 @@ const loadElectrodes = async (
 
   // each slider and button for the slices must call the slices draw method
   DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
-  document.getElementById('new-seiz-type-add').addEventListener("click", () => addNewSeizType(data));
+  DOM.newSeizTypeBtn.addEventListener("click", () => addNewSeizType(data));
   DOM.brightCtrl.oninput = (event) => {
     slices.forEach(s => s.setBrightness(event.target.value));
     slices.forEach(s => s.drawCanvas())

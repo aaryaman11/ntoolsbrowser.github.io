@@ -6,6 +6,7 @@ const DOM = {
   fmapThreshold: document.getElementById("fmap-threshold"),
   fmapDischarge: document.getElementById("fmap-after-discharge"),
 
+  numSeizTypeLabel: document.getElementById("num-seiz-types-lbl"),
   intPopulationLabel: document.getElementById("int-population-label-inner"),
   seizTypeLabel: document.getElementById("seiz-type-label-inner"),
   coordinateLabel: document.getElementById("coordinates-label-inner"),
@@ -25,6 +26,7 @@ const DOM = {
   editBtn: document.getElementById("edit-btn"),
   downloadBtn: document.getElementById("download-btn"),
   syncBtn: document.getElementById("sync-btn"),
+  newSeizTypeBtn: document.getElementById("new-seiz-type-add"),
 
   brightCtrl: document.getElementById("slice-brightness"),
   sliceXCtrl: document.getElementById("sliceX-control"),
