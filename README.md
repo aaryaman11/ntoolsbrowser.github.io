@@ -8,6 +8,8 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
 ## **Contents**
 <details>
 <summary>User Walkthrough</summary>
+<br>
+
 - [User Walkthrough](#user-walkthrough)
   - [Loading a Subject for Demo](#loading-a-subject-for-demo)
   - [Main Screen](#main-screen)
@@ -17,6 +19,7 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
   - [Electrode and Functional Map Editing](#electrode-and-functional-map-editing)
   - [Electrode Signal View](#electrode-signal-view)
 </details>
+
 - [Instructions For Using N-Tools With Your Own Data](#instructions-for-using-n-tools-with-your-own-data)
   - [Files Needed](#files-needed)
   - [Option 1. Place your files into the local project directory as so.](#option-1-place-your-files-into-the-local-project-directory-as-so)
