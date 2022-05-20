@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import sys
 
 def get_connection(index):
     connect_index = int(index) - 1
@@ -17,11 +18,14 @@ def get_coords(x, y, z):
     }
     return coords
 
-subject = 'NY841'
+def isComposite(type):
+  return len(type.split(',')) > 1
 
-attributes_df = pd.read_excel(f'{subject}/{subject}_attributes.xlsx')
-functions_df = pd.read_excel(f'{subject}/{subject}_functions.xlsx')
-coord_file = open('NY841/NY841_841_T1T2_coor_T1_2021-07-30.txt', 'r')
+subject = input("Enter Subject ID: ")
+
+coord_file = open(sys.argv[1])
+attributes_df = pd.read_excel(sys.argv[2])
+functions_df = pd.read_excel(sys.argv[3])
 coord_contents = coord_file.read()
 
 seizure_types = [col for col in attributes_df.columns if col.lower().startswith('seizure')]
@@ -43,16 +47,16 @@ for line in coord_contents.split('\n'):
 
 for index, row in attributes_df.iterrows():
   if pd.isnull(row['Interictal Population']):
-    electrode_objects[index]['intPopulation'] = [0]
+    electrode_objects[index]['intPopulation'] = 0
   else:
     int_population = str(int(row['Interictal Population']))
-    electrode_objects[index]['intPopulation'] = list(map(lambda x: int(x), int_population.split(',')))
+    electrode_objects[index]['intPopulation'] = int_population if not isComposite(int_population) else "Variable"
 
   for type in seizure_types:
     if pd.isnull(row[type]):
       electrode_objects[index][type] = ""
     else:
-      electrode_objects[index][type] = str(row[type]).split(', ')
+      electrode_objects[index][type] = row[type] if not isComposite(str(row[type])) else "Variable"
 
 functional_maps = []
 for index, row in functions_df.iterrows():

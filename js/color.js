@@ -10,12 +10,13 @@ const COLOR = {
   cyan: [0, 1, 1],
   magenta: [1, 0, 1],
   orange: [1, 0.65, 0],
+  pink: [1, 0.41, 0.70],
   electricGreen: [0, 1, 0.19],
   giantsOrange: [1, 0.35, 0.12],
   sapGreen: [0.27, 0.46, 0.2],
   eminence: [0.4, 0.17, 0.57],
   silverSand: [0.76, 0.76, 0.76],
-  shadowBlue: [0.46, 0.55, 0.65]
+  shadowBlue: [0.46, 0.55, 0.65],
 }
 
 // returns color of electrode
@@ -43,6 +44,7 @@ const getSeizTypeColor = (type) => {
     "very early spread": COLOR.giantsOrange,
     "rapid spread": COLOR.blue,
     "early onset": COLOR.cyan,
+    "variable": COLOR.pink,
 
     // int pop
     0: COLOR.white,

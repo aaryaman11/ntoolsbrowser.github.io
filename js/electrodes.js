@@ -371,6 +371,8 @@ const insertMenuHTML = (electrode) => {
       <option value="Late Spread">Late Spread</option>
       <option value="Rapid Spread">Rapid Spread</option>
       <option value="Early Onset">Early Onset</option>
+      <option value="Variable" Onset">Variable</option>
+
     </select>
     <hr>
     <hr>
