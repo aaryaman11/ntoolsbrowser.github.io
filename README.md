@@ -7,6 +7,7 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
 <!-- omit in toc -->
 ## **Contents**
 <details open>
+<summary></summary>
 - [User Walkthrough](#user-walkthrough)
 <br>
   - [Loading a Subject for Demo](#loading-a-subject-for-demo)
