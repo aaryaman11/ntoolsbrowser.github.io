@@ -1,11 +1,13 @@
 import { loadElectrodes } from "./js/electrodes.js";
 
-("use strict");
 
+"use strict";
+// execute the code below if the document is loaded. otherwise, add the code below
+// to the window as an event listener onload.
 ((main) => {
   document.readyState == "complete"
-    ? main()
-    : window.addEventListener("load", main);
+  ? main()
+  : window.addEventListener("load", main);
 })(() => {
   
   const volume = new X.volume();
@@ -15,8 +17,6 @@ import { loadElectrodes } from "./js/electrodes.js";
   volume.pickable = false;
   leftHemisphereMesh.pickable = false;
   rightHemisphereMesh.pickable = false;
-  leftHemisphereMesh.color = [1, 1, 1];
-  rightHemisphereMesh.color = [1, 1, 1];
   leftHemisphereMesh.opacity = 0.5;
   rightHemisphereMesh.opacity = 0.5;
 
@@ -25,6 +25,7 @@ import { loadElectrodes } from "./js/electrodes.js";
   const protocol = window.location.protocol;
   const baseURL = `ievappwpdcpvm01.nyumc.org/?bids=ana&file=sub-${subject}`
 
+  // load either our local sample files, or get the files at the URL
   if (mode === "demo") {
     const volumePath = `./data/${subject}/volume/${subject}_T1.nii`;
     const lhPath = `./data/${subject}/meshes/${subject}_lh.pial`;
@@ -48,7 +49,7 @@ import { loadElectrodes } from "./js/electrodes.js";
     rightHemisphereMesh.file = rhURL;
   }
 
-  // set up 3D renderer
+  // init 3D renderer and add 3D volume and meshes
   const renderer = new X.renderer3D();
   renderer.container = "3d";
   renderer.init();
@@ -66,8 +67,6 @@ import { loadElectrodes } from "./js/electrodes.js";
     volume.visible = false;
     const volumeGUI = gui.addFolder("Volume");
     volumeGUI.add(volume, "visible");
-
-    // slice indicies
 
     // hemisphere GUIs
     const leftHemisphereGUI = gui.addFolder("Left Hemisphere");
@@ -88,11 +87,7 @@ import { loadElectrodes } from "./js/electrodes.js";
 
     signalGUI.add(playSignalController, "start / stop");
     signalGUI.add(playSignalController, "sin wave");
-
-    // leftHemisphereGUI.open();
-    // rightHemisphereGUI.open();
-    // slicesGUI.open();
-    // signalGUI.open();
+    signalGUI.open();
 
     // fix original camera position
     renderer.camera.position = [-200, 0, 0];
@@ -132,11 +127,13 @@ const parseURL = () => {
   );
 };
 
+// adapted from https://stackoverflow.com/questions/31710768/how-can-i-fetch-an-array-of-urls-with-promise-all
+// This will provide mode meaningful errors when a file can't be found
 const checkUrls = async (...urls) => {
   Promise.all(urls.map(url => {
     fetch(url).then(async (res) => {
       if (!res.ok) {
-        alert(`Could not find ${url}`);
+        console.error(`Could not find ${url}`);
       }
     })
   }));

@@ -470,6 +470,20 @@ const addFmap = (
   renderer.add(newHighlight);
 }
 
+// add a new blank seizure type to the subject
+const addNewSeizType = (data) => {
+  const numTypes = DOM.seizTypeMenu.options.length;
+  const newSeizType = data.electrodes.map(datum => ({ ...datum, [`Seizure Type ${numTypes}`]: ""}));
+  const newOption = document.createElement('option');
+  data.totalSeizType = numTypes;
+  DOM.numSeizTypeLabel.innerText = numTypes;
+  newOption.value = `Seizure Type ${numTypes}`;
+  newOption.innerText = `Seizure Type ${numTypes}`; 
+  DOM.seizTypeMenu.appendChild(newOption);
+  DOM.seizTypeMenu.selectedIndex = numTypes;
+  data.electrodes = newSeizType;
+}
+
 const createElectrodeTags = (spheres) => {
   for (const sphere of spheres) {
     const captionDiv = document.createElement("div");
@@ -643,7 +657,7 @@ const loadElectrodes = async (
 
   const signalHeader = await fetch(signalHeaderURL)
     .then(response => response.json())
-    .catch(error => console.log(error));
+    .catch(error => console.log("This current subject does not have a signal or bin file."));
 
   const sampleSize = signalHeader ? signalHeader.length : null;
 
@@ -707,8 +721,11 @@ const loadElectrodes = async (
     for(let i = 0; i < electrodeSignals.length; i++){
       let normalizedSignal = 0;
 
-      normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
+      let signalsPerEntry = electrodeSignals[0].length;
+      let percentage = parseFloat((signalIndex / signalsPerEntry) * 100).toFixed(2);
+      DOM.signalBar.style.width = `${percentage}%`;
 
+      normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
       electrodeSpheres[i].color = [normalizedSignal, 0, 1 - normalizedSignal];
     }
   };
@@ -721,6 +738,9 @@ const loadElectrodes = async (
     let signalFrequency = 10;
 
     playSignal = !playSignal;
+
+    if (playSignal) 
+      DOM.signalProgress.style.visibility = "visible";
 
     function applySignal() {
       if (!playSignal) return;
@@ -790,6 +810,7 @@ const loadElectrodes = async (
 
   // each slider and button for the slices must call the slices draw method
   DOM.downloadBtn.addEventListener("click", () => downloadJSON(data, subject));
+  DOM.newSeizTypeBtn.addEventListener("click", () => addNewSeizType(data));
   DOM.brightCtrl.oninput = (event) => {
     slices.forEach(s => s.setBrightness(event.target.value));
     slices.forEach(s => s.drawCanvas())
@@ -819,10 +840,6 @@ const loadElectrodes = async (
   }
   DOM.windowHigh.oninput = (event) => {
     slices.forEach(s => s.setWindowHigh(parseInt(event.target.value)));
-    slices.forEach(s => s.drawCanvas());
-  }
-  DOM.sliceDetails.onclick = () => {
-    slices.forEach(s => s.toggleDetails());
     slices.forEach(s => s.drawCanvas());
   }
 };

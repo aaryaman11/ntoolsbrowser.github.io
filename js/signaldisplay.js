@@ -16,7 +16,7 @@ function CreateUI_SignalControl(canvas, d, onScrollCallback) {
 
   function swapSignal(d) {
     currentSignal += d;
-    const electrodeIDs = Array.apply(null, DOM.electrodeMenu.options)
+    constectrodeIDs = Array.apply(null, DOM.electrodeMenu.options)
       .map(option => option.value);
 
     console.log(electrodeIDs[currentSignal + 1]);

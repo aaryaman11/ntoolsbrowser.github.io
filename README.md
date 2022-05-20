@@ -4,6 +4,8 @@
 
 An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_browser), based on [XTK](https://github.com/xtk/X).
 
+<a href='./Docs/NYU-Final-Documentation.pdf'>Final Documentation</a>
+
 <!-- omit in toc -->
 ## **Contents**
 <details>
