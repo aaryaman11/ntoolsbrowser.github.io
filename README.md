@@ -20,10 +20,16 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
   - [Electrode Signal View](#electrode-signal-view)
 </details>
 
+<details>
+<summary>Instructions For Using N-Tools With Your Own Data</summary>
+<br>
+
 - [Instructions For Using N-Tools With Your Own Data](#instructions-for-using-n-tools-with-your-own-data)
   - [Files Needed](#files-needed)
   - [Option 1. Place your files into the local project directory as so.](#option-1-place-your-files-into-the-local-project-directory-as-so)
   - [Option 2. Update the URLs](#option-2-update-the-urls)
+</details>
+
 - [Publications](#publications)
 - [Affiliations](#affiliations)
 - [Acknowledgements](#acknowledgements)
