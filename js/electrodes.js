@@ -842,10 +842,6 @@ const loadElectrodes = async (
     slices.forEach(s => s.setWindowHigh(parseInt(event.target.value)));
     slices.forEach(s => s.drawCanvas());
   }
-  DOM.sliceDetails.onclick = () => {
-    slices.forEach(s => s.toggleDetails());
-    slices.forEach(s => s.drawCanvas());
-  }
 };
 
 export { loadElectrodes };
