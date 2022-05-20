@@ -723,7 +723,7 @@ const loadElectrodes = async (
 
       let signalsPerEntry = electrodeSignals[0].length;
       let percentage = parseFloat((signalIndex / signalsPerEntry) * 100).toFixed(2);
-      document.getElementById('signal-bar').style.width = `${percentage}%`;
+      DOM.signalBar.style.width = `${percentage}%`;
 
       normalizedSignal = (electrodeSignals[i][signalIndex] - min) / (max - min);
       electrodeSpheres[i].color = [normalizedSignal, 0, 1 - normalizedSignal];
@@ -740,7 +740,7 @@ const loadElectrodes = async (
     playSignal = !playSignal;
 
     if (playSignal) 
-      document.getElementById('signal-progress').style.visibility = "visible";
+      DOM.signalProgress.style.visibility = "visible";
 
     function applySignal() {
       if (!playSignal) return;

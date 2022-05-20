@@ -35,6 +35,9 @@ const DOM = {
   windowLow: document.getElementById("slice-window-low"),
   windowHigh: document.getElementById("slice-window-high"),
   sliceDetails: document.getElementById("slice-details"),
+
+  signalBar: document.getElementById('signal-bar'),
+  signalProgress: document.getElementById('signal-progress'),
 };
 
 export { DOM };
