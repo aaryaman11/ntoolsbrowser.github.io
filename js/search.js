@@ -48,11 +48,12 @@
       ? fileTokens[1][0] 
       : fileTokens[0][0];
     const reader = new FileReader();
+    console.log(subject);
 
     reader.onloadend = (event) => {
       const result = JSON.parse(event.target.result);
       sessionStorage.setItem("draggedJSON", JSON.stringify(result));
-      window.location.href = `./view.html?mode=demo&subject=${subject}`;
+      window.location.href = `./view.html?mode=build&subject=${subject}`;
     }
 
     reader.readAsText(file);
