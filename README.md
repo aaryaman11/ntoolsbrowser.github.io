@@ -8,62 +8,64 @@ An update of the original [N-Tools Browser](https://github.com/jingyunc/ntools_b
 ## **Contents**
 <details>
 <summary>User Walkthrough</summary>
-<br>
 
-- [User Walkthrough](#user-walkthrough)
-  - [Loading a Subject for Demo](#loading-a-subject-for-demo)
-  - [Main Screen](#main-screen)
-  - [2D Slice Renderers](#2d-slice-renderers)
-    - [Controls](#controls)
-  - [2D Slice Settings](#2d-slice-settings)
-  - [Electrode and Functional Map Editing](#electrode-and-functional-map-editing)
-  - [Electrode Signal View](#electrode-signal-view)
+- [1. User Walkthrough](#1-user-walkthrough)
+  - [1.1. Loading a Subject for Demo](#11-loading-a-subject-for-demo)
+  - [1.2. Main Screen](#12-main-screen)
+  - [1.3. 2D Slice Renderers](#13-2d-slice-renderers)
+    - [1.3.1. Controls](#131-controls)
+  - [1.4. 2D Slice Settings](#14-2d-slice-settings)
+  - [1.5. Electrode and Functional Map Editing](#15-electrode-and-functional-map-editing)
+  - [1.6. Electrode Signal View](#16-electrode-signal-view)
 </details>
 
 <details>
 <summary>Instructions For Using N-Tools With Your Own Data</summary>
-<br>
 
-- [Instructions For Using N-Tools With Your Own Data](#instructions-for-using-n-tools-with-your-own-data)
-  - [Files Needed](#files-needed)
-  - [Option 1. Place your files into the local project directory as so.](#option-1-place-your-files-into-the-local-project-directory-as-so)
-  - [Option 2. Update the URLs](#option-2-update-the-urls)
+- [2. Instructions For Using N-Tools With Your Own Data](#2-instructions-for-using-n-tools-with-your-own-data)
+  - [2.1. Files Needed](#21-files-needed)
+  - [2.2. Option 1. Place your files into the local project directory as so.](#22-option-1-place-your-files-into-the-local-project-directory-as-so)
+  - [2.3. Option 2. Update the URLs](#23-option-2-update-the-urls)
 </details>
+
+<details>
+<summary>Miscellanous</summary>
 
 - [Publications](#publications)
 - [Affiliations](#affiliations)
 - [Acknowledgements](#acknowledgements)
+</details>
 
-## User Walkthrough
+## 1. User Walkthrough
 
 Go to the Github and search for github pages or click on this [link](https://ntoolsbrowser.github.io/).  
 
 To demo the software, no installation is required. We have three samples to choose from using the drop down menu shown below
 
-### Loading a Subject for Demo
+### 1.1. Loading a Subject for Demo
 ![Figure 1](Docs/loading-page.png)
 
 After the loading page you can interact with the patient's data represented on a 3D brain mesh.
 
-### Main Screen
+### 1.2. Main Screen
 <img src="Docs/selecting-fmap.png" width="500">
 
 
 Electrodes can be selected by either clicking with the mouse, or using the 'Select Electrode' menu. Different functional mappings and seizure types can be selected with the 'Seizure Type' and 'Functional Map' menus.
 
-### 2D Slice Renderers
+### 1.3. 2D Slice Renderers
 
 ![Figure 3](Docs/axial-slice.png)
 
 A 2D renderer for each axis will be drawn at the bottom of the screen.
 
-#### Controls
+#### 1.3.1. Controls
 - **Click+Drag** to move the slices to a different location
 - **Scroll Wheel** to cycle between images
 - **Ctrl+Scroll Wheel** to change image size
 - **Double Click** to reset them back to their original position and size
 
-### 2D Slice Settings
+### 1.4. 2D Slice Settings
 
 To control the brightness and contrast of the 2D image, the sliders at the bottom of the screen can be used. Low window and high window work by changing anything below the value of window low to black and anything above the value of window high to white. You can also adjust the current image of the three axes here rather than using the scroll wheel.
 
@@ -71,13 +73,13 @@ The sync slices button will jump all images back to the image containing the cur
 
 ![Figure 4](Docs/bright-and-contrast.png)
 
-### Electrode and Functional Map Editing
+### 1.5. Electrode and Functional Map Editing
 
 ![Figure 5](Docs/the-edit-menu.png)
 
 The edit menu is activated by right clicking an electrode. The menu can be moved by clicking and dragging. At this time, the user must ensure that a functional mapping category is selected from the menu on the left panel. Left clicking on a new electrode will close the edit menu.
 
-### Electrode Signal View
+### 1.6. Electrode Signal View
 
 The user can start the play back of all electrode signals by pushing the 'play/stop' button under the 'Electrode Signal' folder in the UI.
 
@@ -99,13 +101,13 @@ As the scrolling of the sin wave happens the 3D view will update the electrode c
 
 For the user to see the next electrode signal as a 'sin wave', he/she must press the arrow down on the keyboard to move to the next signal wave. Pressing arrow up displays the previous signal wave.
 
-## Instructions For Using N-Tools With Your Own Data
+## 2. Instructions For Using N-Tools With Your Own Data
 
 Advanced users who wish to adapt N-Tools Browser for their own use will first need to download the repository. This can be done either by downloading the repository as a zip file or using:
 
     $ git clone https://github.com/ntoolsbrowser/ntoolsbrowser.github.io.git
 
-### Files Needed
+### 2.1. Files Needed
 
 You will need the following files:
 
@@ -135,7 +137,7 @@ the script [`genblank.py`](https://github.com/ntoolsbrowser/ntoolsbrowser.github
 
 Similar simple scripts can be created for other file formats, such as `.csv`
 
-### Option 1. Place your files into the local project directory as so.
+### 2.2. Option 1. Place your files into the local project directory as so.
 
 
 Replace 'subject' with the actual subject ID.
@@ -155,7 +157,7 @@ data
     └───volume
         | subject_T1.nii
 ```
-### Option 2. Update the URLs
+### 2.3. Option 2. Update the URLs
 
 [`main.js`](https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/main.js) and [`electrodes.js`](https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/js/electrodes.js) contain code that handles the files above.
 Currently, the URLs in these files are pointing to NYU's server. If you have your own URL where you store files, this can be easily changed.
@@ -169,18 +171,18 @@ For file naming conventions, we have worked to comply to the [BIDS specification
 - `?bids=ieeg&file=sub-subject_functionalmapping.json`
 - `?bids=ieeg&file=sub-subject_functionalmapping.bin`
 
-## Publications
+## 3. Publications
 
 **N-Tools-Browser: Web-Based Visualization of Electrocorticography Data for Epilepsy Surgery**. Frontiers in Bioinformatics, April 2022. [Link](https://www.frontiersin.org/articles/10.3389/fbinf.2022.857577/full).
 
-## Affiliations
+## 4. Affiliations
 
 [UMass Boston](https://www.umb.edu/)
 
 [NYU Langone Comprehensive Epilepsy Center](https://nyulangone.org/locations/comprehensive-epilepsy-center)
 
 
-## Acknowledgements
+## 5. Acknowledgements
 
 Special thank you to [Jingyun Chen](https://med.nyu.edu/faculty/jingyun-chen), [Daniel Friedman](https://nyulangone.org/doctors/1407900152/daniel-friedman), and [Daniel Haehn](https://danielhaehn.com/)! This project could would not have been successful without your support. 
 
