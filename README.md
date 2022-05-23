@@ -182,9 +182,9 @@ For file naming conventions, we have worked to comply to the [BIDS specification
 ## 3. For Future Developers
 
 You can find information about some of the weirder parts of the code that were too big to fit in comments [here](https://github.com/ntoolsbrowser/ntoolsbrowser.github.io/blob/main/Docs/futuredevs.md)
-## 4. Publications
+## 4. Citation
 
-**N-Tools-Browser: Web-Based Visualization of Electrocorticography Data for Epilepsy Surgery**. Frontiers in Bioinformatics, April 2022. [Link](https://www.frontiersin.org/articles/10.3389/fbinf.2022.857577/full).
+For reference in publication, please cite our accompany paper **N-Tools-Browser: Web-Based Visualization of Electrocorticography Data for Epilepsy Surgery**. Frontiers in Bioinformatics, April 2022. [Link](https://www.frontiersin.org/articles/10.3389/fbinf.2022.857577/full).
 
 ## 5. Affiliations
 
@@ -195,6 +195,6 @@ You can find information about some of the weirder parts of the code that were t
 
 ## 6. Acknowledgements
 
-Special thank you to [Jingyun Chen](https://med.nyu.edu/faculty/jingyun-chen), [Daniel Friedman](https://nyulangone.org/doctors/1407900152/daniel-friedman), and [Daniel Haehn](https://danielhaehn.com/)! This project could would not have been successful without your support. 
+Special thank you to [Jingyun "Josh" Chen](https://med.nyu.edu/faculty/jingyun-chen), [Daniel Friedman](https://nyulangone.org/doctors/1407900152/daniel-friedman), and [Daniel Haehn](https://danielhaehn.com/)! This project could would not have been successful without your support. 
 
 
