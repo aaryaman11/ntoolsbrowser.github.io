@@ -200,30 +200,35 @@ export class SagittalCanvas extends ElectrodeCanvas {
       }
     }
     this.ctx.putImageData(canvasImageData, 0, 0);
+    this.ctx.drawImage(this.canvas, 0, 0);
 
     if (this.sliceMap.has(this.currentSlice)) {
-       const electrodesAtSlice = this.sliceMap.get(this.currentSlice);
-       const previousElectrodes = this.sliceMap.get(this.currentSlice - 1);
-       const nextElectrodes = this.sliceMap.get(this.currentSlice + 1);
-  
-       this.draw2DElectrodes(electrodesAtSlice);
-  
-       // also draw on the two adjacent slices
-       if (!this.showDetails) {
-         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
-         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
-       }
-  
-       // if the current scroll wheel selected slice passes the user selected slice, draw
-       // the crosshair
-       if (this.currentSlice === this.relativeSlice) {
-         this.drawMark(this.relativeX, this.relativeY);
-       }
-     }
+      const electrodesAtSlice = this.sliceMap.get(this.currentSlice);
+      const previousElectrodes = this.sliceMap.get(this.currentSlice - 1);
+      const nextElectrodes = this.sliceMap.get(this.currentSlice + 1);
+
+      this.draw2DElectrodes(electrodesAtSlice);
+
+      // also draw on the two adjacent slices
+      if (!this.showDetails) {
+        if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
+        if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
+      }
+
+      // if the current scroll wheel selected slice passes the user selected slice, draw
+      // the crosshair
+      if (this.currentSlice === this.relativeSlice) {
+        this.drawMark(this.relativeX, this.relativeY);
+      }
+    }
+
   }
 
   // draw the 2D electrodes over the current image in the current slice
-  draw2DElectrodes(electrodes, size = 2){
+  draw2DElectrodes(electrodes, size = 2) {
+    // const canvas2 = document.createElement('canvas');
+    // const ctx2 = canvas2.getContext("2d");
+
     for (const e of electrodes) {
       const mappedX = this.dims[0] - Math.round(mapInterval(e.coordinates.y, this.oldInterval, this.newInterval));
       const mappedY = this.dims[0] - Math.round(mapInterval(e.coordinates.z, this.oldInterval, this.newInterval));
@@ -233,6 +238,8 @@ export class SagittalCanvas extends ElectrodeCanvas {
       this.ctx.fillStyle = getColor(e[this.currentType]);
       this.ctx.fill();
     }
+
+    // this.ctx.drawImage(canvas2, 0, 0);
   }
 }
 
@@ -318,23 +325,24 @@ export class CoronalCanvas extends ElectrodeCanvas {
       }
     }
     this.ctx.putImageData(canvasImageData, 0, 0);
+    this.ctx.drawImage(this.canvas, 0, 0);
 
     if (this.sliceMap.has(this.currentSlice)) {
-       const electrodesAtSlice = this.sliceMap.get(this.currentSlice);
-       const previousElectrodes = this.sliceMap.get(this.currentSlice - 1);
-       const nextElectrodes = this.sliceMap.get(this.currentSlice + 1);
-  
-       this.draw2DElectrodes(electrodesAtSlice);
-  
-       if (!this.showDetails) {
-         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
-         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
-       }
-  
-       if (this.currentSlice === this.relativeSlice) {
-         this.drawMark(this.relativeX, this.relativeY);
-       }
-     }
+      const electrodesAtSlice = this.sliceMap.get(this.currentSlice);
+      const previousElectrodes = this.sliceMap.get(this.currentSlice - 1);
+      const nextElectrodes = this.sliceMap.get(this.currentSlice + 1);
+
+      this.draw2DElectrodes(electrodesAtSlice);
+
+      if (!this.showDetails) {
+        if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
+        if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
+      }
+
+      if (this.currentSlice === this.relativeSlice) {
+        this.drawMark(this.relativeX, this.relativeY);
+      }
+    }
   }
 
   draw2DElectrodes(electrodes, size = 2, textOffset = 30) {
@@ -432,23 +440,24 @@ export class AxialCanvas extends ElectrodeCanvas {
       }
     }
     this.ctx.putImageData(canvasImageData, 0, 0);
+    this.ctx.drawImage(this.canvas, 0, 0);
 
     if (this.sliceMap.has(this.currentSlice)) {
-       const electrodesAtSlice = this.sliceMap.get(this.currentSlice);
-       const previousElectrodes = this.sliceMap.get(this.currentSlice - 1);
-       const nextElectrodes = this.sliceMap.get(this.currentSlice + 1);
-  
-       this.draw2DElectrodes(electrodesAtSlice);
-  
-       if (!this.showDetails) {
-         if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
-         if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
-       }
-  
-       if (this.currentSlice === this.relativeSlice) {
-         this.drawMark(this.relativeX, this.relativeY);
-       }
-     }
+      const electrodesAtSlice = this.sliceMap.get(this.currentSlice);
+      const previousElectrodes = this.sliceMap.get(this.currentSlice - 1);
+      const nextElectrodes = this.sliceMap.get(this.currentSlice + 1);
+
+      this.draw2DElectrodes(electrodesAtSlice);
+
+      if (!this.showDetails) {
+        if (previousElectrodes) this.draw2DElectrodes(previousElectrodes, 1);
+        if (nextElectrodes) this.draw2DElectrodes(nextElectrodes, 1);
+      }
+
+      if (this.currentSlice === this.relativeSlice) {
+        this.drawMark(this.relativeX, this.relativeY);
+      }
+    }
   }
 
   draw2DElectrodes(electrodes, size = 2, textOffset = 30) {
@@ -551,10 +560,10 @@ window.onload = function () {
 
     const editMenu = document.getElementById("edit-menu")
     const instanceForEdit = renderer({
-        minScale: 0.1,
-        maxScale: 30,
-        element: editMenu,
-        scaleSensitivity: 500,
+      minScale: 0.1,
+      maxScale: 30,
+      element: editMenu,
+      scaleSensitivity: 500,
     });
 
 
